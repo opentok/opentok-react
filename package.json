@@ -1,0 +1,31 @@
+{
+  "name": "opentok-react",
+  "version": "0.1.0",
+  "description": "React module for Opentok.js",
+  "main": "src/index.js",
+  "scripts": {
+    "start": "cd examples && (watchify -o bundle.js app.js & python -m SimpleHTTPServer)"
+  },
+  "keywords": [
+    "opentok",
+    "react"
+  ],
+  "author": "Aiham Hammami <aiham@aiham.net>",
+  "license": "MIT",
+  "dependencies": {
+    "lodash": "^4.13.1",
+    "react": "^15.1.0",
+    "react-dom": "^15.1.0"
+  },
+  "devDependencies": {
+    "babel-preset-es2015": "^6.9.0",
+    "babel-preset-react": "^6.5.0",
+    "babelify": "^7.3.0",
+    "browserify": "^13.0.1"
+  },
+  "browserify": {
+    "transform": [
+      "babelify"
+    ]
+  }
+}
