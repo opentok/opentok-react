@@ -1,6 +1,6 @@
 'use strict';
 
-export {
+export default {
   API_KEY: '123',
   SESSION_ID: 'foo',
   TOKEN: 'bar',
