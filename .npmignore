@@ -1,4 +1,3 @@
-node_modules/
-dist/
+src/
 example/bundle.js
 example/config.js

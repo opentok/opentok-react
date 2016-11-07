@@ -2,9 +2,10 @@
   "name": "opentok-react",
   "version": "0.2.0",
   "description": "React component for OpenTok.js",
-  "main": "dist/opentok-react.js",
+  "main": "dist/index.js",
   "scripts": {
-    "build": "mkdir -p dist && browserify -o dist/opentok-react.js src/index.js",
+    "prepublish": "npm run build",
+    "build": "babel src --out-dir dist",
     "example": "cd example && browserify -o bundle.js app.js && python -m SimpleHTTPServer"
   },
   "keywords": [
@@ -18,11 +19,12 @@
   "author": "Aiham Hammami <aiham@aiham.net>",
   "license": "MIT",
   "dependencies": {
-    "lodash": "^4.13.1",
     "react": "^15.1.0",
     "react-dom": "^15.1.0"
   },
   "devDependencies": {
+    "lodash": "^4.13.1",
+    "babel-cli": "^6.18.0",
     "babel-preset-es2015": "^6.9.0",
     "babel-preset-react": "^6.5.0",
     "babelify": "^7.3.0",
