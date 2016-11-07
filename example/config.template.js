@@ -1,5 +1,3 @@
-'use strict';
-
 export default {
   API_KEY: '123',
   SESSION_ID: 'foo',

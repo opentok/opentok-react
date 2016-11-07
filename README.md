@@ -173,8 +173,6 @@ class MyApp extends React.Component {
 ### A Complete Example
 
 ```js
-'use strict';
-
 import { createSession, OTPublisher, OTSubscriber } from 'opentok-react';
 
 import React from 'react';
