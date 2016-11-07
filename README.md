@@ -67,6 +67,16 @@ Import the `opentok-react` modules into your React application:
 import { createSession, OTPublisher, OTSubscriber } from 'opentok-react';
 ```
 
+Or if you need to use CommonJS modules:
+
+```js
+var otReact = require('opentok-react');
+
+var createSession = otReact.createSession;
+var OTPublisher = otReact.OTPublisher;
+var OTSubscriber = otReact.OTSubscriber;
+```
+
 ### createSession Helper
 
 The `createSession` helper has been provided to easily create a session and monitor the current list of subscriber streams.
