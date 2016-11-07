@@ -170,6 +170,63 @@ class MyApp extends React.Component {
 - Explain that `eventHandlers` are dynamically updated.
 - Explain that this component will not cause subscriber to be appended to body.
 
+### A Complete Example
+
+```js
+'use strict';
+
+import { createSession, OTPublisher, OTSubscriber } from 'opentok-react';
+
+import React from 'react';
+import ReactDOM from 'react-dom';
+
+const config = {
+  API_KEY: 'your-api-key',
+  SESSION_ID: 'your-session-id',
+  TOKEN: 'your-session-token'
+};
+
+class MyApp extends React.Component {
+  constructor(props) {
+    super(props);
+    this.state = { streams: [] };
+  }
+
+  componentWillMount() {
+    this.sessionHelper = createSession({
+      apiKey: config.API_KEY,
+      sessionId: config.SESSION_ID,
+      token: config.TOKEN,
+      onStreamsUpdated: streams => { this.setState({ streams }); }
+    });
+  }
+
+  componentWillUnmount() {
+    this.sessionHelper.disconnect();
+  }
+
+  render() {
+    return (
+      <div>
+        <OTPublisher session={this.sessionHelper.session} />
+
+        {this.state.streams.map(stream => {
+          return (
+            <OTSubscriber
+              key={stream.id}
+              session={this.sessionHelper.session}
+              stream={stream}
+            />
+          );
+        })}
+      </div>
+    );
+  }
+}
+
+ReactDOM.render(<MyApp />, document.getElementById('content'));
+```
+
 ## Custom Build
 
 1. `git clone https://github.com/aiham/opentok-react.git`
