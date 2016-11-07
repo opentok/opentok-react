@@ -1,6 +1,6 @@
 'use strict';
 
-module.exports = {
+export {
   API_KEY: '123',
   SESSION_ID: 'foo',
   TOKEN: 'bar',

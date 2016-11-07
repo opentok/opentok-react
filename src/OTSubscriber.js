@@ -1,44 +1,35 @@
 'use strict';
 
-import React from 'react';
-import ReactDOM from 'react-dom';
-import lodash from 'lodash';
+import React, { Component, PropTypes } from 'react';
+import { findDOMNode } from 'react-dom';
 
-export default class OTSubscriber extends React.Component {
+export default class OTSubscriber extends Component {
   constructor(props) {
-    console.log('OTSubscriber()');
     super(props);
 
     this.state = {
       subscriber: null
     };
-
-    this.videoElementCreatedHandler = this.videoElementCreatedHandler.bind(this);
   }
 
-  videoElementCreatedHandler(event) {
-    console.log('OTSubscriber.videoElementCreatedHandler()', event);
-    ReactDOM.findDOMNode(this).appendChild(event.element);
+  getSubscriber() {
+    return this.state.subscriber;
   }
 
   componentDidMount() {
-    console.log('OTSubscriber.componentDidMount()');
-    let properties = lodash.assign(
-      {},
-      this.props.properties,
-      { insertDefaultUI: false }
-    );
+    let container = document.createElement('div');
+    findDOMNode(this).appendChild(container);
+
     let subscriber = this.props.session.subscribe(
       this.props.stream,
-      properties,
+      container,
+      this.props.properties,
       err => {
-        console.log('Subscribe callback', err);
         if (err) {
           console.error('Failed to publish to OpenTok session:', err);
         }
       }
     );
-    subscriber.on('videoElementCreated', this.videoElementCreatedHandler);
 
     if (
       this.props.eventHandlers &&
@@ -50,13 +41,25 @@ export default class OTSubscriber extends React.Component {
     this.setState({ subscriber });
   }
 
-  componentWillUnmount() {
-    console.log('OTSubscriber.componentWillUnmount()');
-    if (this.state.subscriber) {
-      this.state.subscriber.off({
-        videoElementCreated: this.videoElementCreatedHandler
-      });
+  componentDidUpdate(prevProps, prevState) {
+    let cast = (value, Type, defaultValue) => {
+      return value === undefined ? defaultValue : Type(value);
+    };
 
+    let updateSubscriberProperty = key => {
+      let previous = cast(prevProps.properties[key], Boolean, true);
+      let current = cast(this.props.properties[key], Boolean, true);
+      if (previous !== current) {
+        this.state.subscriber[key](current);
+      }
+    };
+
+    updateSubscriberProperty('subscribeToAudio');
+    updateSubscriberProperty('subscribeToVideo');
+  }
+
+  componentWillUnmount() {
+    if (this.state.subscriber) {
       if (
         this.props.eventHandlers &&
         typeof this.props.eventHandlers === 'object'
@@ -71,16 +74,15 @@ export default class OTSubscriber extends React.Component {
   }
 
   render() {
-    console.log('OTSubscriber.render()');
-    return (<div><h3>Subscriber {this.props.stream.id}</h3></div>);
+    return <div />;
   }
 }
 
 OTSubscriber.propTypes = {
-  stream: React.PropTypes.object.isRequired,
-  session: React.PropTypes.object.isRequired,
-  properties: React.PropTypes.object,
-  eventHandlers: React.PropTypes.objectOf(React.PropTypes.func)
+  stream: PropTypes.object.isRequired,
+  session: PropTypes.object.isRequired,
+  properties: PropTypes.object,
+  eventHandlers: PropTypes.objectOf(PropTypes.func)
 };
 
 OTSubscriber.defaultProps = {

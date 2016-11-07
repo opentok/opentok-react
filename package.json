@@ -1,14 +1,19 @@
 {
   "name": "opentok-react",
-  "version": "0.1.0",
+  "version": "0.2.0",
   "description": "React module for Opentok.js",
-  "main": "src/index.js",
+  "main": "dist/opentok-react.js",
   "scripts": {
-    "start": "cd examples && (watchify -o bundle.js app.js & python -m SimpleHTTPServer)"
+    "build": "mkdir -p dist && browserify -o dist/opentok-react.js src/index.js",
+    "example": "cd example && browserify -o bundle.js app.js && python -m SimpleHTTPServer"
   },
   "keywords": [
+    "tokbox",
     "opentok",
-    "react"
+    "react",
+    "react-component",
+    "video",
+    "webrtc"
   ],
   "author": "Aiham Hammami <aiham@aiham.net>",
   "license": "MIT",

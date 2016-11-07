@@ -1,12 +1,10 @@
 'use strict';
 
-import React from 'react';
-import ReactDOM from 'react-dom';
-import lodash from 'lodash';
+import React, { Component, PropTypes } from 'react';
+import { findDOMNode } from 'react-dom';
 
-export default class OTPublisher extends React.Component {
+export default class OTPublisher extends Component {
   constructor(props) {
-    console.log('OTPublisher()');
     super(props);
 
     this.state = {
@@ -14,44 +12,25 @@ export default class OTPublisher extends React.Component {
       lastStreamId: ''
     };
 
-    this.videoElementCreatedHandler = this.videoElementCreatedHandler.bind(this);
     this.streamCreatedHandler = this.streamCreatedHandler.bind(this);
     this.sessionConnectedHandler = this.sessionConnectedHandler.bind(this);
   }
 
-  videoElementCreatedHandler(event) {
-    console.log('OTPublisher.videoElementCreatedHandler()', event);
-    ReactDOM.findDOMNode(this).appendChild(event.element);
-  }
-
   streamCreatedHandler(event) {
-    console.log('OTPublisher.streamCreatedHandler()', event);
     this.setState({ lastStreamId: event.stream.id });
   }
 
   sessionConnectedHandler(event) {
-    console.log('OTPublisher.sessionConnectedHandler()', event);
     this.publishToSession(this.state.publisher);
   }
 
-  publishToSession(publisher) {
-    this.props.session.publish(publisher, err => {
-      console.log('Publish callback', err);
-      if (err) {
-        console.error('Failed to publish to OpenTok session:', err);
-      }
-    });
-  }
+  createPublisher() {
+    this.destroyPublisher();
 
-  componentDidMount() {
-    console.log('OTPublisher.componentDidMount()');
-    let properties = lodash.assign(
-      {},
-      this.props.properties,
-      { insertDefaultUI: false }
-    );
-    let publisher = OT.initPublisher(properties);
-    publisher.on('videoElementCreated', this.videoElementCreatedHandler);
+    let container = document.createElement('div');
+    findDOMNode(this).appendChild(container);
+
+    let publisher = OT.initPublisher(container, this.props.properties);
     publisher.on('streamCreated', this.streamCreatedHandler);
 
     if (
@@ -67,20 +46,12 @@ export default class OTPublisher extends React.Component {
       this.props.session.once('sessionConnected', this.sessionConnectedHandler);
     }
 
-    this.setState({ publisher });
+    this.setState({ publisher, lastStreamId: '' });
   }
 
-  componentWillUnmount() {
-    console.log('OTPublisher.componentWillUnmount()');
-    if (this.props.session) {
-      this.props.session.off('sessionConnected', this.sessionConnectedHandler);
-    }
-
+  destroyPublisher() {
     if (this.state.publisher) {
-      this.state.publisher.off({
-        videoElementCreated: this.videoElementCreatedHandler,
-        streamCreated: this.streamCreatedHandler
-      });
+      this.state.publisher.off('streamCreated', this.streamCreatedHandler);
 
       if (
         this.props.eventHandlers &&
@@ -96,16 +67,66 @@ export default class OTPublisher extends React.Component {
     }
   }
 
+  publishToSession(publisher) {
+    this.props.session.publish(publisher, err => {
+      if (err) {
+        console.error('Failed to publish to OpenTok session:', err);
+      }
+    });
+  }
+
+  getPublisher() {
+    return this.state.publisher;
+  }
+
+  componentDidMount() {
+    this.createPublisher();
+  }
+
+  componentDidUpdate(prevProps, prevState) {
+    let useDefault = (value, defaultValue) => {
+      return value === undefined ? defaultValue : value;
+    };
+
+    let shouldUpdate = (key, defaultValue) => {
+      let previous = useDefault(prevProps.properties[key], defaultValue);
+      let current = useDefault(this.props.properties[key], defaultValue);
+      return previous !== current;
+    };
+
+    let updatePublisherProperty = (key, defaultValue) => {
+      if (shouldUpdate(key, defaultValue)) {
+        let value = useDefault(this.props.properties[key], defaultValue);
+        this.state.publisher[key](value);
+      }
+    };
+
+    if (shouldUpdate('videoSource', undefined)) {
+      this.createPublisher();
+      return;
+    }
+
+    updatePublisherProperty('publishAudio', true);
+    updatePublisherProperty('publishVideo', true);
+  }
+
+  componentWillUnmount() {
+    if (this.props.session) {
+      this.props.session.off('sessionConnected', this.sessionConnectedHandler);
+    }
+
+    this.destroyPublisher();
+  }
+
   render() {
-    console.log('OTPublisher.render()');
-    return (<div><h3>Publisher {this.state.lastStreamId}</h3></div>);
+    return <div />;
   }
 }
 
 OTPublisher.propTypes = {
-  session: React.PropTypes.object.isRequired,
-  properties: React.PropTypes.object,
-  eventHandlers: React.PropTypes.objectOf(React.PropTypes.func)
+  session: PropTypes.object.isRequired,
+  properties: PropTypes.object,
+  eventHandlers: PropTypes.objectOf(PropTypes.func)
 };
 
 OTPublisher.defaultProps = {

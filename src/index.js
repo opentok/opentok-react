@@ -1,11 +1,11 @@
 'use strict';
 
-import OTSession from './OTSession';
+import createSession from './createSession';
 import OTPublisher from './OTPublisher';
 import OTSubscriber from './OTSubscriber';
 
 export {
-  OTSession,
+  createSession,
   OTPublisher,
   OTSubscriber
 };
