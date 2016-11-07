@@ -147,7 +147,7 @@ class MyApp extends React.Component {
   render() {
     return (
       <div>
-        {this.sessionHelper.streams.map(streams => {
+        {this.sessionHelper.streams.map(stream => {
           return (
             <OTSubscriber
               key={stream.id}
