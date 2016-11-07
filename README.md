@@ -3,7 +3,7 @@
 ## Pre-Requisites
 
 1. NodeJS
-1. Register a TokBox account: https://tokbox.com/account/
+1. Register a TokBox account: https://tokbox.com/account/user/signup
 
 ## Install
 
