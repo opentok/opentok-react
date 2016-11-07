@@ -1,7 +1,7 @@
 {
   "name": "opentok-react",
   "version": "0.2.0",
-  "description": "React module for Opentok.js",
+  "description": "React component for OpenTok.js",
   "main": "dist/opentok-react.js",
   "scripts": {
     "build": "mkdir -p dist && browserify -o dist/opentok-react.js src/index.js",
