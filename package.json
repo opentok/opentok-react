@@ -1,6 +1,6 @@
 {
   "name": "opentok-react",
-  "version": "0.2.0",
+  "version": "0.2.1",
   "description": "React component for OpenTok.js",
   "main": "dist/index.js",
   "scripts": {
