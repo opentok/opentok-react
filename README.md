@@ -1,5 +1,19 @@
 # opentok-react
 
+## Contents
+
+- [Pre-Requisites](#pre-requisites)
+- [Install](#install)
+- [Example App](#example-app)
+- [Usage](#usage)
+  - [Importing opentok-react](#importing-opentok-react)
+  - [createSession Helper](#createsession-helper)
+  - [OTPublisher Component](#otpublisher-component)
+  - [OTSubscriber Component](#otsubscriber-component)
+  - [A Complete Example](#a-complete-example)
+- [Custom Build](#custom-build)
+- [Tests](#tests)
+
 ## Pre-Requisites
 
 1. NodeJS
