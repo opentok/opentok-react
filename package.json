@@ -16,6 +16,10 @@
     "video",
     "webrtc"
   ],
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/aiham/opentok-react.git"
+  },
   "author": "Aiham Hammami <aiham@aiham.net>",
   "license": "MIT",
   "dependencies": {
