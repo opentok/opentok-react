@@ -177,7 +177,7 @@ class MyApp extends React.Component {
 1. `npm install`
 1. Modify code in `src/`
 1. `npm run build`
-1. Check that `dist/opentok-react.js` has been updated.
+1. Check that files in `dist/` have been updated.
 
 ## Tests
 
