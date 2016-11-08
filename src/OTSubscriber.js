@@ -10,11 +10,13 @@ export default class OTSubscriber extends Component {
     };
   }
 
-  getSubscriber() {
-    return this.state.subscriber;
-  }
+  createSubscriber() {
+    this.destroySubscriber();
 
-  componentDidMount() {
+    if (!this.props.session || !this.props.stream) {
+      return;
+    }
+
     let container = document.createElement('div');
     findDOMNode(this).appendChild(container);
 
@@ -39,6 +41,35 @@ export default class OTSubscriber extends Component {
     this.setState({ subscriber });
   }
 
+  destroySubscriber(session) {
+    if (!session) {
+      session = this.props.session;
+    }
+
+    if (this.state.subscriber) {
+      if (
+        this.props.eventHandlers &&
+        typeof this.props.eventHandlers === 'object'
+      ) {
+        this.state.subscriber.once('destroyed', () => {
+          this.state.subscriber.off(this.props.eventHandlers);
+        });
+      }
+
+      if (session) {
+        session.unsubscribe(this.state.subscriber);
+      }
+    }
+  }
+
+  getSubscriber() {
+    return this.state.subscriber;
+  }
+
+  componentDidMount() {
+    this.createSubscriber();
+  }
+
   componentDidUpdate(prevProps, prevState) {
     let cast = (value, Type, defaultValue) => {
       return value === undefined ? defaultValue : Type(value);
@@ -54,21 +85,22 @@ export default class OTSubscriber extends Component {
 
     updateSubscriberProperty('subscribeToAudio');
     updateSubscriberProperty('subscribeToVideo');
+
+    if (
+      (!prevProps.session || !prevProps.stream) &&
+      this.props.session && this.props.stream
+    ) {
+      this.createSubscriber();
+    } else if (
+      prevProps.session && prevProps.stream &&
+      (!this.props.session || !this.props.stream)
+    ) {
+      this.destroySubscriber(prevProps.session);
+    }
   }
 
   componentWillUnmount() {
-    if (this.state.subscriber) {
-      if (
-        this.props.eventHandlers &&
-        typeof this.props.eventHandlers === 'object'
-      ) {
-        this.state.subscriber.once('destroyed', () => {
-          this.state.subscriber.off(this.props.eventHandlers);
-        });
-      }
-
-      this.props.session.unsubscribe(this.state.subscriber);
-    }
+    this.destroySubscriber();
   }
 
   render() {
@@ -77,8 +109,8 @@ export default class OTSubscriber extends Component {
 }
 
 OTSubscriber.propTypes = {
-  stream: PropTypes.object.isRequired,
-  session: PropTypes.object.isRequired,
+  stream: PropTypes.object,
+  session: PropTypes.object,
   properties: PropTypes.object,
   eventHandlers: PropTypes.objectOf(PropTypes.func)
 };
