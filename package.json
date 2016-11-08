@@ -1,7 +1,7 @@
 {
   "name": "opentok-react",
   "version": "0.2.4",
-  "description": "React component for OpenTok.js",
+  "description": "React components for OpenTok.js",
   "main": "dist/index.js",
   "scripts": {
     "prepublish": "npm run build",

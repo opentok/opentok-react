@@ -1,5 +1,9 @@
 # opentok-react
 
+[![npm version](https://badge.fury.io/js/opentok-react.svg)](https://badge.fury.io/js/opentok-react)
+
+React components for OpenTok.js
+
 ## Contents
 
 - [Pre-Requisites](#pre-requisites)
