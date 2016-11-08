@@ -13,14 +13,18 @@ export default class Publisher extends Component {
       video: true,
       videoSource: 'camera'
     };
-
-    this.setAudio = this.setStateValue.bind(this, 'audio');
-    this.setVideo = this.setStateValue.bind(this, 'video');
-    this.setVideoSource = this.setStateValue.bind(this, 'videoSource');
   }
 
-  setStateValue(key, value) {
-    this.setState({ [key]: value });
+  setAudio = (audio) => {
+    this.setState({ audio });
+  }
+
+  setVideo = (video) => {
+    this.setState({ video });
+  }
+
+  setVideoSource = (videoSource) => {
+    this.setState({ videoSource });
   }
 
   render() {

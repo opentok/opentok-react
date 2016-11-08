@@ -11,13 +11,14 @@ export default class Subscriber extends Component {
       audio: true,
       video: true
     };
-
-    this.setAudio = this.setStateValue.bind(this, 'audio');
-    this.setVideo = this.setStateValue.bind(this, 'video');
   }
 
-  setStateValue(key, value) {
-    this.setState({ [key]: value });
+  setAudio = (audio) => {
+    this.setState({ audio });
+  }
+
+  setVideo = (video) => {
+    this.setState({ video });
   }
 
   render() {
