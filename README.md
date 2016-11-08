@@ -11,10 +11,14 @@ React components for OpenTok.js
 - [Example App](#example-app)
 - [Usage](#usage)
   - [Importing opentok-react](#importing-opentok-react)
-  - [createSession Helper](#createsession-helper)
+  - [Example with OTSession Component](#example-with-otsession-component)
+  - [Example with createSession Helper](#example-with-createsession-helper)
+- [API Reference](#api-reference)
+  - [OTSession Component](#otsession-component)
   - [OTPublisher Component](#otpublisher-component)
+  - [OTStreams Component](#otstreams-component)
   - [OTSubscriber Component](#otsubscriber-component)
-  - [A Complete Example](#a-complete-example)
+  - [createSession Helper](#createsession-helper)
 - [Custom Build](#custom-build)
 - [Tests](#tests)
 
@@ -55,62 +59,100 @@ Refer to the `App.js`, `Publisher.js` and `Subscriber.js` files in `example/comp
 
 ## Usage
 
-The `opentok-react` library is comprised of:
-
-- `createSession` Helper
-- `OTPublisher` Component
-- `OTSubscriber` Component
-
-The following sections explains how to import and use them in your React application.
+The following sections explains how to import and use `opentok-react` in your React application.
 
 ### Importing opentok-react
 
-Import the `opentok-react` modules into your React application:
+Import the `opentok-react` components into your React application:
 
 ```js
-import { createSession, OTPublisher, OTSubscriber } from 'opentok-react';
+import { OTSession, OTPublisher, OTStreams, OTSubscriber, createSession } from 'opentok-react';
 ```
 
-Or if you need to use CommonJS modules:
+Or `require` it if you need to use CommonJS modules:
 
 ```js
 var otReact = require('opentok-react');
 
-var createSession = otReact.createSession;
+var OTSession = otReact.OTSession;
 var OTPublisher = otReact.OTPublisher;
+var OTStreams = otReact.OTStreams;
 var OTSubscriber = otReact.OTSubscriber;
+var createSession = otReact.createSession;
 ```
 
-### createSession Helper
-
-The `createSession` helper has been provided to easily create a session and monitor the current list of subscriber streams.
+### Example with OTSession Component
 
 ```js
 class MyApp extends React.Component {
+  render() {
+    return (
+      <OTSession apiKey="your-api-key" sessionId="your-session-id" token="your-session-token">
+        <OTPublisher />
+        <OTStreams>
+          <OTSubscriber />
+        </OTStreams>
+      </OTSession>
+    );
+  }
+}
+```
+
+### Example with createSession Helper
+
+```js
+class MyApp extends React.Component {
+  constructor(props) {
+    super(props);
+    this.state = { streams: [] };
+  }
+
   componentWillMount() {
     this.sessionHelper = createSession({
       apiKey: 'your-api-key',
       sessionId: 'your-session-id',
       token: 'your-session-token',
-      onStreamsUpdated: streams => {
-        console.log('Current subscriber streams:', streams);
-      }
+      onStreamsUpdated: streams => { this.setState({ streams }); }
     });
   }
 
   componentWillUnmount() {
     this.sessionHelper.disconnect();
   }
+
+  render() {
+    return (
+      <div>
+        <OTPublisher session={this.sessionHelper.session} />
+
+        {this.state.streams.map(stream => {
+          return (
+            <OTSubscriber
+              key={stream.id}
+              session={this.sessionHelper.session}
+              stream={stream}
+            />
+          );
+        })}
+      </div>
+    );
+  }
 }
 ```
 
-The `createSession` helper returns an object with the following properties:
+## API Reference
 
-- `session` - The [Session](https://tokbox.com/developer/sdks/js/reference/Session.html) instance.
-- `streams` - An up-to-date array of [Stream](https://tokbox.com/developer/sdks/js/reference/Stream.html) instances.
-- `disconnect` - A clean up function. Call this when your component unmounts.
+The `opentok-react` library is comprised of:
 
-Use of this helper is optional and you can directly call [OT.initSession](https://tokbox.com/developer/sdks/js/reference/OT.html#initSession) and listen to [streamCreated](https://tokbox.com/developer/sdks/js/reference/Session.html#event:streamCreated) events if you prefer.
+- `OTSession` Component
+- `OTPublisher` Component
+- `OTStreams` Component
+- `OTSubscriber` Component
+- `createSession` Helper
+
+### OTSession Component
+
+TODO
 
 ### OTPublisher Component
 
@@ -163,12 +205,15 @@ class MyApp extends React.Component {
 #### TODO
 - Describe `getPublisher()` method.
 - Explain which properties `OTPublisher` will monitor for changes.
-- Explain that `eventHandlers` are dynamically updated.
 - Explain that this component will not cause publisher to be appended to body.
+
+### OTStreams Component
+
+TODO
 
 ### OTSubscriber Component
 
-The `OTSubscriber` component will subscribe to a specified stream from a specified session upon mounting. You must specify a [Stream](https://tokbox.com/developer/sdks/js/reference/Stream.html) object using the `stream` prop and a [Session](https://tokbox.com/developer/sdks/js/reference/Session.html) object using the `session` prop.
+The `OTSubscriber` component will subscribe to a specified stream from a specified session upon mounting. You must provide a [Stream](https://tokbox.com/developer/sdks/js/reference/Stream.html) object using the `stream` prop and a [Session](https://tokbox.com/developer/sdks/js/reference/Session.html) object using the `session` prop.
 
 ```js
 class MyApp extends React.Component {
@@ -195,63 +240,38 @@ class MyApp extends React.Component {
 - Describe `properties` prop.
 - Describe `eventHandlers` prop.
 - Explain which properties `OTPublisher` will monitor for changes.
-- Explain that `eventHandlers` are dynamically updated.
 - Explain that this component will not cause subscriber to be appended to body.
 
-### A Complete Example
+### createSession Helper
+
+The `createSession` helper has been provided to easily create a session and monitor the current list of subscriber streams.
 
 ```js
-import { createSession, OTPublisher, OTSubscriber } from 'opentok-react';
-
-import React from 'react';
-import ReactDOM from 'react-dom';
-
-const config = {
-  API_KEY: 'your-api-key',
-  SESSION_ID: 'your-session-id',
-  TOKEN: 'your-session-token'
-};
-
 class MyApp extends React.Component {
-  constructor(props) {
-    super(props);
-    this.state = { streams: [] };
-  }
-
   componentWillMount() {
     this.sessionHelper = createSession({
-      apiKey: config.API_KEY,
-      sessionId: config.SESSION_ID,
-      token: config.TOKEN,
-      onStreamsUpdated: streams => { this.setState({ streams }); }
+      apiKey: 'your-api-key',
+      sessionId: 'your-session-id',
+      token: 'your-session-token',
+      onStreamsUpdated: streams => {
+        console.log('Current subscriber streams:', streams);
+      }
     });
   }
 
   componentWillUnmount() {
     this.sessionHelper.disconnect();
   }
-
-  render() {
-    return (
-      <div>
-        <OTPublisher session={this.sessionHelper.session} />
-
-        {this.state.streams.map(stream => {
-          return (
-            <OTSubscriber
-              key={stream.id}
-              session={this.sessionHelper.session}
-              stream={stream}
-            />
-          );
-        })}
-      </div>
-    );
-  }
 }
-
-ReactDOM.render(<MyApp />, document.getElementById('content'));
 ```
+
+The `createSession` helper returns an object with the following properties:
+
+- `session` - The [Session](https://tokbox.com/developer/sdks/js/reference/Session.html) instance.
+- `streams` - An up-to-date array of [Stream](https://tokbox.com/developer/sdks/js/reference/Stream.html) instances.
+- `disconnect` - A clean up function. Call this when your component unmounts.
+
+Use of this helper is optional and you can instead use the `OTSession` component or directly call [OT.initSession](https://tokbox.com/developer/sdks/js/reference/OT.html#initSession) and listen to [streamCreated](https://tokbox.com/developer/sdks/js/reference/Session.html#event:streamCreated) events if you prefer.
 
 ## Custom Build
 
