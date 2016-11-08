@@ -20,9 +20,7 @@ export default class Publisher extends Component {
   }
 
   setStateValue(key, value) {
-    let state = {};
-    state[key] = value;
-    this.setState(state);
+    this.setState({ [key]: value });
   }
 
   render() {

@@ -24,9 +24,7 @@ export default class App extends Component {
   }
 
   setStateValue(key, value) {
-    let state = {};
-    state[key] = value;
-    this.setState(state);
+    this.setState({ [key]: value });
   }
 
   componentWillMount() {
