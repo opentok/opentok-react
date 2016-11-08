@@ -22,6 +22,10 @@ export default class OTPublisher extends Component {
   createPublisher() {
     this.destroyPublisher();
 
+    if (!this.props.session) {
+      return;
+    }
+
     let container = document.createElement('div');
     findDOMNode(this).appendChild(container);
 
@@ -44,7 +48,11 @@ export default class OTPublisher extends Component {
     this.setState({ publisher, lastStreamId: '' });
   }
 
-  destroyPublisher() {
+  destroyPublisher(session) {
+    if (!session) {
+      session = this.props.session;
+    }
+
     if (this.state.publisher) {
       this.state.publisher.off('streamCreated', this.streamCreatedHandler);
 
@@ -57,7 +65,9 @@ export default class OTPublisher extends Component {
         });
       }
 
-      this.props.session.unpublish(this.state.publisher);
+      if (session) {
+        session.unpublish(this.state.publisher);
+      }
       this.state.publisher.destroy();
     }
   }
@@ -103,6 +113,12 @@ export default class OTPublisher extends Component {
 
     updatePublisherProperty('publishAudio', true);
     updatePublisherProperty('publishVideo', true);
+
+    if (!prevProps.session && this.props.session) {
+      this.createPublisher();
+    } else if (prevProps.session && !this.props.session) {
+      this.destroyPublisher(prevProps.session);
+    }
   }
 
   componentWillUnmount() {
@@ -119,7 +135,7 @@ export default class OTPublisher extends Component {
 }
 
 OTPublisher.propTypes = {
-  session: PropTypes.object.isRequired,
+  session: PropTypes.object,
   properties: PropTypes.object,
   eventHandlers: PropTypes.objectOf(PropTypes.func)
 };
