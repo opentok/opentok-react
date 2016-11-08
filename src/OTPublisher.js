@@ -9,16 +9,13 @@ export default class OTPublisher extends Component {
       publisher: null,
       lastStreamId: ''
     };
-
-    this.streamCreatedHandler = this.streamCreatedHandler.bind(this);
-    this.sessionConnectedHandler = this.sessionConnectedHandler.bind(this);
   }
 
-  streamCreatedHandler(event) {
+  streamCreatedHandler = (event) => {
     this.setState({ lastStreamId: event.stream.id });
   }
 
-  sessionConnectedHandler(event) {
+  sessionConnectedHandler = (event) => {
     this.publishToSession(this.state.publisher);
   }
 

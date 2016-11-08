@@ -9,11 +9,9 @@ export default class CheckBox extends Component {
       id: uniqueId('Checkbox'),
       isChecked: this.props.initialChecked
     };
-
-    this.onChange = this.onChange.bind(this);
   }
 
-  onChange(event) {
+  onChange = (event) => {
     let isChecked = event.currentTarget.checked;
     this.setState({ isChecked });
   }

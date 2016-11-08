@@ -9,11 +9,9 @@ export default class RadioButtons extends Component {
       id: uniqueId('RadioButtons'),
       value: this.props.initialChecked
     };
-
-    this.onChange = this.onChange.bind(this);
   }
 
-  onChange(event) {
+  onChange = (event) => {
     let value = event.currentTarget.value;
     this.setState({ value });
   }

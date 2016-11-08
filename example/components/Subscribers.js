@@ -3,13 +3,7 @@ import React, { Component } from 'react';
 import Subscriber from './Subscriber';
 
 export default class Subscribers extends Component {
-  constructor(props) {
-    super(props);
-
-    this.renderSubscribers = this.renderSubscribers.bind(this);
-  }
-
-  renderSubscribers() {
+  renderSubscribers = () => {
     return this.props.streams.map(stream => {
       return (
         <Subscriber
