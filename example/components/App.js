@@ -1,57 +1,42 @@
 import React, { Component } from 'react';
 
-import { createSession } from '../../src'
+import { OTSession, OTStreams } from '../../src'
 import ConnectionStatus from './ConnectionStatus';
 import Publisher from './Publisher';
-import Subscribers from './Subscribers';
+import Subscriber from './Subscriber';
 
 export default class App extends Component {
   constructor(props) {
     super(props);
 
     this.state = {
-      streams: [],
       connected: false
     };
 
-    this.setConnected = this.setStateValue.bind(this, 'connected');
-    this.setStreams = this.setStateValue.bind(this, 'streams');
-
-    this.sessionEventHandlers = {
-      sessionConnected: this.setConnected.bind(this, true),
-      sessionDisconnected: this.setConnected.bind(this, false)
+    this.sessionEvents = {
+      sessionConnected: () => {
+        this.setState({ connected: true });
+      },
+      sessionDisconnected: () => {
+        this.setState({ connected: false });
+      }
     };
-  }
-
-  setStateValue(key, value) {
-    this.setState({ [key]: value });
-  }
-
-  componentWillMount() {
-    this.sessionHelper = createSession({
-      apiKey: this.props.apiKey,
-      sessionId: this.props.sessionId,
-      token: this.props.token,
-      onStreamsUpdated: this.setStreams
-    });
-    this.sessionHelper.session.on(this.sessionEventHandlers);
-  }
-
-  componentWillUnmount() {
-    this.sessionHelper.session.off(this.sessionEventHandlers);
-    this.sessionHelper.disconnect();
   }
 
   render() {
     return (
-      <div>
+      <OTSession
+        apiKey={this.props.apiKey}
+        sessionId={this.props.sessionId}
+        token={this.props.token}
+        eventHandlers={this.sessionEvents}
+      >
         <ConnectionStatus connected={this.state.connected} />
-        <Publisher session={this.sessionHelper.session} />
-        <Subscribers
-          session={this.sessionHelper.session}
-          streams={this.state.streams}
-        />
-      </div>
+        <Publisher />
+        <OTStreams>
+          <Subscriber />
+        </OTStreams>
+      </OTSession>
     );
   }
 }
