@@ -1,15 +1,21 @@
-import createSession from './createSession';
+import OTSession from './OTSession';
 import OTPublisher from './OTPublisher';
+import OTStreams from './OTStreams';
 import OTSubscriber from './OTSubscriber';
+import createSession from './createSession';
 
 export default {
-  createSession,
+  OTSession,
   OTPublisher,
-  OTSubscriber
+  OTStreams,
+  OTSubscriber,
+  createSession
 };
 
 export {
-  createSession,
+  OTSession,
   OTPublisher,
-  OTSubscriber
+  OTStreams,
+  OTSubscriber,
+  createSession
 };
