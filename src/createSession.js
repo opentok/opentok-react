@@ -37,6 +37,7 @@ export default function createSession({
         session.disconnect();
       }
 
+      onStreamsUpdated = null;
       streams = null;
       onStreamCreated = null;
       onStreamDestroyed = null;
