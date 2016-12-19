@@ -26,6 +26,10 @@ React components for OpenTok.js
 
 1. NodeJS
 1. Register a TokBox account: https://tokbox.com/account/user/signup
+1. Include `opentok.js` before your application:
+```html
+<script src="//static.opentok.com/v2/js/opentok.min.js"></script>
+```
 
 ## Install
 
@@ -33,12 +37,6 @@ Add `opentok-react` as a dependency of your application:
 
 ```sh
 npm install --save opentok-react
-```
-
-Include `opentok.js` before your application:
-
-```html
-<script src="//static.opentok.com/v2/js/opentok.min.js"></script>
 ```
 
 ## Example App
