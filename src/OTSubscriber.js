@@ -105,7 +105,7 @@ export default class OTSubscriber extends Component {
   }
 
   render() {
-    return <div className='OTSubscriber' />;
+    return <div />;
   }
 }
 

@@ -46,7 +46,7 @@ describe('OTSubscriber', () => {
       session;
 
     beforeEach(() => {
-      session = jasmine.createSpyObj('session', [ 'subscribe', 'unsubscribe' ]);
+      session = jasmine.createSpyObj('session', ['subscribe', 'unsubscribe']);
       wrapper = mount(<OTSubscriber session={session} />);
     });
 
@@ -77,8 +77,8 @@ describe('OTSubscriber', () => {
       stream;
 
     beforeEach(() => {
-      session = jasmine.createSpyObj('session', [ 'subscribe', 'unsubscribe' ]);
-      subscriber = jasmine.createSpyObj('subscriber', [ 'on', 'off', 'once' ]);
+      session = jasmine.createSpyObj('session', ['subscribe', 'unsubscribe']);
+      subscriber = jasmine.createSpyObj('subscriber', ['on', 'off', 'once']);
       session.subscribe.and.returnValue(subscriber);
       stream = {};
       wrapper = mount(<OTSubscriber session={session} stream={stream} />);
