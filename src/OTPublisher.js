@@ -27,6 +27,7 @@ export default class OTPublisher extends Component {
     }
 
     let container = document.createElement('div');
+    container.setAttribute('class', 'OTPublisherContainer');
     findDOMNode(this).appendChild(container);
 
     let publisher = OT.initPublisher(container, this.props.properties);

@@ -3,6 +3,7 @@ module.exports = config => {
     basePath: '',
     frameworks: ['browserify', 'jasmine'],
     files: [
+      'https://static.opentok.com/v2/js/opentok.js',
       'test/**/*.js'
     ],
     preprocessors: {
