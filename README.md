@@ -28,7 +28,7 @@ React components for OpenTok.js
 1. Register a TokBox account: https://tokbox.com/account/user/signup
 1. Include `opentok.js` before your application:
 ```html
-<script src="//static.opentok.com/v2/js/opentok.min.js"></script>
+<script src="https://static.opentok.com/v2/js/opentok.min.js"></script>
 ```
 
 ## Install
