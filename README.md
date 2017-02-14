@@ -38,7 +38,7 @@ npm install --save opentok-react
 Include `opentok.js` before your application:
 
 ```html
-<script src="//static.opentok.com/v2/js/opentok.min.js"></script>
+<script src="https://static.opentok.com/v2/js/opentok.min.js"></script>
 ```
 
 ## Example App
