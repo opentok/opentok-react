@@ -28,7 +28,7 @@ module.exports = config => {
     reporters: ['spec'],
     port: 9876,
     colors: true,
-    logLevel: config.LOG_INFO,
+    logLevel: config.LOG_DEBUG,
     autoWatch: true,
     browsers: [browser[0].toUpperCase() + browser.substr(1)],
     singleRun: false
