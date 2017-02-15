@@ -1,6 +1,18 @@
 export default function createSession({
   apiKey, sessionId, token, onStreamsUpdated
-}) {
+} = {}) {
+  if (!apiKey) {
+    throw new Error('Missing apiKey');
+  }
+
+  if (!sessionId) {
+    throw new Error('Missing sessionId');
+  }
+
+  if (!token) {
+    throw new Error('Missing token');
+  }
+
   let streams = [];
 
   let onStreamCreated = event => {

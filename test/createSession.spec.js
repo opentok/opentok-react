@@ -1,127 +1,149 @@
 import createSession from '../src/createSession.js';
 
 describe('createSession', () => {
-  let session,
-    onStreamCreated,
-    onStreamDestroyed,
-    onStreamsUpdated,
-    options,
-    sessionHelper;
-
-  beforeEach(() => {
-    session = jasmine.createSpyObj('session', [
-      'on',
-      'off',
-      'connect',
-      'disconnect'
-    ]);
-
-    session.on.and.callFake(eventHandlers => {
-      onStreamCreated = eventHandlers.streamCreated;
-      onStreamDestroyed = eventHandlers.streamDestroyed;
+  describe('required credentials', () => {
+    it('should throw when missing apiKey', () => {
+      expect(() => {
+        createSession();
+      }).toThrowError(/Missing apiKey/);
     });
 
-    spyOn(OT, 'initSession').and.returnValue(session);
+    it('should throw when missing sessionId', () => {
+      expect(() => {
+        createSession({ apiKey: 'fakeApiKey' });
+      }).toThrowError(/Missing sessionId/);
+    });
 
-    onStreamsUpdated = jasmine.createSpy('onStreamsUpdated');
-
-    options = {
-      apiKey: 'fakeApiKey',
-      sessionId: 'fakeSessionId',
-      token: 'fakeToken',
-      onStreamsUpdated
-    };
-
-    sessionHelper = createSession(options);
-  });
-
-  it('should call OT.initSession', () => {
-    expect(OT.initSession).toHaveBeenCalledWith(options.apiKey, options.sessionId);
-  });
-
-  it('should call session.on', () => {
-    expect(session.on).toHaveBeenCalledWith(jasmine.objectContaining({
-      streamCreated: jasmine.any(Function),
-      streamDestroyed: jasmine.any(Function)
-    }));
-  });
-
-  it('should call session.connect', () => {
-    expect(session.connect).toHaveBeenCalledWith(options.token);
-  });
-
-  it('should return session helper', () => {
-    expect(sessionHelper).toEqual({
-      session,
-      streams: jasmine.any(Array),
-      disconnect: jasmine.any(Function)
+    it('should throw when missing token', () => {
+      expect(() => {
+        createSession({ apiKey: 'fakeApiKey', sessionId: 'fakeSessionId' });
+      }).toThrowError(/Missing token/);
     });
   });
 
-  it('should add stream to streams array', () => {
-    expect(sessionHelper.streams.length).toBe(0);
-    expect(onStreamsUpdated).not.toHaveBeenCalled();
+  describe('all options', () => {
+    let session,
+      onStreamCreated,
+      onStreamDestroyed,
+      onStreamsUpdated,
+      options,
+      sessionHelper;
 
-    const stream = { id: 'fakeStreamId' };
-    onStreamCreated({ stream });
+    beforeEach(() => {
+      session = jasmine.createSpyObj('session', [
+        'on',
+        'off',
+        'connect',
+        'disconnect'
+      ]);
 
-    expect(sessionHelper.streams.length).toBe(1);
-    expect(sessionHelper.streams[0]).toBe(stream);
-    expect(onStreamsUpdated).toHaveBeenCalledWith(sessionHelper.streams);
-  });
+      session.on.and.callFake(eventHandlers => {
+        onStreamCreated = eventHandlers.streamCreated;
+        onStreamDestroyed = eventHandlers.streamDestroyed;
+      });
 
-  it('should not add duplicate stream to streams array', () => {
-    const stream = { id: 'fakeStreamId' };
-    sessionHelper.streams.push(stream);
+      spyOn(OT, 'initSession').and.returnValue(session);
 
-    expect(sessionHelper.streams.length).toBe(1);
-    expect(onStreamsUpdated).not.toHaveBeenCalled();
+      onStreamsUpdated = jasmine.createSpy('onStreamsUpdated');
 
-    onStreamCreated({ stream });
+      options = {
+        apiKey: 'fakeApiKey',
+        sessionId: 'fakeSessionId',
+        token: 'fakeToken',
+        onStreamsUpdated
+      };
 
-    expect(sessionHelper.streams.length).toBe(1);
-    expect(sessionHelper.streams[0]).toBe(stream);
-    expect(onStreamsUpdated).not.toHaveBeenCalled();
-  });
+      sessionHelper = createSession(options);
+    });
 
-  it('should remove existing stream from streams array', () => {
-    const stream = { id: 'fakeStreamId' };
-    sessionHelper.streams.push(stream);
+    it('should call OT.initSession', () => {
+      expect(OT.initSession).toHaveBeenCalledWith(options.apiKey, options.sessionId);
+    });
 
-    expect(sessionHelper.streams.length).toBe(1);
-    expect(onStreamsUpdated).not.toHaveBeenCalled();
+    it('should call session.on', () => {
+      expect(session.on).toHaveBeenCalledWith(jasmine.objectContaining({
+        streamCreated: jasmine.any(Function),
+        streamDestroyed: jasmine.any(Function)
+      }));
+    });
 
-    onStreamDestroyed({ stream });
+    it('should call session.connect', () => {
+      expect(session.connect).toHaveBeenCalledWith(options.token);
+    });
 
-    expect(sessionHelper.streams.length).toBe(0);
-    expect(onStreamsUpdated).toHaveBeenCalledWith(sessionHelper.streams);
-  });
+    it('should return session helper', () => {
+      expect(sessionHelper).toEqual({
+        session,
+        streams: jasmine.any(Array),
+        disconnect: jasmine.any(Function)
+      });
+    });
 
-  it('should not remove unknown stream from streams array', () => {
-    const stream = { id: 'fakeStreamId' };
-    sessionHelper.streams.push(stream);
+    it('should add stream to streams array', () => {
+      expect(sessionHelper.streams.length).toBe(0);
+      expect(onStreamsUpdated).not.toHaveBeenCalled();
 
-    expect(sessionHelper.streams.length).toBe(1);
-    expect(onStreamsUpdated).not.toHaveBeenCalled();
+      const stream = { id: 'fakeStreamId' };
+      onStreamCreated({ stream });
 
-    onStreamDestroyed({ stream: { id: 'otherFakeStreamId' } });
+      expect(sessionHelper.streams.length).toBe(1);
+      expect(sessionHelper.streams[0]).toBe(stream);
+      expect(onStreamsUpdated).toHaveBeenCalledWith(sessionHelper.streams);
+    });
 
-    expect(sessionHelper.streams.length).toBe(1);
-    expect(onStreamsUpdated).not.toHaveBeenCalled();
-  });
+    it('should not add duplicate stream to streams array', () => {
+      const stream = { id: 'fakeStreamId' };
+      sessionHelper.streams.push(stream);
 
-  it('should call session.off on disconnect', () => {
-    expect(session.off).not.toHaveBeenCalled();
-    sessionHelper.disconnect();
-    expect(session.off).toHaveBeenCalledWith(jasmine.objectContaining({
-      streamCreated: onStreamCreated,
-      streamDestroyed: onStreamDestroyed
-    }));
-  });
+      expect(sessionHelper.streams.length).toBe(1);
+      expect(onStreamsUpdated).not.toHaveBeenCalled();
 
-  it('should call session.disconnect on disconnect', () => {
-    expect(session.disconnect).not.toHaveBeenCalled();
-    sessionHelper.disconnect();
-    expect(session.disconnect).toHaveBeenCalled();
+      onStreamCreated({ stream });
+
+      expect(sessionHelper.streams.length).toBe(1);
+      expect(sessionHelper.streams[0]).toBe(stream);
+      expect(onStreamsUpdated).not.toHaveBeenCalled();
+    });
+
+    it('should remove existing stream from streams array', () => {
+      const stream = { id: 'fakeStreamId' };
+      sessionHelper.streams.push(stream);
+
+      expect(sessionHelper.streams.length).toBe(1);
+      expect(onStreamsUpdated).not.toHaveBeenCalled();
+
+      onStreamDestroyed({ stream });
+
+      expect(sessionHelper.streams.length).toBe(0);
+      expect(onStreamsUpdated).toHaveBeenCalledWith(sessionHelper.streams);
+    });
+
+    it('should not remove unknown stream from streams array', () => {
+      const stream = { id: 'fakeStreamId' };
+      sessionHelper.streams.push(stream);
+
+      expect(sessionHelper.streams.length).toBe(1);
+      expect(onStreamsUpdated).not.toHaveBeenCalled();
+
+      onStreamDestroyed({ stream: { id: 'otherFakeStreamId' } });
+
+      expect(sessionHelper.streams.length).toBe(1);
+      expect(onStreamsUpdated).not.toHaveBeenCalled();
+    });
+
+    it('should call session.off on disconnect', () => {
+      expect(session.off).not.toHaveBeenCalled();
+      sessionHelper.disconnect();
+      expect(session.off).toHaveBeenCalledWith(jasmine.objectContaining({
+        streamCreated: onStreamCreated,
+        streamDestroyed: onStreamDestroyed
+      }));
+    });
+
+    it('should call session.disconnect on disconnect', () => {
+      expect(session.disconnect).not.toHaveBeenCalled();
+      sessionHelper.disconnect();
+      expect(session.disconnect).toHaveBeenCalled();
+    });
   });
 });

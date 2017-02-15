@@ -26,6 +26,26 @@ describe('OTSession', () => {
     spyOn(OT, 'initSession').and.returnValue(session);
   });
 
+  describe('missing credentials', () => {
+    it('should throw when missing apiKey', () => {
+      expect(() => {
+        mount(<OTSession />);
+      }).toThrowError(/Missing apiKey/);
+    });
+
+    it('should throw when missing sessionId', () => {
+      expect(() => {
+        mount(<OTSession apiKey={apiKey} />);
+      }).toThrowError(/Missing sessionId/);
+    });
+
+    it('should throw when missing token', () => {
+      expect(() => {
+        mount(<OTSession apiKey={apiKey} sessionId={sessionId} />);
+      }).toThrowError(/Missing token/);
+    });
+  });
+
   describe('without event handlers', () => {
     describe('without children', () => {
       beforeEach(() => {
