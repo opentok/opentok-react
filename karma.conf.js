@@ -1,4 +1,6 @@
 module.exports = config => {
+  const browser = process.env.BROWSER || 'chrome';
+
   config.set({
     basePath: '',
     frameworks: ['browserify', 'jasmine'],
@@ -28,7 +30,7 @@ module.exports = config => {
     colors: true,
     logLevel: config.LOG_INFO,
     autoWatch: true,
-    browsers: ['Chrome'],
+    browsers: [browser[0].toUpperCase() + browser.substr(1)],
     singleRun: false
   });
 };

@@ -5,6 +5,7 @@
   "main": "dist/index.js",
   "scripts": {
     "test": "karma start",
+    "travis-test": "karma start --single-run",
     "prepublish": "npm run build",
     "build": "babel src --out-dir dist",
     "example": "cd example && browserify -o bundle.js app.js && python -m SimpleHTTPServer"
@@ -24,6 +25,7 @@
   "author": "Aiham Hammami <aiham@aiham.net>",
   "license": "MIT",
   "dependencies": {
+    "opentok-test-scripts": "^3.2.1",
     "react": "^15.1.0",
     "react-dom": "^15.1.0"
   },
@@ -40,6 +42,7 @@
     "karma-babel-preprocessor": "^6.0.1",
     "karma-browserify": "^5.1.0",
     "karma-chrome-launcher": "^2.0.0",
+    "karma-firefox-launcher": "^1.0.0",
     "karma-jasmine": "^1.1.0",
     "karma-spec-reporter": "^0.0.26",
     "lodash": "^4.13.1",
