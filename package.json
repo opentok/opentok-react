@@ -44,6 +44,7 @@
     "karma-spec-reporter": "^0.0.26",
     "lodash": "^4.13.1",
     "react-addons-test-utils": "^15.4.1",
+    "travis-multirunner": "^3.1.0",
     "watchify": "^3.8.0"
   },
   "browserify": {
