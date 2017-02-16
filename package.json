@@ -5,7 +5,7 @@
   "main": "dist/index.js",
   "scripts": {
     "test": "karma start",
-    "travis-test": "karma start --single-run",
+    "unit": "karma start --single-run",
     "prepublish": "npm run build",
     "build": "babel src --out-dir dist",
     "example": "cd example && browserify -o bundle.js app.js && python -m SimpleHTTPServer"

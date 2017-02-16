@@ -1,6 +1,6 @@
 # opentok-react
 
-[![npm version](https://badge.fury.io/js/opentok-react.svg)](https://badge.fury.io/js/opentok-react)
+[![npm version](https://badge.fury.io/js/opentok-react.svg)](https://badge.fury.io/js/opentok-react) [![Build Status](https://travis-ci.org/aiham/opentok-react.svg?branch=master)](https://travis-ci.org/aiham/opentok-react)
 
 React components for OpenTok.js
 
@@ -282,4 +282,16 @@ Use of this helper is optional and you can instead use the `OTSession` component
 
 ## Tests
 
-TODO
+Run the unit tests locally with the following command:
+
+```
+npm run unit
+```
+
+By default this will launch the Chrome browser. To run tests in Firefox use:
+
+```
+npm run unit -- --browsers Firefox
+```
+
+The unit tests are automatically run on [Travis](https://travis-ci.org/aiham/opentok-react) on both Chrome and Firefox and the current build status is shown at the top of this document.

@@ -18,7 +18,7 @@ env:
     - BROWSER=firefox BVER=stable
   global:
     - TRAVIS=true
-    - UNIT_CMD='npm run travis-test'
+    - UNIT_CMD='npm run unit'
 
 matrix:
   fast_finish: true
