@@ -36,6 +36,12 @@ React components for OpenTok.js
 Add `opentok-react` as a dependency of your application:
 
 ```sh
+yarn add opentok-react
+```
+
+Or if you're still using npm:
+
+```sh
 npm install --save opentok-react
 ```
 
