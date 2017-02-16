@@ -1,6 +1,10 @@
 import createSession from '../src/createSession.js';
 
 describe('createSession', () => {
+  beforeEach(() => {
+    spyOn(OT, 'initSession');
+  });
+
   describe('required credentials', () => {
     it('should throw when missing apiKey', () => {
       expect(() => {
@@ -42,7 +46,7 @@ describe('createSession', () => {
         onStreamDestroyed = eventHandlers.streamDestroyed;
       });
 
-      spyOn(OT, 'initSession').and.returnValue(session);
+      OT.initSession.and.returnValue(session);
 
       onStreamsUpdated = jasmine.createSpy('onStreamsUpdated');
 
