@@ -25,11 +25,16 @@ export default class OTPublisher extends Component {
     if (!this.props.session) {
       return;
     }
+    
+    let properties = this.props.properties || {};
+    let container;
 
-    let container = document.createElement('div');
-    findDOMNode(this).appendChild(container);
+    if(properties.insertDefaultUI !== false) {
+      container = document.createElement('div');
+      findDOMNode(this).appendChild(container);
+    }
 
-    let publisher = OT.initPublisher(container, this.props.properties);
+    let publisher = OT.initPublisher(container, properties);
     publisher.on('streamCreated', this.streamCreatedHandler);
 
     if (
