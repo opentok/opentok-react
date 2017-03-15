@@ -2,12 +2,12 @@ import React, { PropTypes, Children, cloneElement } from 'react';
 
 export default function OTStreams(props) {
   if (!props.session) {
-    return null;
+    return <div />;
   }
 
   const child = Children.only(props.children);
 
-  const childrenWithProps = props.streams.map(
+  const childrenWithProps = Array.isArray(props.streams) ? props.streams.map(
     stream => cloneElement(
       child,
       {
@@ -16,7 +16,7 @@ export default function OTStreams(props) {
         key: stream.id
       }
     )
-  );
+  ) : null;
 
   return <div>{childrenWithProps}</div>;
 }

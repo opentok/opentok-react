@@ -1,6 +1,6 @@
 # opentok-react
 
-[![npm version](https://badge.fury.io/js/opentok-react.svg)](https://badge.fury.io/js/opentok-react)
+[![npm version](https://badge.fury.io/js/opentok-react.svg)](https://badge.fury.io/js/opentok-react) [![Build Status](https://travis-ci.org/aiham/opentok-react.svg?branch=master)](https://travis-ci.org/aiham/opentok-react)
 
 React components for OpenTok.js
 
@@ -20,25 +20,30 @@ React components for OpenTok.js
   - [OTSubscriber Component](#otsubscriber-component)
   - [createSession Helper](#createsession-helper)
 - [Custom Build](#custom-build)
+- [Contributing](#contributing)
 - [Tests](#tests)
 
 ## Pre-Requisites
 
 1. NodeJS
 1. Register a TokBox account: https://tokbox.com/account/user/signup
+1. Include `opentok.js` before your application:
+```html
+<script src="https://static.opentok.com/v2/js/opentok.min.js"></script>
+```
 
 ## Install
 
 Add `opentok-react` as a dependency of your application:
 
 ```sh
-npm install --save opentok-react
+yarn add opentok-react
 ```
 
-Include `opentok.js` before your application:
+Or if you're still using npm:
 
-```html
-<script src="https://static.opentok.com/v2/js/opentok.min.js"></script>
+```sh
+npm install --save opentok-react
 ```
 
 ## Example App
@@ -282,6 +287,28 @@ Use of this helper is optional and you can instead use the `OTSession` component
 1. `npm run build`
 1. Check that files in `dist/` have been updated.
 
+## Contributing
+
+If you make changes to the project that you would like to contribute back then please follow the [contributing guidelines](CONTRIBUTING.md). All contributions are greatly appreciated!
+
 ## Tests
 
-TODO
+Run the unit tests locally with the following command:
+
+```
+npm run unit
+```
+
+By default this will launch the Chrome browser. To run tests in Firefox use:
+
+```
+npm run unit -- --browsers Firefox
+```
+
+Run the linter with:
+
+```
+npm run lint
+```
+
+The unit tests are automatically run on [Travis](https://travis-ci.org/aiham/opentok-react) on both Chrome and Firefox and the current build status is shown at the top of this document.

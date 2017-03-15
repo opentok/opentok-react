@@ -31,6 +31,7 @@ export default class OTPublisher extends Component {
 
     if(properties.insertDefaultUI !== false) {
       container = document.createElement('div');
+      container.setAttribute('class', 'OTPublisherContainer');
       findDOMNode(this).appendChild(container);
     }
 

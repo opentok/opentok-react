@@ -1,2 +1,6 @@
-src/
 example/
+src/
+test/
+karma.conf.js
+.travis.yml
+.npmignore

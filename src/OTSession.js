@@ -25,6 +25,9 @@ export default class OTSession extends Component {
     ) {
       this.sessionHelper.session.on(this.props.eventHandlers);
     }
+
+    const { streams } = this.sessionHelper;
+    this.setState({ streams });
   }
 
   componentWillUnmount() {

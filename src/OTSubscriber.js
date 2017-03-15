@@ -18,6 +18,7 @@ export default class OTSubscriber extends Component {
     }
 
     let container = document.createElement('div');
+    container.setAttribute('class', 'OTSubscriberContainer');
     findDOMNode(this).appendChild(container);
 
     let subscriber = this.props.session.subscribe(
