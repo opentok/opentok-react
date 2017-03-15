@@ -20,6 +20,7 @@ React components for OpenTok.js
   - [OTSubscriber Component](#otsubscriber-component)
   - [createSession Helper](#createsession-helper)
 - [Custom Build](#custom-build)
+- [Contributing](#contributing)
 - [Tests](#tests)
 
 ## Pre-Requisites
@@ -286,6 +287,10 @@ Use of this helper is optional and you can instead use the `OTSession` component
 1. `npm run build`
 1. Check that files in `dist/` have been updated.
 
+## Contributing
+
+If you make changes to the project that you would like to contribute back then please follow the [contributing guidelines](CONTRIBUTING.md). All contributions are greatly appreciated!
+
 ## Tests
 
 Run the unit tests locally with the following command:
@@ -298,6 +303,12 @@ By default this will launch the Chrome browser. To run tests in Firefox use:
 
 ```
 npm run unit -- --browsers Firefox
+```
+
+Run the linter with:
+
+```
+npm run lint
 ```
 
 The unit tests are automatically run on [Travis](https://travis-ci.org/aiham/opentok-react) on both Chrome and Firefox and the current build status is shown at the top of this document.
