@@ -305,4 +305,10 @@ By default this will launch the Chrome browser. To run tests in Firefox use:
 npm run unit -- --browsers Firefox
 ```
 
+Run the linter with:
+
+```
+npm run lint
+```
+
 The unit tests are automatically run on [Travis](https://travis-ci.org/aiham/opentok-react) on both Chrome and Firefox and the current build status is shown at the top of this document.

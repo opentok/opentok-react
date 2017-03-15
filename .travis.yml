@@ -16,6 +16,7 @@ env:
   matrix:
     - BROWSER=chrome  BVER=stable
     - BROWSER=firefox BVER=stable
+    - UNIT_CMD='npm run lint'
   global:
     - TRAVIS=true
     - UNIT_CMD='npm run unit'
