@@ -20,6 +20,7 @@ React components for OpenTok.js
   - [OTSubscriber Component](#otsubscriber-component)
   - [createSession Helper](#createsession-helper)
 - [Custom Build](#custom-build)
+- [Contributing](#contributing)
 - [Tests](#tests)
 
 ## Pre-Requisites
@@ -285,6 +286,10 @@ Use of this helper is optional and you can instead use the `OTSession` component
 1. Modify code in `src/`
 1. `npm run build`
 1. Check that files in `dist/` have been updated.
+
+## Contributing
+
+If you make changes to the project that you would like to contribute back then please follow the [contributing guidelines](CONTRIBUTING.md). All contributions are greatly appreciated!
 
 ## Tests
 
