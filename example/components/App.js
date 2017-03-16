@@ -1,11 +1,12 @@
 import React, { Component } from 'react';
 
-import { OTSession, OTStreams } from '../../src'
+import { OTSession, OTStreams, preloadScript } from '../../src'
 import ConnectionStatus from './ConnectionStatus';
 import Publisher from './Publisher';
 import Subscriber from './Subscriber';
+import config from '../config';
 
-export default class App extends Component {
+class App extends Component {
   constructor(props) {
     super(props);
 
@@ -21,6 +22,10 @@ export default class App extends Component {
         this.setState({ connected: false });
       }
     };
+  }
+
+  componentWillMount() {
+    OT.registerScreenSharingExtension('chrome', config.CHROME_EXTENSION_ID, 2);
   }
 
   render() {
@@ -40,3 +45,5 @@ export default class App extends Component {
     );
   }
 }
+
+export default preloadScript(App);

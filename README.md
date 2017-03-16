@@ -46,6 +46,8 @@ Or if you're still using npm:
 npm install --save opentok-react
 ```
 
+Alternatively, wrap your top-level component using OpenTok with the [`preloadScript`](#preloadscript-higher-order-component) HOC. The HOC will take care of loading `opentok.js` for you before rendering. 
+
 ## Example App
 
 There is an example application provided in `example/` and you can run it with the following steps:
@@ -154,6 +156,7 @@ The `opentok-react` library is comprised of:
 - `OTStreams` Component
 - `OTSubscriber` Component
 - `createSession` Helper
+- `preloadScript` Higher-Order Component
 
 ### OTSession Component
 
@@ -277,6 +280,39 @@ The `createSession` helper returns an object with the following properties:
 - `disconnect` - A clean up function. Call this when your component unmounts.
 
 Use of this helper is optional and you can instead use the `OTSession` component or directly call [OT.initSession](https://tokbox.com/developer/sdks/js/reference/OT.html#initSession) and listen to [streamCreated](https://tokbox.com/developer/sdks/js/reference/Session.html#event:streamCreated) events if you prefer.
+
+
+### `preloadScript` Higher-Order Component
+In larger applications, one might not want to load the `opentok.js` client with a `<script>` tag all the time. The `preloadScript` higher-order component will do this for you at the appropriate time.
+
+For example, imagine you have a React Router application with the following route structure:
+
+```javascript
+<Router>
+  <Route path="/">
+    <IndexRoute component="..." />
+    <Route path="something" component="..." />
+    <Route path="video" component={VideoChat} />
+    <Route path="something-else" component="..." />
+  </Route>
+</Router>
+```
+
+What you'd like to do is delay the loading of `opentok.js` until the `VideoChat` component is being used. Here's how you can do this:
+
+```javascript
+class VideoChat extends React.Component {
+  // All the code of your component
+}
+
+export default preloadScript(App);
+```
+
+When rendering the `preloadScript` HOC, it accepts two optional props:
+
+  * `opentokClientUrl`: The URL of the OpenTok client script to load. It defaults to `https://static.opentok.com/v2/js/opentok.min.js`.
+  * `loadingDelegate`: An element that will be displayed while the OpenTok client script is loading. It defaults to an empty `<div />`.
+
 
 ## Custom Build
 

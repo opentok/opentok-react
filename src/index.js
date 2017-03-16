@@ -3,13 +3,15 @@ import OTPublisher from './OTPublisher';
 import OTStreams from './OTStreams';
 import OTSubscriber from './OTSubscriber';
 import createSession from './createSession';
+import preloadScript from './preloadScript';
 
 export default {
   OTSession,
   OTPublisher,
   OTStreams,
   OTSubscriber,
-  createSession
+  createSession,
+  preloadScript
 };
 
 export {
@@ -17,5 +19,6 @@ export {
   OTPublisher,
   OTStreams,
   OTSubscriber,
-  createSession
+  createSession,
+  preloadScript
 };
