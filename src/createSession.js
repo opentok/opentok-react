@@ -1,5 +1,6 @@
 export default function createSession({
-  apiKey, sessionId, token, onStreamsUpdated
+  apiKey, sessionId, token, onStreamsUpdated,
+  onSessionConnectError
 }) {
   let streams = [];
 
@@ -26,7 +27,11 @@ export default function createSession({
 
   let session = OT.initSession(apiKey, sessionId);
   session.on(eventHandlers);
-  session.connect(token);
+  session.connect(token, (err) => {
+    if (err && onSessionConnectError) {
+      onSessionConnectError(err);
+    }
+  });
 
   return {
     session,

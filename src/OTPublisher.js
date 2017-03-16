@@ -29,7 +29,13 @@ export default class OTPublisher extends Component {
     let container = document.createElement('div');
     findDOMNode(this).appendChild(container);
 
-    let publisher = OT.initPublisher(container, this.props.properties);
+    const cb = (err) => {
+      if (err && this.props.onPublisherInitError) {
+        this.props.onPublisherInitError(err);
+      }
+    };
+
+    let publisher = OT.initPublisher(container, this.props.properties, cb);
     publisher.on('streamCreated', this.streamCreatedHandler);
 
     if (
@@ -75,6 +81,10 @@ export default class OTPublisher extends Component {
   publishToSession(publisher) {
     this.props.session.publish(publisher, err => {
       if (err) {
+        if (this.props.onPublishError) {
+          this.props.onPublishError(err);
+        }
+        
         console.error('Failed to publish to OpenTok session:', err);
       }
     });
@@ -137,7 +147,9 @@ export default class OTPublisher extends Component {
 OTPublisher.propTypes = {
   session: PropTypes.object,
   properties: PropTypes.object,
-  eventHandlers: PropTypes.objectOf(PropTypes.func)
+  eventHandlers: PropTypes.objectOf(PropTypes.func),
+  onPublisherInitError: PropTypes.func,
+  onPublishError: PropTypes.func
 };
 
 OTPublisher.defaultProps = {
