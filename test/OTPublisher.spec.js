@@ -50,6 +50,19 @@ describe('OTPublisher', () => {
       ]);
     });
 
+    describe('configuration', () => {
+      beforeEach(() => {
+        session.connection = {};
+      });
+
+      it('should not render the publisher container element when default UI is disabled', () => {
+        const wrapper = mount(<OTPublisher session={session} properties={{ insertDefaultUI: false }} />);
+        const divContainer = wrapper.render().find('div.OTPublisherContainer');
+        expect(divContainer.length).toBe(0);
+      });
+
+    });
+
     describe('connected session', () => {
       let wrapper;
 
