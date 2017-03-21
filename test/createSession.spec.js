@@ -1,4 +1,4 @@
-import createSession from '../src/createSession.js';
+import createSession from '../src/createSession';
 
 describe('createSession', () => {
   beforeEach(() => {
@@ -26,22 +26,22 @@ describe('createSession', () => {
   });
 
   describe('all options', () => {
-    let session,
-      onStreamCreated,
-      onStreamDestroyed,
-      onStreamsUpdated,
-      options,
-      sessionHelper;
+    let session;
+    let onStreamCreated;
+    let onStreamDestroyed;
+    let onStreamsUpdated;
+    let options;
+    let sessionHelper;
 
     beforeEach(() => {
       session = jasmine.createSpyObj('session', [
         'on',
         'off',
         'connect',
-        'disconnect'
+        'disconnect',
       ]);
 
-      session.on.and.callFake(eventHandlers => {
+      session.on.and.callFake((eventHandlers) => {
         onStreamCreated = eventHandlers.streamCreated;
         onStreamDestroyed = eventHandlers.streamDestroyed;
       });
@@ -54,7 +54,7 @@ describe('createSession', () => {
         apiKey: 'fakeApiKey',
         sessionId: 'fakeSessionId',
         token: 'fakeToken',
-        onStreamsUpdated
+        onStreamsUpdated,
       };
 
       sessionHelper = createSession(options);
@@ -67,7 +67,7 @@ describe('createSession', () => {
     it('should call session.on', () => {
       expect(session.on).toHaveBeenCalledWith(jasmine.objectContaining({
         streamCreated: jasmine.any(Function),
-        streamDestroyed: jasmine.any(Function)
+        streamDestroyed: jasmine.any(Function),
       }));
     });
 
@@ -79,7 +79,7 @@ describe('createSession', () => {
       expect(sessionHelper).toEqual({
         session,
         streams: jasmine.any(Array),
-        disconnect: jasmine.any(Function)
+        disconnect: jasmine.any(Function),
       });
     });
 
@@ -140,7 +140,7 @@ describe('createSession', () => {
       sessionHelper.disconnect();
       expect(session.off).toHaveBeenCalledWith(jasmine.objectContaining({
         streamCreated: onStreamCreated,
-        streamDestroyed: onStreamDestroyed
+        streamDestroyed: onStreamDestroyed,
       }));
     });
 

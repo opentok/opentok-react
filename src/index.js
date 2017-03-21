@@ -11,7 +11,7 @@ export default {
   OTStreams,
   OTSubscriber,
   createSession,
-  preloadScript
+  preloadScript,
 };
 
 export {
@@ -20,5 +20,5 @@ export {
   OTStreams,
   OTSubscriber,
   createSession,
-  preloadScript
+  preloadScript,
 };

@@ -1,4 +1,4 @@
-import React, {Component, PropTypes} from 'react';
+import React, { Component, PropTypes } from 'react';
 import getDisplayName from 'react-display-name';
 import scriptjs from 'scriptjs';
 
@@ -15,7 +15,7 @@ export default function preloadScript(InnerComponent) {
       super(props);
 
       this.state = {
-        scriptLoaded: typeof OT !== 'undefined'
+        scriptLoaded: typeof OT !== 'undefined',
       };
       this.isPresent = false;
     }
@@ -23,15 +23,13 @@ export default function preloadScript(InnerComponent) {
     componentDidMount() {
       this.isPresent = true;
 
-      if (this.state.scriptLoaded || this.state.scriptLoading) {
+      if (this.scriptLoading || this.state.scriptLoaded) {
         return;
       }
 
-      this.setState({
-        scriptLoading: true
-      });
+      this.scriptLoading = true;
 
-      const scriptUrl = this.props.opentokClientUrl || DEFAULT_SCRIPT_URL;
+      const scriptUrl = this.props.opentokClientUrl;
       scriptjs(scriptUrl, this.onScriptLoad);
     }
 
@@ -41,9 +39,7 @@ export default function preloadScript(InnerComponent) {
 
     onScriptLoad = () => {
       if (this.isPresent) {
-        this.setState({
-          scriptLoaded: true
-        });
+        this.setState({ scriptLoaded: true });
       }
     }
 
@@ -53,16 +49,19 @@ export default function preloadScript(InnerComponent) {
       if (this.state.scriptLoaded) {
         return <InnerComponent {...restProps} />;
       }
-      else {
-        return loadingDelegate || <div />;
-      }
+
+      return loadingDelegate;
     }
-  };
+  }
 
   PreloadScript.displayName = `preloadScript(${getDisplayName(InnerComponent)})`;
   PreloadScript.propTypes = {
     opentokClientUrl: PropTypes.string,
-    loadingDelegate: PropTypes.node
+    loadingDelegate: PropTypes.node,
+  };
+  PreloadScript.defaultProps = {
+    opentokClientUrl: DEFAULT_SCRIPT_URL,
+    loadingDelegate: <div />,
   };
 
   return PreloadScript;

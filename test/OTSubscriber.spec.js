@@ -1,6 +1,6 @@
 import React from 'react';
 import { mount } from 'enzyme';
-import OTSubscriber from '../src/OTSubscriber.js';
+import OTSubscriber from '../src/OTSubscriber';
 
 describe('OTSubscriber', () => {
   describe('no props', () => {
@@ -22,8 +22,8 @@ describe('OTSubscriber', () => {
   });
 
   describe('with only stream prop', () => {
-    let wrapper,
-      stream;
+    let wrapper;
+    let stream;
 
     beforeEach(() => {
       stream = {};
@@ -42,8 +42,8 @@ describe('OTSubscriber', () => {
   });
 
   describe('with only session prop', () => {
-    let wrapper,
-      session;
+    let wrapper;
+    let session;
 
     beforeEach(() => {
       session = jasmine.createSpyObj('session', ['subscribe', 'unsubscribe']);
@@ -71,10 +71,10 @@ describe('OTSubscriber', () => {
   });
 
   describe('with both session and stream props', () => {
-    let wrapper,
-      session,
-      subscriber,
-      stream;
+    let wrapper;
+    let session;
+    let subscriber;
+    let stream;
 
     beforeEach(() => {
       session = jasmine.createSpyObj('session', ['subscribe', 'unsubscribe']);
@@ -94,7 +94,7 @@ describe('OTSubscriber', () => {
         stream,
         jasmine.any(Object),
         jasmine.any(Object),
-        jasmine.any(Function)
+        jasmine.any(Function),
       );
     });
 

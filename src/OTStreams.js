@@ -13,9 +13,9 @@ export default function OTStreams(props) {
       {
         session: props.session,
         stream,
-        key: stream.id
-      }
-    )
+        key: stream.id,
+      },
+    ),
   ) : null;
 
   return <div>{childrenWithProps}</div>;
@@ -23,6 +23,13 @@ export default function OTStreams(props) {
 
 OTStreams.propTypes = {
   children: PropTypes.element.isRequired,
-  session: PropTypes.object,
-  streams: PropTypes.arrayOf(React.PropTypes.object)
+  session: PropTypes.shape({
+    publish: PropTypes.func,
+    subscribe: PropTypes.func,
+  }).isRequired,
+  streams: PropTypes.arrayOf(React.PropTypes.object),
+};
+
+OTStreams.defaultProps = {
+  streams: [],
 };

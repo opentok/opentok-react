@@ -1,10 +1,10 @@
 import React from 'react';
-import ReactDOM from 'react-dom';
+import { render } from 'react-dom';
 
 import config from './config';
 import App from './components/App';
 
-ReactDOM.render((
+render((
   <App
     apiKey={config.API_KEY}
     sessionId={config.SESSION_ID}
