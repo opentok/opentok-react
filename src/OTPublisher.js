@@ -1,5 +1,4 @@
 import React, { Component, PropTypes } from 'react';
-import { findDOMNode } from 'react-dom';
 
 export default class OTPublisher extends Component {
   constructor(props) {
@@ -7,107 +6,26 @@ export default class OTPublisher extends Component {
 
     this.state = {
       publisher: null,
-      lastStreamId: ''
+      lastStreamId: '',
     };
-  }
-
-  streamCreatedHandler = (event) => {
-    this.setState({ lastStreamId: event.stream.id });
-  }
-
-  sessionConnectedHandler = (event) => {
-    this.publishToSession(this.state.publisher);
-  }
-
-  createPublisher() {
-    this.destroyPublisher();
-
-    if (!this.props.session) {
-      return;
-    }
-    
-    let properties = this.props.properties || {};
-    let container;
-
-    if(properties.insertDefaultUI !== false) {
-      container = document.createElement('div');
-      container.setAttribute('class', 'OTPublisherContainer');
-      findDOMNode(this).appendChild(container);
-    }
-
-    let publisher = OT.initPublisher(container, properties);
-    publisher.on('streamCreated', this.streamCreatedHandler);
-
-    if (
-      this.props.eventHandlers &&
-      typeof this.props.eventHandlers === 'object'
-    ) {
-      publisher.on(this.props.eventHandlers);
-    }
-
-    if (this.props.session.connection) {
-      this.publishToSession(publisher);
-    } else {
-      this.props.session.once('sessionConnected', this.sessionConnectedHandler);
-    }
-
-    this.setState({ publisher, lastStreamId: '' });
-  }
-
-  destroyPublisher(session) {
-    if (!session) {
-      session = this.props.session;
-    }
-
-    if (this.state.publisher) {
-      this.state.publisher.off('streamCreated', this.streamCreatedHandler);
-
-      if (
-        this.props.eventHandlers &&
-        typeof this.props.eventHandlers === 'object'
-      ) {
-        this.state.publisher.once('destroyed', () => {
-          this.state.publisher.off(this.props.eventHandlers);
-        });
-      }
-
-      if (session) {
-        session.unpublish(this.state.publisher);
-      }
-      this.state.publisher.destroy();
-    }
-  }
-
-  publishToSession(publisher) {
-    this.props.session.publish(publisher, err => {
-      if (err) {
-        console.error('Failed to publish to OpenTok session:', err);
-      }
-    });
-  }
-
-  getPublisher() {
-    return this.state.publisher;
   }
 
   componentDidMount() {
     this.createPublisher();
   }
 
-  componentDidUpdate(prevProps, prevState) {
-    let useDefault = (value, defaultValue) => {
-      return value === undefined ? defaultValue : value;
-    };
+  componentDidUpdate(prevProps) {
+    const useDefault = (value, defaultValue) => (value === undefined ? defaultValue : value);
 
-    let shouldUpdate = (key, defaultValue) => {
-      let previous = useDefault(prevProps.properties[key], defaultValue);
-      let current = useDefault(this.props.properties[key], defaultValue);
+    const shouldUpdate = (key, defaultValue) => {
+      const previous = useDefault(prevProps.properties[key], defaultValue);
+      const current = useDefault(this.props.properties[key], defaultValue);
       return previous !== current;
     };
 
-    let updatePublisherProperty = (key, defaultValue) => {
+    const updatePublisherProperty = (key, defaultValue) => {
       if (shouldUpdate(key, defaultValue)) {
-        let value = useDefault(this.props.properties[key], defaultValue);
+        const value = useDefault(this.props.properties[key], defaultValue);
         this.state.publisher[key](value);
       }
     };
@@ -135,17 +53,102 @@ export default class OTPublisher extends Component {
     this.destroyPublisher();
   }
 
+  getPublisher() {
+    return this.state.publisher;
+  }
+
+  destroyPublisher(session = this.props.session) {
+    if (this.state.publisher) {
+      this.state.publisher.off('streamCreated', this.streamCreatedHandler);
+
+      if (
+        this.props.eventHandlers &&
+        typeof this.props.eventHandlers === 'object'
+      ) {
+        this.state.publisher.once('destroyed', () => {
+          this.state.publisher.off(this.props.eventHandlers);
+        });
+      }
+
+      if (session) {
+        session.unpublish(this.state.publisher);
+      }
+      this.state.publisher.destroy();
+    }
+  }
+
+  publishToSession(publisher) {
+    this.props.session.publish(publisher, (err) => {
+      if (err) {
+        console.error('Failed to publish to OpenTok session:', err);
+      }
+    });
+  }
+
+  createPublisher() {
+    this.destroyPublisher();
+
+    if (!this.props.session) {
+      return;
+    }
+
+    const properties = this.props.properties || {};
+    let container;
+
+    if (properties.insertDefaultUI !== false) {
+      container = document.createElement('div');
+      container.setAttribute('class', 'OTPublisherContainer');
+      this.node.appendChild(container);
+    }
+
+    const publisher = OT.initPublisher(container, properties);
+    publisher.on('streamCreated', this.streamCreatedHandler);
+
+    if (
+      this.props.eventHandlers &&
+      typeof this.props.eventHandlers === 'object'
+    ) {
+      publisher.on(this.props.eventHandlers);
+    }
+
+    if (this.props.session.connection) {
+      this.publishToSession(publisher);
+    } else {
+      this.props.session.once('sessionConnected', this.sessionConnectedHandler);
+    }
+
+    this.setState({ publisher, lastStreamId: '' });
+  }
+
+  sessionConnectedHandler = () => {
+    this.publishToSession(this.state.publisher);
+  }
+
+  streamCreatedHandler = (event) => {
+    this.setState({ lastStreamId: event.stream.id });
+  }
+
   render() {
-    return <div />;
+    return <div ref={node => (this.node = node)} />;
   }
 }
 
 OTPublisher.propTypes = {
-  session: PropTypes.object,
-  properties: PropTypes.object,
-  eventHandlers: PropTypes.objectOf(PropTypes.func)
+  session: PropTypes.shape({
+    connection: PropTypes.shape({
+      connectionId: PropTypes.string,
+    }),
+    once: PropTypes.func,
+    off: PropTypes.func,
+    publish: PropTypes.func,
+    unpublish: PropTypes.func,
+  }),
+  properties: PropTypes.object, // eslint-disable-line react/forbid-prop-types
+  eventHandlers: PropTypes.objectOf(PropTypes.func),
 };
 
 OTPublisher.defaultProps = {
-  properties: {}
+  session: null,
+  properties: {},
+  eventHandlers: null,
 };

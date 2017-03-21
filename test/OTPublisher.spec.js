@@ -1,6 +1,6 @@
 import React from 'react';
 import { mount } from 'enzyme';
-import OTPublisher from '../src/OTPublisher.js';
+import OTPublisher from '../src/OTPublisher';
 
 describe('OTPublisher', () => {
   let publisher;
@@ -10,7 +10,7 @@ describe('OTPublisher', () => {
       'on',
       'once',
       'off',
-      'destroy'
+      'destroy',
     ]);
 
     spyOn(OT, 'initPublisher').and.returnValue(publisher);
@@ -46,7 +46,7 @@ describe('OTPublisher', () => {
         'once',
         'off',
         'publish',
-        'unpublish'
+        'unpublish',
       ]);
     });
 
@@ -56,11 +56,12 @@ describe('OTPublisher', () => {
       });
 
       it('should not render the publisher container element when default UI is disabled', () => {
-        const wrapper = mount(<OTPublisher session={session} properties={{ insertDefaultUI: false }} />);
+        const wrapper = mount(
+          <OTPublisher session={session} properties={{ insertDefaultUI: false }} />,
+        );
         const divContainer = wrapper.render().find('div.OTPublisherContainer');
         expect(divContainer.length).toBe(0);
       });
-
     });
 
     describe('connected session', () => {
@@ -79,14 +80,14 @@ describe('OTPublisher', () => {
       it('should call OT.initPublisher', () => {
         expect(OT.initPublisher).toHaveBeenCalledWith(
           jasmine.any(HTMLDivElement),
-          jasmine.any(Object)
+          jasmine.any(Object),
         );
       });
 
       it('should listen for streamCreated publisher event', () => {
         expect(publisher.on).toHaveBeenCalledWith(
           'streamCreated',
-          jasmine.any(Function)
+          jasmine.any(Function),
         );
       });
 
@@ -98,14 +99,14 @@ describe('OTPublisher', () => {
       it('should call session.publish', () => {
         expect(session.publish).toHaveBeenCalledWith(
           publisher,
-          jasmine.any(Function)
+          jasmine.any(Function),
         );
       });
 
       it('should not listen for sessionConnected event', () => {
         expect(session.once).not.toHaveBeenCalledWith(
           'sessionConnected',
-          jasmine.any(Function)
+          jasmine.any(Function),
         );
       });
     });
@@ -125,14 +126,14 @@ describe('OTPublisher', () => {
       it('should call OT.initPublisher', () => {
         expect(OT.initPublisher).toHaveBeenCalledWith(
           jasmine.any(HTMLDivElement),
-          jasmine.any(Object)
+          jasmine.any(Object),
         );
       });
 
       it('should listen for streamCreated publisher event', () => {
         expect(publisher.on).toHaveBeenCalledWith(
           'streamCreated',
-          jasmine.any(Function)
+          jasmine.any(Function),
         );
       });
 
@@ -148,7 +149,7 @@ describe('OTPublisher', () => {
       it('should listen for sessionConnected event', () => {
         expect(session.once).toHaveBeenCalledWith(
           'sessionConnected',
-          jasmine.any(Function)
+          jasmine.any(Function),
         );
       });
 
@@ -157,7 +158,7 @@ describe('OTPublisher', () => {
         sessionConnectedHandler();
         expect(session.publish).toHaveBeenCalledWith(
           publisher,
-          jasmine.any(Function)
+          jasmine.any(Function),
         );
       });
 
@@ -166,7 +167,7 @@ describe('OTPublisher', () => {
         wrapper.unmount();
         expect(session.off).toHaveBeenCalledWith(
           'sessionConnected',
-          sessionConnectedHandler
+          sessionConnectedHandler,
         );
       });
 
@@ -175,7 +176,7 @@ describe('OTPublisher', () => {
         wrapper.unmount();
         expect(publisher.off).toHaveBeenCalledWith(
           'streamCreated',
-          streamCreatedHandler
+          streamCreatedHandler,
         );
       });
 

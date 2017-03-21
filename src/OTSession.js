@@ -7,7 +7,7 @@ export default class OTSession extends Component {
     super(props);
 
     this.state = {
-      streams: []
+      streams: [],
     };
   }
 
@@ -16,7 +16,7 @@ export default class OTSession extends Component {
       apiKey: this.props.apiKey,
       sessionId: this.props.sessionId,
       token: this.props.token,
-      onStreamsUpdated: streams => { this.setState({ streams }); }
+      onStreamsUpdated: (streams) => { this.setState({ streams }); },
     });
 
     if (
@@ -47,9 +47,9 @@ export default class OTSession extends Component {
         child,
         {
           session: this.sessionHelper.session,
-          streams: this.state.streams
-        }
-      )
+          streams: this.state.streams,
+        },
+      ),
     );
 
     return <div>{childrenWithProps}</div>;
@@ -57,8 +57,16 @@ export default class OTSession extends Component {
 }
 
 OTSession.propTypes = {
+  children: React.PropTypes.oneOfType([
+    PropTypes.element,
+    PropTypes.arrayOf(PropTypes.element),
+  ]).isRequired,
   apiKey: PropTypes.string.isRequired,
   sessionId: PropTypes.string.isRequired,
   token: PropTypes.string.isRequired,
-  eventHandlers: PropTypes.objectOf(PropTypes.func)
+  eventHandlers: PropTypes.objectOf(PropTypes.func),
+};
+
+OTSession.defaultProps = {
+  eventHandlers: null,
 };

@@ -1,5 +1,8 @@
 export default function createSession({
-  apiKey, sessionId, token, onStreamsUpdated
+  apiKey,
+  sessionId,
+  token,
+  onStreamsUpdated,
 } = {}) {
   if (!apiKey) {
     throw new Error('Missing apiKey');
@@ -15,16 +18,16 @@ export default function createSession({
 
   let streams = [];
 
-  let onStreamCreated = event => {
-    let index = streams.findIndex(stream => stream.id === event.stream.id);
+  let onStreamCreated = (event) => {
+    const index = streams.findIndex(stream => stream.id === event.stream.id);
     if (index < 0) {
       streams.push(event.stream);
       onStreamsUpdated(streams);
     }
   };
 
-  let onStreamDestroyed = event => {
-    let index = streams.findIndex(stream => stream.id === event.stream.id);
+  let onStreamDestroyed = (event) => {
+    const index = streams.findIndex(stream => stream.id === event.stream.id);
     if (index >= 0) {
       streams.splice(index, 1);
       onStreamsUpdated(streams);
@@ -33,7 +36,7 @@ export default function createSession({
 
   let eventHandlers = {
     streamCreated: onStreamCreated,
-    streamDestroyed: onStreamDestroyed
+    streamDestroyed: onStreamDestroyed,
   };
 
   let session = OT.initSession(apiKey, sessionId);
@@ -49,7 +52,6 @@ export default function createSession({
         session.disconnect();
       }
 
-      onStreamsUpdated = null;
       streams = null;
       onStreamCreated = null;
       onStreamDestroyed = null;
@@ -58,6 +60,6 @@ export default function createSession({
 
       this.session = null;
       this.streams = null;
-    }
+    },
   };
 }

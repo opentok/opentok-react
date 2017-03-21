@@ -1,6 +1,6 @@
 import React from 'react';
 import { mount } from 'enzyme';
-import OTStreams from '../src/OTStreams.js';
+import OTStreams from '../src/OTStreams';
 
 const MyComponent = () => <div />;
 
@@ -14,7 +14,7 @@ describe('OTStreams', () => {
       expect(() => {
         mount(<OTStreams />);
         expect(console.error).toHaveBeenCalledWith(
-          jasmine.stringMatching('Failed prop type')
+          jasmine.stringMatching('Failed prop type'),
         );
       }).not.toThrow();
     });
@@ -23,7 +23,7 @@ describe('OTStreams', () => {
       expect(() => {
         mount(<OTStreams session={{}} />);
         expect(console.error).toHaveBeenCalledWith(
-          jasmine.stringMatching('Failed prop type')
+          jasmine.stringMatching('Failed prop type'),
         );
       }).toThrow();
     });
@@ -34,7 +34,7 @@ describe('OTStreams', () => {
       expect(() => {
         mount(<OTStreams><MyComponent /><MyComponent /></OTStreams>);
         expect(console.error).toHaveBeenCalledWith(
-          jasmine.stringMatching('Failed prop type')
+          jasmine.stringMatching('Failed prop type'),
         );
       }).not.toThrow();
     });
@@ -43,7 +43,7 @@ describe('OTStreams', () => {
       expect(() => {
         mount(<OTStreams session={{}}><MyComponent /><MyComponent /></OTStreams>);
         expect(console.error).toHaveBeenCalledWith(
-          jasmine.stringMatching('Failed prop type')
+          jasmine.stringMatching('Failed prop type'),
         );
       }).toThrow();
     });
@@ -78,9 +78,9 @@ describe('OTStreams', () => {
     });
 
     describe('with single stream prop', () => {
-      let session,
-        streams,
-        wrapper;
+      let session;
+      let streams;
+      let wrapper;
 
       beforeEach(() => {
         session = {};
@@ -101,9 +101,9 @@ describe('OTStreams', () => {
     });
 
     describe('with multiple stream prop', () => {
-      let session,
-        streams,
-        wrapper;
+      let session;
+      let streams;
+      let wrapper;
 
       beforeEach(() => {
         session = {};

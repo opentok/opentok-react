@@ -1,22 +1,22 @@
 import React from 'react';
 import { mount } from 'enzyme';
-import OTSession from '../src/OTSession.js';
+import OTSession from '../src/OTSession';
 
 const MyComponent = () => <div />;
 
 describe('OTSession', () => {
-  let session,
-    wrapper,
-    apiKey,
-    sessionId,
-    token;
+  let session;
+  let wrapper;
+  let apiKey;
+  let sessionId;
+  let token;
 
   beforeEach(() => {
     session = jasmine.createSpyObj('session', [
       'on',
       'off',
       'connect',
-      'disconnect'
+      'disconnect',
     ]);
 
     apiKey = 'fakeApiKey';
@@ -81,7 +81,7 @@ describe('OTSession', () => {
 
         const stream = { id: 'fakeStreamId' };
         onStreamCreated({ stream });
-        expect(wrapper.state('streams')).toEqual([ stream ]);
+        expect(wrapper.state('streams')).toEqual([stream]);
       });
 
       it('should update streams state when streamDestroyed triggered', () => {
@@ -92,7 +92,7 @@ describe('OTSession', () => {
         const stream = { id: 'fakeStreamId' };
         wrapper.state('streams').push(stream);
 
-        expect(wrapper.state('streams')).toEqual([ stream ]);
+        expect(wrapper.state('streams')).toEqual([stream]);
         onStreamDestroyed({ stream });
         expect(wrapper.state('streams')).toEqual([]);
       });
@@ -123,7 +123,7 @@ describe('OTSession', () => {
       });
 
       it('should have session and streams props on children', () => {
-        wrapper.children().forEach(child => {
+        wrapper.children().forEach((child) => {
           expect(child.prop('streams')).toBe(wrapper.state('streams'));
           expect(child.prop('session')).toBe(session);
         });
