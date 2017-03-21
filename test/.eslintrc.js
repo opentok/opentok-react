@@ -1,21 +1,12 @@
 module.exports = {
-  extends: 'airbnb',
-  parser: 'babel-eslint',
+  extends: '../src/.eslintrc.js',
   plugins: [
-    'react',
-    'jsx-a11y',
-    'import',
     'jasmine'
   ],
-  globals: {
-    OT: true
-  },
   env: {
-    browser: true,
     jasmine: true
   },
   rules: {
-    'no-console': 'off',
-    'react/jsx-filename-extension': 'off'
+    'no-console': 'off'
   }
 };
