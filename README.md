@@ -19,6 +19,7 @@ React components for OpenTok.js
   - [OTStreams Component](#otstreams-component)
   - [OTSubscriber Component](#otsubscriber-component)
   - [createSession Helper](#createsession-helper)
+  - [preloadScript Higher-Order Component](#preloadscript-higher-order-component)
 - [Custom Build](#custom-build)
 - [Contributing](#contributing)
 - [Tests](#tests)
@@ -27,10 +28,6 @@ React components for OpenTok.js
 
 1. NodeJS
 1. Register a TokBox account: https://tokbox.com/account/user/signup
-1. Include `opentok.js` before your application:
-```html
-<script src="https://static.opentok.com/v2/js/opentok.min.js"></script>
-```
 
 ## Install
 
@@ -46,7 +43,13 @@ Or if you're still using npm:
 npm install --save opentok-react
 ```
 
-Alternatively, wrap your top-level component using OpenTok with the [`preloadScript`](#preloadscript-higher-order-component) HOC. The HOC will take care of loading `opentok.js` for you before rendering. 
+Then include `opentok.js` before your application:
+
+```html
+<script src="https://static.opentok.com/v2/js/opentok.min.js"></script>
+```
+
+Alternatively, wrap your top-level component using OpenTok with the [`preloadScript`](#preloadscript-higher-order-component) HOC. The HOC will take care of loading `opentok.js` for you before rendering.
 
 ## Example App
 
@@ -73,19 +76,13 @@ The following sections explains how to import and use `opentok-react` in your Re
 Import the `opentok-react` components into your React application:
 
 ```js
-import { OTSession, OTPublisher, OTStreams, OTSubscriber, createSession } from 'opentok-react';
+import { OTSession, OTPublisher, OTStreams, OTSubscriber } from 'opentok-react';
 ```
 
 Or `require` it if you need to use CommonJS modules:
 
 ```js
-var otReact = require('opentok-react');
-
-var OTSession = otReact.OTSession;
-var OTPublisher = otReact.OTPublisher;
-var OTStreams = otReact.OTStreams;
-var OTSubscriber = otReact.OTSubscriber;
-var createSession = otReact.createSession;
+const { OTSession, OTPublisher, OTStreams, OTSubscriber } = require('opentok-react');
 ```
 
 ### Example with OTSession Component
@@ -149,7 +146,7 @@ class MyApp extends React.Component {
 
 ## API Reference
 
-The `opentok-react` library is comprised of:
+The `opentok-react` library comprises of:
 
 - `OTSession` Component
 - `OTPublisher` Component
