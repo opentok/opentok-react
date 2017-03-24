@@ -29,7 +29,8 @@
     "lodash": "^4.13.1",
     "react": "^15.1.0",
     "react-display-name": "^0.2.0",
-    "scriptjs": "^2.5.8"
+    "scriptjs": "^2.5.8",
+    "uuid": "^3.0.1"
   },
   "devDependencies": {
     "babel-cli": "^6.18.0",

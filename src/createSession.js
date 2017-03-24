@@ -44,6 +44,11 @@ export default function createSession({
   let session = OT.initSession(apiKey, sessionId);
   session.on(eventHandlers);
   session.connect(token, (err) => {
+    if (!session) {
+      // Either this session has been disconnected or OTSession
+      // has been unmounted so don't invoke any callbacks
+      return;
+    }
     if (err && typeof onError === 'function') {
       onError(err);
     } else if (!err && typeof onConnect === 'function') {
