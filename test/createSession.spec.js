@@ -72,7 +72,7 @@ describe('createSession', () => {
     });
 
     it('should call session.connect', () => {
-      expect(session.connect).toHaveBeenCalledWith(options.token);
+      expect(session.connect).toHaveBeenCalledWith(options.token, jasmine.any(Function));
     });
 
     it('should return session helper', () => {

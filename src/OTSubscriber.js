@@ -64,8 +64,10 @@ export default class OTSubscriber extends Component {
       container,
       this.props.properties,
       (err) => {
-        if (err) {
-          console.error('Failed to publish to OpenTok session:', err);
+        if (err && typeof this.props.onError === 'function') {
+          this.props.onError(err);
+        } else if (!err && typeof this.props.onSubscribe === 'function') {
+          this.props.onSubscribe();
         }
       },
     );
@@ -112,6 +114,8 @@ OTSubscriber.propTypes = {
   }),
   properties: PropTypes.object, // eslint-disable-line react/forbid-prop-types
   eventHandlers: PropTypes.objectOf(PropTypes.func),
+  onSubscribe: PropTypes.func,
+  onError: PropTypes.func,
 };
 
 OTSubscriber.defaultProps = {
@@ -119,4 +123,6 @@ OTSubscriber.defaultProps = {
   session: null,
   properties: {},
   eventHandlers: null,
+  onSubscribe: null,
+  onError: null,
 };

@@ -1,4 +1,5 @@
 import React, { Component, PropTypes } from 'react';
+import once from 'lodash/once';
 
 export default class OTPublisher extends Component {
   constructor(props) {
@@ -80,7 +81,9 @@ export default class OTPublisher extends Component {
   publishToSession(publisher) {
     this.props.session.publish(publisher, (err) => {
       if (err) {
-        console.error('Failed to publish to OpenTok session:', err);
+        this.errorHandler(err);
+      } else if (typeof this.props.onPublish === 'function') {
+        this.props.onPublish();
       }
     });
   }
@@ -101,7 +104,19 @@ export default class OTPublisher extends Component {
       this.node.appendChild(container);
     }
 
-    const publisher = OT.initPublisher(container, properties);
+    this.errorHandler = once((err) => {
+      if (typeof this.props.onError === 'function') {
+        this.props.onError(err);
+      }
+    });
+
+    const publisher = OT.initPublisher(container, properties, (err) => {
+      if (err) {
+        this.errorHandler(err);
+      } else if (typeof this.props.onInit === 'function') {
+        this.props.onInit();
+      }
+    });
     publisher.on('streamCreated', this.streamCreatedHandler);
 
     if (
@@ -145,10 +160,16 @@ OTPublisher.propTypes = {
   }),
   properties: PropTypes.object, // eslint-disable-line react/forbid-prop-types
   eventHandlers: PropTypes.objectOf(PropTypes.func),
+  onInit: PropTypes.func,
+  onPublish: PropTypes.func,
+  onError: PropTypes.func,
 };
 
 OTPublisher.defaultProps = {
   session: null,
   properties: {},
   eventHandlers: null,
+  onInit: null,
+  onPublish: null,
+  onError: null,
 };

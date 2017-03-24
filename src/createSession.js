@@ -3,6 +3,8 @@ export default function createSession({
   sessionId,
   token,
   onStreamsUpdated,
+  onConnect,
+  onError,
 } = {}) {
   if (!apiKey) {
     throw new Error('Missing apiKey');
@@ -41,7 +43,13 @@ export default function createSession({
 
   let session = OT.initSession(apiKey, sessionId);
   session.on(eventHandlers);
-  session.connect(token);
+  session.connect(token, (err) => {
+    if (err && typeof onError === 'function') {
+      onError(err);
+    } else if (!err && typeof onConnect === 'function') {
+      onConnect();
+    }
+  });
 
   return {
     session,

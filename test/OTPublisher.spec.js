@@ -81,6 +81,7 @@ describe('OTPublisher', () => {
         expect(OT.initPublisher).toHaveBeenCalledWith(
           jasmine.any(HTMLDivElement),
           jasmine.any(Object),
+          jasmine.any(Function),
         );
       });
 
@@ -127,6 +128,7 @@ describe('OTPublisher', () => {
         expect(OT.initPublisher).toHaveBeenCalledWith(
           jasmine.any(HTMLDivElement),
           jasmine.any(Object),
+          jasmine.any(Function),
         );
       });
 

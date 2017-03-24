@@ -26,6 +26,7 @@
   "author": "Aiham Hammami <aiham@aiham.net>",
   "license": "MIT",
   "dependencies": {
+    "lodash": "^4.13.1",
     "react": "^15.1.0",
     "react-display-name": "^0.2.0",
     "scriptjs": "^2.5.8"
@@ -53,7 +54,6 @@
     "karma-firefox-launcher": "^1.0.0",
     "karma-jasmine": "^1.1.0",
     "karma-spec-reporter": "^0.0.26",
-    "lodash": "^4.13.1",
     "opentok-test-scripts": "^3.2.1",
     "react-addons-test-utils": "^15.4.1",
     "react-dom": "^15.1.0",

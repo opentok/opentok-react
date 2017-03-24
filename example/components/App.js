@@ -11,6 +11,7 @@ class App extends Component {
     super(props);
 
     this.state = {
+      error: null,
       connected: false
     };
 
@@ -28,6 +29,10 @@ class App extends Component {
     OT.registerScreenSharingExtension('chrome', config.CHROME_EXTENSION_ID, 2);
   }
 
+  onError = (err) => {
+    this.setState({ error: `Failed to connect: ${err.message}` });
+  }
+
   render() {
     return (
       <OTSession
@@ -35,7 +40,9 @@ class App extends Component {
         sessionId={this.props.sessionId}
         token={this.props.token}
         eventHandlers={this.sessionEvents}
+        onError={this.onError}
       >
+        {this.state.error ? <div>{this.state.error}</div> : null}
         <ConnectionStatus connected={this.state.connected} />
         <Publisher />
         <OTStreams>
