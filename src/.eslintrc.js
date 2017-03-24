@@ -13,6 +13,7 @@ module.exports = {
     browser: true,
   },
   rules: {
+    'no-confusing-arrow': ['error', { allowParens: true }],
     'react/jsx-filename-extension': 'off'
   }
 };
