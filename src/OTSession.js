@@ -43,13 +43,13 @@ export default class OTSession extends Component {
   render() {
     const childrenWithProps = Children.map(
       this.props.children,
-      child => cloneElement(
+      child => (child ? cloneElement(
         child,
         {
           session: this.sessionHelper.session,
           streams: this.state.streams,
         },
-      ),
+      ) : child),
     );
 
     return <div>{childrenWithProps}</div>;
