@@ -17,6 +17,8 @@ export default class OTSession extends Component {
       sessionId: this.props.sessionId,
       token: this.props.token,
       onStreamsUpdated: (streams) => { this.setState({ streams }); },
+      onConnect: this.props.onConnect,
+      onError: this.props.onError,
     });
 
     if (
@@ -65,8 +67,12 @@ OTSession.propTypes = {
   sessionId: PropTypes.string.isRequired,
   token: PropTypes.string.isRequired,
   eventHandlers: PropTypes.objectOf(PropTypes.func),
+  onConnect: PropTypes.func,
+  onError: PropTypes.func,
 };
 
 OTSession.defaultProps = {
   eventHandlers: null,
+  onConnect: null,
+  onError: null,
 };

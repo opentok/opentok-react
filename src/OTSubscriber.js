@@ -1,4 +1,5 @@
 import React, { Component, PropTypes } from 'react';
+import uuid from 'uuid';
 
 export default class OTSubscriber extends Component {
   constructor(props) {
@@ -59,13 +60,23 @@ export default class OTSubscriber extends Component {
     container.setAttribute('class', 'OTSubscriberContainer');
     this.node.appendChild(container);
 
+    this.subscriberId = uuid();
+    const { subscriberId } = this;
+
     const subscriber = this.props.session.subscribe(
       this.props.stream,
       container,
       this.props.properties,
       (err) => {
-        if (err) {
-          console.error('Failed to publish to OpenTok session:', err);
+        if (subscriberId !== this.subscriberId) {
+          // Either this subscriber has been recreated or the
+          // component unmounted so don't invoke any callbacks
+          return;
+        }
+        if (err && typeof this.props.onError === 'function') {
+          this.props.onError(err);
+        } else if (!err && typeof this.props.onSubscribe === 'function') {
+          this.props.onSubscribe();
         }
       },
     );
@@ -81,6 +92,8 @@ export default class OTSubscriber extends Component {
   }
 
   destroySubscriber(session = this.props.session) {
+    delete this.subscriberId;
+
     if (this.state.subscriber) {
       if (
         this.props.eventHandlers &&
@@ -112,6 +125,8 @@ OTSubscriber.propTypes = {
   }),
   properties: PropTypes.object, // eslint-disable-line react/forbid-prop-types
   eventHandlers: PropTypes.objectOf(PropTypes.func),
+  onSubscribe: PropTypes.func,
+  onError: PropTypes.func,
 };
 
 OTSubscriber.defaultProps = {
@@ -119,4 +134,6 @@ OTSubscriber.defaultProps = {
   session: null,
   properties: {},
   eventHandlers: null,
+  onSubscribe: null,
+  onError: null,
 };
