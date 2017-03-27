@@ -157,9 +157,25 @@ The `opentok-react` library comprises of:
 
 ### OTSession Component
 
-TODO
+| Prop | Type | Required | Description |
+| --- | --- | --- | --- |
+| apiKey | String | Yes | TokBox API Key
+| sessionId | String | Yes | TokBox Session ID
+| token | String | Yes | TokBox token
+| eventHandlers | Object&lt;Function&gt; | No | Event handlers passed into `session.on`
+| onConnect | Function() | No | Invoked when `session.connect` successfully completes
+| onError | Function(err) | No | Invoked when `session.connect` fails
 
 ### OTPublisher Component
+
+| Prop | Type | Required | Description |
+| --- | --- | --- | --- |
+| session | [Session](https://tokbox.com/developer/sdks/js/reference/Session.html) | No | OpenTok Session instance
+| properties | Object | No | Properties passed into `OT.initPublisher`
+| eventHandlers | Object&lt;Function&gt; | No | Event handlers passed into `publisher.on`
+| onInit | Function() | No | Invoked when `OT.initPublisher` successfully completes
+| onPublish | Function() | No | Invoked when `session.publish` successfully completes
+| onError | Function(err) | No | Invoked when either `OT.initPublisher` or `session.publish` fail
 
 The `OTPublisher` component will initialise a publisher and publish to a specified session upon mounting. You must specify a [Session](https://tokbox.com/developer/sdks/js/reference/Session.html) object using the `session` prop.
 
@@ -214,9 +230,22 @@ class MyApp extends React.Component {
 
 ### OTStreams Component
 
-TODO
+| Prop | Type | Required | Description |
+| --- | --- | --- | --- |
+| children | OTSubscriber | Yes | Must only have a single `OTSubscriber` component (or similar component that accepts `session` and `stream` props)
+| session | [Session](https://tokbox.com/developer/sdks/js/reference/Session.html) | Yes | OpenTok Session instance. This is auto populated by wrapping `OTStreams` with `OTSession`
+| streams | Array&lt;[Stream](https://tokbox.com/developer/sdks/js/reference/Stream.html)&gt; | No | Array of OpenTok Stream instances. This is auto populated by wrapping `OTStreams` with `OTSession`
 
 ### OTSubscriber Component
+
+| Prop | Type | Required | Description |
+| --- | --- | --- | --- |
+| session | [Session](https://tokbox.com/developer/sdks/js/reference/Session.html) | No | OpenTok Session instance. This is auto populated by wrapping `OTSubscriber` with `OTStreams`
+| stream | [Stream](https://tokbox.com/developer/sdks/js/reference/Stream.html) | No | OpenTok Stream instance. This is auto populated by wrapping `OTSubscriber` with `OTStreams`
+| properties | Object | No | Properties passed into `session.subscribe`
+| eventHandlers | Object&lt;Function&gt; | No | Event handlers passed into `subscriber.on`
+| onSubscribe | Function() | No | Invoked when `session.subscribe` successfully completes
+| onError | Function(err) | No | Invoked when `session.subscribe` fails
 
 The `OTSubscriber` component will subscribe to a specified stream from a specified session upon mounting. You must provide a [Stream](https://tokbox.com/developer/sdks/js/reference/Stream.html) object using the `stream` prop and a [Session](https://tokbox.com/developer/sdks/js/reference/Session.html) object using the `session` prop.
 
@@ -280,6 +309,12 @@ Use of this helper is optional and you can instead use the `OTSession` component
 
 
 ### `preloadScript` Higher-Order Component
+
+| Prop | Type | Required | Description |
+| --- | --- | --- | --- |
+| opentokClientUrl | String | No | The URL of the OpenTok client script to load. It defaults to `https://static.opentok.com/v2/js/opentok.min.js`.
+| loadingDelegate | Element | No | An element that will be displayed while the OpenTok client script is loading. It defaults to an empty `<div />`.
+
 In larger applications, one might not want to load the `opentok.js` client with a `<script>` tag all the time. The `preloadScript` higher-order component will do this for you at the appropriate time.
 
 For example, imagine you have a React Router application with the following route structure:
@@ -304,12 +339,6 @@ class VideoChat extends React.Component {
 
 export default preloadScript(App);
 ```
-
-When rendering the `preloadScript` HOC, it accepts two optional props:
-
-  * `opentokClientUrl`: The URL of the OpenTok client script to load. It defaults to `https://static.opentok.com/v2/js/opentok.min.js`.
-  * `loadingDelegate`: An element that will be displayed while the OpenTok client script is loading. It defaults to an empty `<div />`.
-
 
 ## Custom Build
 
