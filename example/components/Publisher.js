@@ -9,6 +9,7 @@ export default class Publisher extends Component {
     super(props);
 
     this.state = {
+      error: null,
       audio: true,
       video: true,
       videoSource: 'camera'
@@ -27,9 +28,14 @@ export default class Publisher extends Component {
     this.setState({ videoSource });
   }
 
+  onError = (err) => {
+    this.setState({ error: `Failed to publish: ${err.message}` });
+  }
+
   render() {
     return (
       <div>
+        {this.state.error ? <div>{this.state.error}</div> : null}
         <OTPublisher
           session={this.props.session}
           properties={{
@@ -37,6 +43,7 @@ export default class Publisher extends Component {
             publishVideo: this.state.video,
             videoSource: this.state.videoSource === 'screen' ? 'screen' : undefined
           }}
+          onError={this.onError}
         />
         <RadioButtons
           buttons={[

@@ -8,6 +8,7 @@ export default class Subscriber extends Component {
     super(props);
 
     this.state = {
+      error: null,
       audio: true,
       video: true
     };
@@ -21,9 +22,14 @@ export default class Subscriber extends Component {
     this.setState({ video });
   }
 
+  onError = (err) => {
+    this.setState({ error: `Failed to subscribe: ${err.message}` });
+  }
+
   render() {
     return (
       <div>
+        {this.state.error ? <div>{this.state.error}</div> : null}
         <OTSubscriber
           session={this.props.session}
           stream={this.props.stream}
@@ -31,6 +37,7 @@ export default class Subscriber extends Component {
             subscribeToAudio: this.state.audio,
             subscribeToVideo: this.state.video
           }}
+          onError={this.onError}
         />
         <CheckBox
           label="Subscribe to Audio"

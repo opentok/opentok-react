@@ -1,15 +1,17 @@
 import React, { Component } from 'react';
 
-import { OTSession, OTStreams } from '../../src'
+import { OTSession, OTStreams, preloadScript } from '../../src'
 import ConnectionStatus from './ConnectionStatus';
 import Publisher from './Publisher';
 import Subscriber from './Subscriber';
+import config from '../config';
 
-export default class App extends Component {
+class App extends Component {
   constructor(props) {
     super(props);
 
     this.state = {
+      error: null,
       connected: false
     };
 
@@ -23,6 +25,14 @@ export default class App extends Component {
     };
   }
 
+  componentWillMount() {
+    OT.registerScreenSharingExtension('chrome', config.CHROME_EXTENSION_ID, 2);
+  }
+
+  onError = (err) => {
+    this.setState({ error: `Failed to connect: ${err.message}` });
+  }
+
   render() {
     return (
       <OTSession
@@ -30,7 +40,9 @@ export default class App extends Component {
         sessionId={this.props.sessionId}
         token={this.props.token}
         eventHandlers={this.sessionEvents}
+        onError={this.onError}
       >
+        {this.state.error ? <div>{this.state.error}</div> : null}
         <ConnectionStatus connected={this.state.connected} />
         <Publisher />
         <OTStreams>
@@ -40,3 +52,5 @@ export default class App extends Component {
     );
   }
 }
+
+export default preloadScript(App);

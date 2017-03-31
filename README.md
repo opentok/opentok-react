@@ -1,6 +1,6 @@
 # opentok-react
 
-[![npm version](https://badge.fury.io/js/opentok-react.svg)](https://badge.fury.io/js/opentok-react)
+[![npm version](https://badge.fury.io/js/opentok-react.svg)](https://badge.fury.io/js/opentok-react) [![Build Status](https://travis-ci.org/aiham/opentok-react.svg?branch=master)](https://travis-ci.org/aiham/opentok-react)
 
 React components for OpenTok.js
 
@@ -19,7 +19,9 @@ React components for OpenTok.js
   - [OTStreams Component](#otstreams-component)
   - [OTSubscriber Component](#otsubscriber-component)
   - [createSession Helper](#createsession-helper)
+  - [preloadScript Higher-Order Component](#preloadscript-higher-order-component)
 - [Custom Build](#custom-build)
+- [Contributing](#contributing)
 - [Tests](#tests)
 
 ## Pre-Requisites
@@ -32,14 +34,22 @@ React components for OpenTok.js
 Add `opentok-react` as a dependency of your application:
 
 ```sh
+yarn add opentok-react
+```
+
+Or if you're still using npm:
+
+```sh
 npm install --save opentok-react
 ```
 
-Include `opentok.js` before your application:
+Then include `opentok.js` before your application:
 
 ```html
 <script src="https://static.opentok.com/v2/js/opentok.min.js"></script>
 ```
+
+Alternatively, wrap your top-level component using OpenTok with the [`preloadScript`](#preloadscript-higher-order-component) HOC. The HOC will take care of loading `opentok.js` for you before rendering.
 
 ## Example App
 
@@ -66,19 +76,13 @@ The following sections explains how to import and use `opentok-react` in your Re
 Import the `opentok-react` components into your React application:
 
 ```js
-import { OTSession, OTPublisher, OTStreams, OTSubscriber, createSession } from 'opentok-react';
+import { OTSession, OTPublisher, OTStreams, OTSubscriber } from 'opentok-react';
 ```
 
 Or `require` it if you need to use CommonJS modules:
 
 ```js
-var otReact = require('opentok-react');
-
-var OTSession = otReact.OTSession;
-var OTPublisher = otReact.OTPublisher;
-var OTStreams = otReact.OTStreams;
-var OTSubscriber = otReact.OTSubscriber;
-var createSession = otReact.createSession;
+const { OTSession, OTPublisher, OTStreams, OTSubscriber } = require('opentok-react');
 ```
 
 ### Example with OTSession Component
@@ -142,19 +146,36 @@ class MyApp extends React.Component {
 
 ## API Reference
 
-The `opentok-react` library is comprised of:
+The `opentok-react` library comprises of:
 
 - `OTSession` Component
 - `OTPublisher` Component
 - `OTStreams` Component
 - `OTSubscriber` Component
 - `createSession` Helper
+- `preloadScript` Higher-Order Component
 
 ### OTSession Component
 
-TODO
+| Prop | Type | Required | Description |
+| --- | --- | --- | --- |
+| apiKey | String | Yes | TokBox API Key
+| sessionId | String | Yes | TokBox Session ID
+| token | String | Yes | TokBox token
+| eventHandlers | Object&lt;Function&gt; | No | Event handlers passed into `session.on`
+| onConnect | Function() | No | Invoked when `session.connect` successfully completes
+| onError | Function(err) | No | Invoked when `session.connect` fails
 
 ### OTPublisher Component
+
+| Prop | Type | Required | Description |
+| --- | --- | --- | --- |
+| session | [Session](https://tokbox.com/developer/sdks/js/reference/Session.html) | No | OpenTok Session instance
+| properties | Object | No | Properties passed into `OT.initPublisher`
+| eventHandlers | Object&lt;Function&gt; | No | Event handlers passed into `publisher.on`
+| onInit | Function() | No | Invoked when `OT.initPublisher` successfully completes
+| onPublish | Function() | No | Invoked when `session.publish` successfully completes
+| onError | Function(err) | No | Invoked when either `OT.initPublisher` or `session.publish` fail
 
 The `OTPublisher` component will initialise a publisher and publish to a specified session upon mounting. You must specify a [Session](https://tokbox.com/developer/sdks/js/reference/Session.html) object using the `session` prop.
 
@@ -209,9 +230,22 @@ class MyApp extends React.Component {
 
 ### OTStreams Component
 
-TODO
+| Prop | Type | Required | Description |
+| --- | --- | --- | --- |
+| children | OTSubscriber | Yes | Must only have a single `OTSubscriber` component (or similar component that accepts `session` and `stream` props)
+| session | [Session](https://tokbox.com/developer/sdks/js/reference/Session.html) | Yes | OpenTok Session instance. This is auto populated by wrapping `OTStreams` with `OTSession`
+| streams | Array&lt;[Stream](https://tokbox.com/developer/sdks/js/reference/Stream.html)&gt; | No | Array of OpenTok Stream instances. This is auto populated by wrapping `OTStreams` with `OTSession`
 
 ### OTSubscriber Component
+
+| Prop | Type | Required | Description |
+| --- | --- | --- | --- |
+| session | [Session](https://tokbox.com/developer/sdks/js/reference/Session.html) | No | OpenTok Session instance. This is auto populated by wrapping `OTSubscriber` with `OTStreams`
+| stream | [Stream](https://tokbox.com/developer/sdks/js/reference/Stream.html) | No | OpenTok Stream instance. This is auto populated by wrapping `OTSubscriber` with `OTStreams`
+| properties | Object | No | Properties passed into `session.subscribe`
+| eventHandlers | Object&lt;Function&gt; | No | Event handlers passed into `subscriber.on`
+| onSubscribe | Function() | No | Invoked when `session.subscribe` successfully completes
+| onError | Function(err) | No | Invoked when `session.subscribe` fails
 
 The `OTSubscriber` component will subscribe to a specified stream from a specified session upon mounting. You must provide a [Stream](https://tokbox.com/developer/sdks/js/reference/Stream.html) object using the `stream` prop and a [Session](https://tokbox.com/developer/sdks/js/reference/Session.html) object using the `session` prop.
 
@@ -273,6 +307,39 @@ The `createSession` helper returns an object with the following properties:
 
 Use of this helper is optional and you can instead use the `OTSession` component or directly call [OT.initSession](https://tokbox.com/developer/sdks/js/reference/OT.html#initSession) and listen to [streamCreated](https://tokbox.com/developer/sdks/js/reference/Session.html#event:streamCreated) events if you prefer.
 
+
+### `preloadScript` Higher-Order Component
+
+| Prop | Type | Required | Description |
+| --- | --- | --- | --- |
+| opentokClientUrl | String | No | The URL of the OpenTok client script to load. It defaults to `https://static.opentok.com/v2/js/opentok.min.js`.
+| loadingDelegate | Element | No | An element that will be displayed while the OpenTok client script is loading. It defaults to an empty `<div />`.
+
+In larger applications, one might not want to load the `opentok.js` client with a `<script>` tag all the time. The `preloadScript` higher-order component will do this for you at the appropriate time.
+
+For example, imagine you have a React Router application with the following route structure:
+
+```javascript
+<Router>
+  <Route path="/">
+    <IndexRoute component="..." />
+    <Route path="something" component="..." />
+    <Route path="video" component={VideoChat} />
+    <Route path="something-else" component="..." />
+  </Route>
+</Router>
+```
+
+What you'd like to do is delay the loading of `opentok.js` until the `VideoChat` component is being used. Here's how you can do this:
+
+```javascript
+class VideoChat extends React.Component {
+  // All the code of your component
+}
+
+export default preloadScript(App);
+```
+
 ## Custom Build
 
 1. `git clone https://github.com/aiham/opentok-react.git`
@@ -282,6 +349,28 @@ Use of this helper is optional and you can instead use the `OTSession` component
 1. `npm run build`
 1. Check that files in `dist/` have been updated.
 
+## Contributing
+
+If you make changes to the project that you would like to contribute back then please follow the [contributing guidelines](CONTRIBUTING.md). All contributions are greatly appreciated!
+
 ## Tests
 
-TODO
+Run the unit tests locally with the following command:
+
+```
+npm run unit
+```
+
+By default this will launch the Chrome browser. To run tests in Firefox use:
+
+```
+npm run unit -- --browsers Firefox
+```
+
+Run the linter with:
+
+```
+npm run lint
+```
+
+The unit tests are automatically run on [Travis](https://travis-ci.org/aiham/opentok-react) on both Chrome and Firefox and the current build status is shown at the top of this document.

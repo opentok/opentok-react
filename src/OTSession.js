@@ -7,7 +7,7 @@ export default class OTSession extends Component {
     super(props);
 
     this.state = {
-      streams: []
+      streams: [],
     };
   }
 
@@ -16,7 +16,9 @@ export default class OTSession extends Component {
       apiKey: this.props.apiKey,
       sessionId: this.props.sessionId,
       token: this.props.token,
-      onStreamsUpdated: streams => { this.setState({ streams }); }
+      onStreamsUpdated: (streams) => { this.setState({ streams }); },
+      onConnect: this.props.onConnect,
+      onError: this.props.onError,
     });
 
     if (
@@ -25,6 +27,9 @@ export default class OTSession extends Component {
     ) {
       this.sessionHelper.session.on(this.props.eventHandlers);
     }
+
+    const { streams } = this.sessionHelper;
+    this.setState({ streams });
   }
 
   componentWillUnmount() {
@@ -40,13 +45,13 @@ export default class OTSession extends Component {
   render() {
     const childrenWithProps = Children.map(
       this.props.children,
-      child => cloneElement(
+      child => (child ? cloneElement(
         child,
         {
           session: this.sessionHelper.session,
-          streams: this.state.streams
-        }
-      )
+          streams: this.state.streams,
+        },
+      ) : child),
     );
 
     return <div>{childrenWithProps}</div>;
@@ -54,8 +59,20 @@ export default class OTSession extends Component {
 }
 
 OTSession.propTypes = {
+  children: React.PropTypes.oneOfType([
+    PropTypes.element,
+    PropTypes.arrayOf(PropTypes.element),
+  ]).isRequired,
   apiKey: PropTypes.string.isRequired,
   sessionId: PropTypes.string.isRequired,
   token: PropTypes.string.isRequired,
-  eventHandlers: PropTypes.objectOf(PropTypes.func)
+  eventHandlers: PropTypes.objectOf(PropTypes.func),
+  onConnect: PropTypes.func,
+  onError: PropTypes.func,
+};
+
+OTSession.defaultProps = {
+  eventHandlers: null,
+  onConnect: null,
+  onError: null,
 };
