@@ -22,7 +22,8 @@ For a contribution to be accepted:
 
 * The test suite must be complete and pass
 * Code must follow existing styling conventions
-* Commit messages must be descriptive. Related issues should be mentioned by number.
+* Commit messages must be descriptive. Related issues should be mentioned by number
+* If the contribution includes a change to the dependency list then the `yarn.lock` file must be updated
 
 If the contribution doesn't meet these criteria, a maintainer will discuss it with you on the Issue. You can still continue to add more commits to the branch you have sent the Pull Request from.
 

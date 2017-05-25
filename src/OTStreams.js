@@ -1,4 +1,5 @@
-import React, { PropTypes, Children, cloneElement } from 'react';
+import React, { Children, cloneElement } from 'react';
+import PropTypes from 'prop-types';
 
 export default function OTStreams(props) {
   if (!props.session) {
@@ -27,7 +28,7 @@ OTStreams.propTypes = {
     publish: PropTypes.func,
     subscribe: PropTypes.func,
   }),
-  streams: PropTypes.arrayOf(React.PropTypes.object),
+  streams: PropTypes.arrayOf(PropTypes.object),
 };
 
 OTStreams.defaultProps = {

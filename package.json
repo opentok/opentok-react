@@ -1,6 +1,6 @@
 {
   "name": "opentok-react",
-  "version": "0.4.0",
+  "version": "0.5.0",
   "description": "React components for OpenTok.js",
   "main": "dist/index.js",
   "scripts": {
@@ -27,7 +27,8 @@
   "license": "MIT",
   "dependencies": {
     "lodash": "^4.13.1",
-    "react": "^15.1.0",
+    "prop-types": "^15.5.10",
+    "react": "^15.5.0",
     "react-display-name": "^0.2.0",
     "scriptjs": "^2.5.8",
     "uuid": "^3.0.1"
@@ -56,8 +57,9 @@
     "karma-jasmine": "^1.1.0",
     "karma-spec-reporter": "^0.0.26",
     "opentok-test-scripts": "^3.2.1",
-    "react-addons-test-utils": "^15.4.1",
-    "react-dom": "^15.1.0",
+    "react-addons-test-utils": "^15.5.1",
+    "react-dom": "^15.5.0",
+    "react-test-renderer": "^15.5.4",
     "travis-multirunner": "^3.1.0",
     "watchify": "^3.8.0"
   },
