@@ -1,4 +1,5 @@
-import React, { Component, PropTypes, Children, cloneElement } from 'react';
+import React, { Component, Children, cloneElement } from 'react';
+import PropTypes from 'prop-types';
 
 import createSession from './createSession';
 
@@ -59,7 +60,7 @@ export default class OTSession extends Component {
 }
 
 OTSession.propTypes = {
-  children: React.PropTypes.oneOfType([
+  children: PropTypes.oneOfType([
     PropTypes.element,
     PropTypes.arrayOf(PropTypes.element),
   ]).isRequired,
