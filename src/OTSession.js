@@ -13,6 +13,26 @@ export default class OTSession extends Component {
   }
 
   componentWillMount() {
+    this.createSession();
+  }
+
+  componentDidUpdate(prevProps) {
+    if (
+      prevProps.apiKey !== this.props.apiKey ||
+      prevProps.sessionId !== this.props.sessionId ||
+      prevProps.token !== this.props.token
+    ) {
+      this.createSession();
+    }
+  }
+
+  componentWillUnmount() {
+    this.destroySession();
+  }
+
+  createSession() {
+    this.destroySession();
+
     this.sessionHelper = createSession({
       apiKey: this.props.apiKey,
       sessionId: this.props.sessionId,
@@ -33,14 +53,16 @@ export default class OTSession extends Component {
     this.setState({ streams });
   }
 
-  componentWillUnmount() {
-    if (
-      this.props.eventHandlers &&
-      typeof this.props.eventHandlers === 'object'
-    ) {
-      this.sessionHelper.session.off(this.props.eventHandlers);
+  destroySession() {
+    if (this.sessionHelper) {
+      if (
+        this.props.eventHandlers &&
+        typeof this.props.eventHandlers === 'object'
+      ) {
+        this.sessionHelper.session.off(this.props.eventHandlers);
+      }
+      this.sessionHelper.disconnect();
     }
-    this.sessionHelper.disconnect();
   }
 
   render() {
