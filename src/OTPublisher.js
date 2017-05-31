@@ -34,6 +34,7 @@ export default class OTPublisher extends Component {
     };
 
     if (shouldUpdate('videoSource', undefined)) {
+      this.destroyPublisher();
       this.createPublisher();
       return;
     }
@@ -41,10 +42,9 @@ export default class OTPublisher extends Component {
     updatePublisherProperty('publishAudio', true);
     updatePublisherProperty('publishVideo', true);
 
-    if (!prevProps.session && this.props.session) {
-      this.createPublisher();
-    } else if (prevProps.session && !this.props.session) {
+    if (this.props.session !== prevProps.session) {
       this.destroyPublisher(prevProps.session);
+      this.createPublisher();
     }
   }
 
@@ -100,9 +100,8 @@ export default class OTPublisher extends Component {
   }
 
   createPublisher() {
-    this.destroyPublisher();
-
     if (!this.props.session) {
+      this.setState({ publisher: null, lastStreamId: '' });
       return;
     }
 

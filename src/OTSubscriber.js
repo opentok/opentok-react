@@ -29,16 +29,9 @@ export default class OTSubscriber extends Component {
     updateSubscriberProperty('subscribeToAudio');
     updateSubscriberProperty('subscribeToVideo');
 
-    if (
-      (!prevProps.session || !prevProps.stream) &&
-      this.props.session && this.props.stream
-    ) {
-      this.createSubscriber();
-    } else if (
-      prevProps.session && prevProps.stream &&
-      (!this.props.session || !this.props.stream)
-    ) {
+    if (this.props.session !== prevProps.session || this.props.stream !== prevProps.stream) {
       this.destroySubscriber(prevProps.session);
+      this.createSubscriber();
     }
   }
 
@@ -51,9 +44,8 @@ export default class OTSubscriber extends Component {
   }
 
   createSubscriber() {
-    this.destroySubscriber();
-
     if (!this.props.session || !this.props.stream) {
+      this.setState({ subscriber: null });
       return;
     }
 
