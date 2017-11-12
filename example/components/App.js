@@ -1,6 +1,6 @@
 import React, { Component } from 'react';
 
-import { OTSession, OTStreams, preloadScript } from '../../src'
+import { OTSession, OTStreams, OTSubscriber,preloadScript } from '../../src'
 import ConnectionStatus from './ConnectionStatus';
 import Publisher from './Publisher';
 import Subscriber from './Subscriber';
