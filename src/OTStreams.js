@@ -14,8 +14,8 @@ export default function OTStreams(props, context) {
 
   const childrenWithContextWrapper = Array.isArray(streams)
     ? streams.map(stream => (child
-      ? <OTSubscriberContext stream={stream}>
-        { cloneElement(child, { key: stream.id }) }
+      ? <OTSubscriberContext stream={stream} key={stream.id} >
+        { cloneElement(child) }
       </OTSubscriberContext>
       : child))
     : null;
