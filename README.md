@@ -61,6 +61,7 @@ There is an example application provided in `example/` and you can run it with t
 1. Edit `config.js`:
   1. Add your OpenTok API key, Session ID and Token (https://tokbox.com/account/)
   1. Add your Chrome Extension ID (https://tokbox.com/developer/guides/screen-sharing/js/)
+1. `cd ..`
 1. `yarn` (or `npm install`)
 1. `npm run example`
 1. Visit `http://localhost:8000` in your browser
