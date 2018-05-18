@@ -1,6 +1,6 @@
 {
   "name": "opentok-react",
-  "version": "0.7.0",
+  "version": "0.7.1",
   "description": "React components for OpenTok.js",
   "main": "dist/index.js",
   "scripts": {
@@ -21,7 +21,7 @@
   ],
   "repository": {
     "type": "git",
-    "url": "https://github.com/aiham/opentok-react.git"
+    "url": "https://github.com/minhduchua/opentok-react"
   },
   "author": "Aiham Hammami <aiham@aiham.net>",
   "license": "MIT",
