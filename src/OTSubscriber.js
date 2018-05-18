@@ -29,6 +29,13 @@ export default class OTSubscriber extends Component {
     updateSubscriberProperty('subscribeToAudio');
     updateSubscriberProperty('subscribeToVideo');
 
+    // manage height and width properties evolution
+    if (this.props.containerStyle.width && this.props.containerStyle.height) {
+      const container = document.getElementById(this.containerId);
+      container.style.width = this.props.containerStyle.width;
+      container.style.height = this.props.containerStyle.height;
+    }
+
     if (this.props.session !== prevProps.session || this.props.stream !== prevProps.stream) {
       this.destroySubscriber(prevProps.session);
       this.createSubscriber();
@@ -49,8 +56,11 @@ export default class OTSubscriber extends Component {
       return;
     }
 
+    this.containerId = uuid();
+    const { containerId } = this;
     const container = document.createElement('div');
     container.setAttribute('class', 'OTSubscriberContainer');
+    container.setAttribute('id', containerId);
     this.node.appendChild(container);
 
     this.subscriberId = uuid();
@@ -67,9 +77,9 @@ export default class OTSubscriber extends Component {
           return;
         }
         if (err && typeof this.props.onError === 'function') {
-          this.props.onError(err);
+          this.props.onError(err, this.props.stream);
         } else if (!err && typeof this.props.onSubscribe === 'function') {
-          this.props.onSubscribe();
+          this.props.onSubscribe(this.props.stream);
         }
       },
     );
@@ -117,6 +127,7 @@ OTSubscriber.propTypes = {
     unsubscribe: PropTypes.func,
   }),
   properties: PropTypes.object, // eslint-disable-line react/forbid-prop-types
+  containerStyle: PropTypes.object, // eslint-disable-line react/forbid-prop-types
   eventHandlers: PropTypes.objectOf(PropTypes.func),
   onSubscribe: PropTypes.func,
   onError: PropTypes.func,
@@ -126,6 +137,7 @@ OTSubscriber.defaultProps = {
   stream: null,
   session: null,
   properties: {},
+  containerStyle: {},
   eventHandlers: null,
   onSubscribe: null,
   onError: null,
