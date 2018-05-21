@@ -1,6 +1,7 @@
 import React, { Component } from 'react';
 import PropTypes from 'prop-types';
 import once from 'lodash/once';
+import { omitBy, isNil } from 'lodash/fp';
 import uuid from 'uuid';
 
 export default class OTPublisher extends Component {
@@ -146,7 +147,8 @@ export default class OTPublisher extends Component {
       this.props.eventHandlers &&
       typeof this.props.eventHandlers === 'object'
     ) {
-      publisher.on(this.props.eventHandlers);
+      const handles = omitBy(isNil)(this.props.eventHandlers);
+      publisher.on(handles);
     }
 
     if (this.props.session.connection) {
