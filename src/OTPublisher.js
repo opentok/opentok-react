@@ -40,6 +40,13 @@ export default class OTPublisher extends Component {
       return;
     }
 
+    // manage height and width properties evolution
+    if (this.props.properties.width && this.props.properties.height) {
+      const container = document.getElementById(this.containerId);
+      container.style.width = this.props.properties.width;
+      container.style.height = this.props.properties.height;
+    }
+
     updatePublisherProperty('publishAudio', true);
     updatePublisherProperty('publishVideo', true);
 
@@ -95,7 +102,7 @@ export default class OTPublisher extends Component {
       if (err) {
         this.errorHandler(err);
       } else if (typeof this.props.onPublish === 'function') {
-        this.props.onPublish();
+        this.props.onPublish(publisher.stream);
       }
     });
   }
@@ -109,9 +116,13 @@ export default class OTPublisher extends Component {
     const properties = this.props.properties || {};
     let container;
 
+    this.containerId = uuid();
+    const { containerId } = this;
+
     if (properties.insertDefaultUI !== false) {
       container = document.createElement('div');
       container.setAttribute('class', 'OTPublisherContainer');
+      container.setAttribute('id', containerId);
       this.node.appendChild(container);
     }
 
@@ -169,7 +180,7 @@ export default class OTPublisher extends Component {
   }
 
   render() {
-    return <div ref={node => (this.node = node)} />;
+    return <div style={this.props.style} ref={node => (this.node = node)} />;
   }
 }
 
@@ -188,6 +199,7 @@ OTPublisher.propTypes = {
   onInit: PropTypes.func,
   onPublish: PropTypes.func,
   onError: PropTypes.func,
+  style: PropTypes.object, // eslint-disable-line react/forbid-prop-types
 };
 
 OTPublisher.defaultProps = {
@@ -197,4 +209,5 @@ OTPublisher.defaultProps = {
   onInit: null,
   onPublish: null,
   onError: null,
+  style: {},
 };
