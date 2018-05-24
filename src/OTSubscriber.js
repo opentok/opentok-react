@@ -3,11 +3,13 @@ import PropTypes from 'prop-types';
 import uuid from 'uuid';
 
 export default class OTSubscriber extends Component {
-  constructor(props) {
+  constructor(props, context) {
     super(props);
 
     this.state = {
       subscriber: null,
+      stream: props.stream || context.stream || null,
+      session: props.session || context.session || null,
     };
   }
 
@@ -15,7 +17,7 @@ export default class OTSubscriber extends Component {
     this.createSubscriber();
   }
 
-  componentDidUpdate(prevProps) {
+  componentDidUpdate(prevProps, prevState) {
     const cast = (value, Type, defaultValue) => (value === undefined ? defaultValue : Type(value));
 
     const updateSubscriberProperty = (key) => {
@@ -29,8 +31,8 @@ export default class OTSubscriber extends Component {
     updateSubscriberProperty('subscribeToAudio');
     updateSubscriberProperty('subscribeToVideo');
 
-    if (this.props.session !== prevProps.session || this.props.stream !== prevProps.stream) {
-      this.destroySubscriber(prevProps.session);
+    if (prevState.session !== this.state.session || prevState.stream !== this.state.stream) {
+      this.destroySubscriber(prevState.session);
       this.createSubscriber();
     }
   }
@@ -44,7 +46,7 @@ export default class OTSubscriber extends Component {
   }
 
   createSubscriber() {
-    if (!this.props.session || !this.props.stream) {
+    if (!this.state.session || !this.state.stream) {
       this.setState({ subscriber: null });
       return;
     }
@@ -56,8 +58,8 @@ export default class OTSubscriber extends Component {
     this.subscriberId = uuid();
     const { subscriberId } = this;
 
-    const subscriber = this.props.session.subscribe(
-      this.props.stream,
+    const subscriber = this.state.session.subscribe(
+      this.state.stream,
       container,
       this.props.properties,
       (err) => {
@@ -104,7 +106,7 @@ export default class OTSubscriber extends Component {
   }
 
   render() {
-    return <div ref={node => (this.node = node)} />;
+    return <div ref={(node) => { this.node = node; }} />;
   }
 }
 
@@ -129,4 +131,14 @@ OTSubscriber.defaultProps = {
   eventHandlers: null,
   onSubscribe: null,
   onError: null,
+};
+
+OTSubscriber.contextTypes = {
+  stream: PropTypes.shape({
+    streamId: PropTypes.string,
+  }),
+  session: PropTypes.shape({
+    subscribe: PropTypes.func,
+    unsubscribe: PropTypes.func,
+  }),
 };

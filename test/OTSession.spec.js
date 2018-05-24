@@ -121,13 +121,6 @@ describe('OTSession', () => {
       it('should have two children', () => {
         expect(wrapper.children().length).toBe(2);
       });
-
-      it('should have session and streams props on children', () => {
-        wrapper.children().forEach((child) => {
-          expect(child.prop('streams')).toBe(wrapper.state('streams'));
-          expect(child.prop('session')).toBe(session);
-        });
-      });
     });
   });
 
