@@ -37,7 +37,6 @@ export default class Publisher extends Component {
       <div>
         {this.state.error ? <div>{this.state.error}</div> : null}
         <OTPublisher
-          session={this.props.session}
           properties={{
             publishAudio: this.state.audio,
             publishVideo: this.state.video,
