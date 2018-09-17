@@ -1,4 +1,4 @@
-import React, { Component, Children, cloneElement } from 'react';
+import React, { Component } from 'react';
 import PropTypes from 'prop-types';
 
 import createSession from './createSession';
@@ -10,6 +10,10 @@ export default class OTSession extends Component {
     this.state = {
       streams: [],
     };
+  }
+
+  getChildContext() {
+    return { session: this.sessionHelper.session, streams: this.state.streams };
   }
 
   componentWillMount() {
@@ -66,18 +70,7 @@ export default class OTSession extends Component {
   }
 
   render() {
-    const childrenWithProps = Children.map(
-      this.props.children,
-      child => (child ? cloneElement(
-        child,
-        {
-          session: this.sessionHelper.session,
-          streams: this.state.streams,
-        },
-      ) : child),
-    );
-
-    return <div>{childrenWithProps}</div>;
+    return <div>{this.props.children}</div>;
   }
 }
 
@@ -98,4 +91,12 @@ OTSession.defaultProps = {
   eventHandlers: null,
   onConnect: null,
   onError: null,
+};
+
+OTSession.childContextTypes = {
+  streams: PropTypes.arrayOf(PropTypes.object),
+  session: PropTypes.shape({
+    subscribe: PropTypes.func,
+    unsubscribe: PropTypes.func,
+  }),
 };

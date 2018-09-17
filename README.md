@@ -1,6 +1,6 @@
 # opentok-react
 
-[![npm version](https://badge.fury.io/js/opentok-react.svg)](https://badge.fury.io/js/opentok-react) [![Build Status](https://travis-ci.org/aiham/opentok-react.svg?branch=master)](https://travis-ci.org/aiham/opentok-react)
+[![npm version](https://badge.fury.io/js/opentok-react.svg)](https://badge.fury.io/js/opentok-react) [![Build Status](https://travis-ci.org/opentok/opentok-react.svg?branch=master)](https://travis-ci.org/opentok/opentok-react)
 
 React components for OpenTok.js
 
@@ -55,12 +55,13 @@ Alternatively, wrap your top-level component using OpenTok with the [`preloadScr
 
 There is an example application provided in `example/` and you can run it with the following steps:
 
-1. `git clone https://github.com/aiham/opentok-react.git`
+1. `git clone https://github.com/opentok/opentok-react.git`
 1. `cd opentok-react/example/`
 1. `cp config.template.js config.js`
 1. Edit `config.js`:
   1. Add your OpenTok API key, Session ID and Token (https://tokbox.com/account/)
   1. Add your Chrome Extension ID (https://tokbox.com/developer/guides/screen-sharing/js/)
+1. `cd ..`
 1. `yarn` (or `npm install`)
 1. `npm run example`
 1. Visit `http://localhost:8000` in your browser
@@ -402,7 +403,7 @@ export default preloadScript(App);
 
 ## Custom Build
 
-1. `git clone https://github.com/aiham/opentok-react.git`
+1. `git clone https://github.com/opentok/opentok-react.git`
 1. `cd opentok-react/`
 1. `yarn` (or `npm install`)
 1. Modify code in `src/`
@@ -433,4 +434,9 @@ Run the linter with:
 npm run lint
 ```
 
-The unit tests are automatically run on [Travis](https://travis-ci.org/aiham/opentok-react) on both Chrome and Firefox and the current build status is shown at the top of this document.
+The unit tests are automatically run on [Travis](https://travis-ci.org/opentok/opentok-react) on both Chrome and Firefox and the current build status is shown at the top of this document.
+
+## About
+
+Originally authored by [Aiham Hammami](https://github.com/aiham).
+Currently maintained by [TokBox Inc.](https://tokbox.com/).

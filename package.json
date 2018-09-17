@@ -21,9 +21,14 @@
   ],
   "repository": {
     "type": "git",
-    "url": "https://github.com/aiham/opentok-react.git"
+    "url": "https://github.com/opentok/opentok-react.git"
   },
-  "author": "Aiham Hammami <aiham@aiham.net>",
+  "contributors": [
+    {
+      "name": "Aiham Hammami",
+      "email": "aiham@aiham.net"
+    }
+  ],
   "license": "MIT",
   "peerDependencies": {
     "react": "^15.5.0"

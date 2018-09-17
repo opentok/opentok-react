@@ -31,8 +31,6 @@ export default class Subscriber extends Component {
       <div>
         {this.state.error ? <div>{this.state.error}</div> : null}
         <OTSubscriber
-          session={this.props.session}
-          stream={this.props.stream}
           properties={{
             subscribeToAudio: this.state.audio,
             subscribeToVideo: this.state.video

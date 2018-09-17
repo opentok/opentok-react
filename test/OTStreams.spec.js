@@ -92,11 +92,9 @@ describe('OTStreams', () => {
         ));
       });
 
-      it('should clone child and provide session and stream as props', () => {
+      it('should clone child', () => {
         const child = wrapper.find('MyComponent');
         expect(child.length).toBe(1);
-        expect(child.prop('session')).toBe(session);
-        expect(child.prop('stream')).toBe(streams[0]);
       });
     });
 
@@ -115,13 +113,9 @@ describe('OTStreams', () => {
         ));
       });
 
-      it('should clone child per stream and provide session and stream as props', () => {
+      it('should clone child per stream', () => {
         const children = wrapper.find('MyComponent');
         expect(children.length).toBe(2);
-        children.forEach((child, index) => {
-          expect(child.prop('session')).toBe(session);
-          expect(child.prop('stream')).toBe(streams[index]);
-        });
       });
     });
   });
