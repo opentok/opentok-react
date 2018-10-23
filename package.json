@@ -31,7 +31,7 @@
   ],
   "license": "MIT",
   "peerDependencies": {
-    "react": "^15.5.0"
+    "react": "^15.5.0 || ^16.0.0"
   },
   "dependencies": {
     "lodash": "^4.13.1",
