@@ -31,6 +31,11 @@ module.exports = config => {
     logLevel: config.LOG_DEBUG,
     autoWatch: true,
     browsers: [browser[0].toUpperCase() + browser.substr(1)],
-    singleRun: false
+    singleRun: false,
+    // Some tolerace for mutation testing
+    browserDisconnectTimeout: 30000,
+    browserDisconnectTolerance: 2,
+    browserNoActivityTimeout: 120000,
+    captureTimeout: 60000,
   });
 };
