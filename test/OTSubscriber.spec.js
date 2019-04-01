@@ -79,13 +79,14 @@ describe('OTSubscriber', () => {
       session = jasmine.createSpyObj('session', ['subscribe', 'unsubscribe']);
       subscriber = jasmine.createSpyObj('subscriber', ['on', 'off', 'once']);
       session.subscribe.and.returnValue(subscriber);
-      stream = {};      
+      stream = {};
     });
 
     describe('configuration', () => {
       it('should not render the subscriber container element when default UI is disabled', () => {
         const wrapper = mount(
-          <OTSubscriber session={session} stream={stream} properties={{ insertDefaultUI: false }} />,
+          <OTSubscriber session={session} stream={stream}
+            properties={{ insertDefaultUI: false }} />
         );
         const divContainer = wrapper.render().find('div.OTSubscriberContainer');
         expect(divContainer.length).toBe(0);
@@ -97,7 +98,7 @@ describe('OTSubscriber', () => {
 
       beforeEach(() => {
         wrapper = mount(<OTSubscriber session={session} stream={stream} />);
-      })
+      });
 
       it('should render the subscriber container element', () => {
         const divContainer = wrapper.render().find('div.OTSubscriberContainer');
