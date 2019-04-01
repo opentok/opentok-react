@@ -71,7 +71,6 @@ describe('OTSubscriber', () => {
   });
 
   describe('with both session and stream props', () => {
-    let wrapper;
     let session;
     let subscriber;
     let stream;
@@ -81,31 +80,52 @@ describe('OTSubscriber', () => {
       subscriber = jasmine.createSpyObj('subscriber', ['on', 'off', 'once']);
       session.subscribe.and.returnValue(subscriber);
       stream = {};
-      wrapper = mount(<OTSubscriber session={session} stream={stream} />);
     });
 
-    it('should render the subscriber container element', () => {
-      const divContainer = wrapper.render().find('div.OTSubscriberContainer');
-      expect(divContainer.length).toBe(1);
+    describe('configuration', () => {
+      it('should not render the subscriber container element when default UI is disabled', () => {
+        const wrapper = mount(
+          <OTSubscriber
+            session={session}
+            stream={stream}
+            properties={{ insertDefaultUI: false }}
+          />,
+        );
+        const divContainer = wrapper.render().find('div.OTSubscriberContainer');
+        expect(divContainer.length).toBe(0);
+      });
     });
 
-    it('should subscribe to stream', () => {
-      expect(session.subscribe).toHaveBeenCalledWith(
-        stream,
-        jasmine.any(Object),
-        jasmine.any(Object),
-        jasmine.any(Function),
-      );
-    });
+    describe('functionality', () => {
+      let wrapper;
 
-    it('should have a subscriber', () => {
-      expect(wrapper.instance().getSubscriber()).toBe(subscriber);
-      expect(wrapper.state('subscriber')).toBe(subscriber);
-    });
+      beforeEach(() => {
+        wrapper = mount(<OTSubscriber session={session} stream={stream} />);
+      });
 
-    it('should unsubscribe when unmounting', () => {
-      wrapper.unmount();
-      expect(session.unsubscribe).toHaveBeenCalledWith(subscriber);
+      it('should render the subscriber container element', () => {
+        const divContainer = wrapper.render().find('div.OTSubscriberContainer');
+        expect(divContainer.length).toBe(1);
+      });
+
+      it('should subscribe to stream', () => {
+        expect(session.subscribe).toHaveBeenCalledWith(
+          stream,
+          jasmine.any(Object),
+          jasmine.any(Object),
+          jasmine.any(Function),
+        );
+      });
+
+      it('should have a subscriber', () => {
+        expect(wrapper.instance().getSubscriber()).toBe(subscriber);
+        expect(wrapper.state('subscriber')).toBe(subscriber);
+      });
+
+      it('should unsubscribe when unmounting', () => {
+        wrapper.unmount();
+        expect(session.unsubscribe).toHaveBeenCalledWith(subscriber);
+      });
     });
   });
 });
