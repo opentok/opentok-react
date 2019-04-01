@@ -85,8 +85,11 @@ describe('OTSubscriber', () => {
     describe('configuration', () => {
       it('should not render the subscriber container element when default UI is disabled', () => {
         const wrapper = mount(
-          <OTSubscriber session={session} stream={stream}
-            properties={{ insertDefaultUI: false }} />
+          <OTSubscriber
+            session={session}
+            stream={stream}
+            properties={{ insertDefaultUI: false }}
+          />,
         );
         const divContainer = wrapper.render().find('div.OTSubscriberContainer');
         expect(divContainer.length).toBe(0);
