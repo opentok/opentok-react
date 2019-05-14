@@ -1,3 +1,33 @@
+import axios from 'axios';
+
+const logRequest = (apiKey, sessionId, action, connectionId) => {
+  const body = {
+    payload: {
+      opentok_react_version: require('../package.json').version,
+    },
+    payload_type: 'info',
+    action,
+    partner_id: apiKey,
+    session_id: sessionId,
+    source: require('../package.json').repository.url,
+  };
+
+  if (connectionId) {
+    body.connectionId = connectionId;
+  }
+  axios({
+    url: 'https://hlg.tokbox.com/prod/logging/ClientEvent',
+    method: 'post',
+    data: JSON.stringify(body),
+  })
+    .then(() => {
+      // response complete
+    })
+    .catch(() => {
+      console.log('logging error');
+    });
+};
+
 export default function createSession({
   apiKey,
   sessionId,
@@ -36,12 +66,18 @@ export default function createSession({
     }
   };
 
+  let onSessionConnected = (event) => {
+    logRequest(apiKey, sessionId, 'react_connected', event.target.connection.connectionId);
+  };
+
   let eventHandlers = {
     streamCreated: onStreamCreated,
     streamDestroyed: onStreamDestroyed,
+    sessionConnected: onSessionConnected,
   };
 
   let session = OT.initSession(apiKey, sessionId);
+  logRequest(apiKey, sessionId, 'react_initialize');
   session.on(eventHandlers);
   session.connect(token, (err) => {
     if (!session) {
@@ -68,6 +104,7 @@ export default function createSession({
       streams = null;
       onStreamCreated = null;
       onStreamDestroyed = null;
+      onSessionConnected = null;
       eventHandlers = null;
       session = null;
 

@@ -34,6 +34,7 @@
     "react": "^15.5.0 || ^16.0.0"
   },
   "dependencies": {
+    "axios": "^0.18.0",
     "lodash": "^4.13.1",
     "prop-types": "^15.5.10",
     "react-display-name": "^0.2.0",
