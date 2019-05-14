@@ -1,15 +1,17 @@
 import axios from 'axios';
 
+const libraryPackage = require('../package.json');
+
 const logRequest = (apiKey, sessionId, action, connectionId) => {
   const body = {
     payload: {
-      opentok_react_version: require('../package.json').version,
+      opentok_react_version: libraryPackage.version,
     },
     payload_type: 'info',
     action,
     partner_id: apiKey,
     session_id: sessionId,
-    source: require('../package.json').repository.url,
+    source: libraryPackage.repository.url,
   };
 
   if (connectionId) {
