@@ -2,7 +2,7 @@ import axios from 'axios';
 
 const libraryPackage = require('../package.json');
 
-const logRequest = (apiKey, sessionId, action, connectionId) => {
+const logAnalyticsEvent = (apiKey, sessionId, action, connectionId) => {
   const body = {
     payload: {
       opentok_react_version: libraryPackage.version,
@@ -69,7 +69,7 @@ export default function createSession({
   };
 
   let onSessionConnected = (event) => {
-    logRequest(apiKey, sessionId, 'react_connected', event.target.connection.connectionId);
+    logAnalyticsEvent(apiKey, sessionId, 'react_connected', event.target.connection.connectionId);
   };
 
   let eventHandlers = {
@@ -79,7 +79,7 @@ export default function createSession({
   };
 
   let session = OT.initSession(apiKey, sessionId);
-  logRequest(apiKey, sessionId, 'react_initialize');
+  logAnalyticsEvent(apiKey, sessionId, 'react_initialize');
   session.on(eventHandlers);
   session.connect(token, (err) => {
     if (!session) {
