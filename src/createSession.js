@@ -2,6 +2,7 @@ export default function createSession({
   apiKey,
   sessionId,
   token,
+  options,
   onStreamsUpdated,
   onConnect,
   onError,
@@ -41,7 +42,7 @@ export default function createSession({
     streamDestroyed: onStreamDestroyed,
   };
 
-  let session = OT.initSession(apiKey, sessionId);
+  let session = OT.initSession(apiKey, sessionId, options);
   session.on(eventHandlers);
   session.connect(token, (err) => {
     if (!session) {
