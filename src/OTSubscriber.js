@@ -70,7 +70,9 @@ export default class OTSubscriber extends Component {
                     // component unmounted so don't invoke any callbacks
                 return;
               }
-              if (err && this.props.retry && this.state.currentRetryAttempt < this.maxRetryAttempts) {
+              if (err &&
+                this.props.retry &&
+                this.state.currentRetryAttempt < this.maxRetryAttempts) {
                     // Error during subscribe function
                 this.handleRetrySubscriber();
                 // If there is a retry action, do we want to execute the onError props function?
