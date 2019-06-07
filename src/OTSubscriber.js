@@ -10,7 +10,10 @@ export default class OTSubscriber extends Component {
       subscriber: null,
       stream: props.stream || context.stream || null,
       session: props.session || context.session || null,
+      currentRetryAttempt: 0,
     };
+    this.maxRetryAttempts = props.maxRetryAttempts || 15;
+    this.retryAttemptTimeout = props.retryAttemptTimeout || 1000;
   }
 
   componentDidMount() {
@@ -57,33 +60,47 @@ export default class OTSubscriber extends Component {
 
     this.subscriberId = uuid();
     const { subscriberId } = this;
-
     const subscriber = this.state.session.subscribe(
-      this.state.stream,
-      container,
-      this.props.properties,
-      (err) => {
-        if (subscriberId !== this.subscriberId) {
-          // Either this subscriber has been recreated or the
-          // component unmounted so don't invoke any callbacks
-          return;
-        }
-        if (err && typeof this.props.onError === 'function') {
-          this.props.onError(err);
-        } else if (!err && typeof this.props.onSubscribe === 'function') {
-          this.props.onSubscribe();
-        }
-      },
-    );
+            this.state.stream,
+            container,
+            this.props.properties,
+            (err) => {
+              if (subscriberId !== this.subscriberId) {
+                    // Either this subscriber has been recreated or the
+                    // component unmounted so don't invoke any callbacks
+                return;
+              }
+              if (err && this.props.retry && this.state.currentRetryAttempt < this.maxRetryAttempts) {
+                    // Error during subscribe function
+                this.handleRetrySubscriber();
+                // If there is a retry action, do we want to execute the onError props function?
+                // return;
+              }
+              if (err && typeof this.props.onError === 'function') {
+                this.props.onError(err);
+              } else if (!err && typeof this.props.onSubscribe === 'function') {
+                this.props.onSubscribe();
+              }
+            },
+        );
 
     if (
-      this.props.eventHandlers &&
-      typeof this.props.eventHandlers === 'object'
-    ) {
+            this.props.eventHandlers &&
+            typeof this.props.eventHandlers === 'object'
+        ) {
       subscriber.on(this.props.eventHandlers);
     }
 
     this.setState({ subscriber });
+  }
+
+  handleRetrySubscriber() {
+    setTimeout(() => {
+      let { currentRetryAttempt } = this.state;
+      currentRetryAttempt += 1;
+      this.setState({ subscriber: null, currentRetryAttempt });
+      this.createSubscriber();
+    }, this.retryAttemptTimeout);
   }
 
   destroySubscriber(session = this.props.session) {
@@ -91,9 +108,9 @@ export default class OTSubscriber extends Component {
 
     if (this.state.subscriber) {
       if (
-        this.props.eventHandlers &&
-        typeof this.props.eventHandlers === 'object'
-      ) {
+                this.props.eventHandlers &&
+                typeof this.props.eventHandlers === 'object'
+            ) {
         this.state.subscriber.once('destroyed', () => {
           this.state.subscriber.off(this.props.eventHandlers);
         });
@@ -119,6 +136,9 @@ OTSubscriber.propTypes = {
     unsubscribe: PropTypes.func,
   }),
   properties: PropTypes.object, // eslint-disable-line react/forbid-prop-types
+  retry: PropTypes.bool,
+  maxRetryAttempts: PropTypes.number,
+  retryAttemptTimeout: PropTypes.number,
   eventHandlers: PropTypes.objectOf(PropTypes.func),
   onSubscribe: PropTypes.func,
   onError: PropTypes.func,
@@ -128,6 +148,9 @@ OTSubscriber.defaultProps = {
   stream: null,
   session: null,
   properties: {},
+  retry: false,
+  maxRetryAttempts: 15,
+  retryAttemptTimeout: 1000,
   eventHandlers: null,
   onSubscribe: null,
   onError: null,

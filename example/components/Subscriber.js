@@ -36,6 +36,7 @@ export default class Subscriber extends Component {
             subscribeToVideo: this.state.video
           }}
           onError={this.onError}
+          retry={true}
         />
         <CheckBox
           label="Subscribe to Audio"
