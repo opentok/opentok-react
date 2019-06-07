@@ -12,6 +12,8 @@ export default class Subscriber extends Component {
       audio: true,
       video: true
     };
+
+    this.otSubscriber = null;
   }
 
   setAudio = (audio) => {
@@ -26,6 +28,11 @@ export default class Subscriber extends Component {
     this.setState({ error: `Failed to subscribe: ${err.message}` });
   }
 
+  reSubscribe = () => {
+        this.otSubscriber.destroySubscriber(this.otSubscriber.state.session);
+        this.otSubscriber.createSubscriber();
+    }
+
   render() {
     return (
       <div>
@@ -36,6 +43,8 @@ export default class Subscriber extends Component {
             subscribeToVideo: this.state.video
           }}
           onError={this.onError}
+          eventHandlers={this.props.eventHandlers}
+          ref={(instance) => { this.otSubscriber = instance }}
         />
         <CheckBox
           label="Subscribe to Audio"
@@ -47,6 +56,7 @@ export default class Subscriber extends Component {
           initialChecked={this.state.video}
           onChange={this.setVideo}
         />
+        <button onClick={this.reSubscribe} > Resubscribe </button>
       </div>
     );
   }

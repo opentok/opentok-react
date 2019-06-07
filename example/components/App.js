@@ -23,6 +23,48 @@ class App extends Component {
         this.setState({ connected: false });
       }
     };
+
+    this.publisherEventHandlers = {
+        accessDenied: () => {
+          console.log('User denied access to media source')
+        },
+        accessAllowed: () => {
+          console.log('User allowed access to media source')
+        },
+        streamCreated: () => {
+          console.log('Publisher stream created')
+        },
+        streamDestroyed: ({ reason }) => {
+          console.log(`Publisher stream destroyed, reason: ${reason}`)
+        },
+        disconnected: () => {
+          console.log('Publisher disconnected')
+        },
+        destroyed: () => {
+          console.log('Publisher destroyed')
+        }
+      }
+
+    this.subscriberEventHandlers = {
+          videoEnabled: () => {
+            console.log('Subscriber video enabled')
+          },
+          videoDisabled: () => {
+            console.log('Subscriber video disabled')
+          },
+          streamDestroyed: ({ reason }) => {
+            console.log(`Subscriber stream destroyed, reason: ${reason}`)
+          },
+          connected: () => {
+            console.log('Subscriber connected')
+          },
+          disconnected: () => {
+            console.log('Subscriber disconnected')
+          },
+          destroyed: () => {
+            console.log('Subscriber destroyed')
+          }
+      }
   }
 
   componentWillMount() {
@@ -44,9 +86,9 @@ class App extends Component {
       >
         {this.state.error ? <div>{this.state.error}</div> : null}
         <ConnectionStatus connected={this.state.connected} />
-        <Publisher />
+        <Publisher eventHandlers={this.publisherEventHandlers}/>
         <OTStreams>
-          <Subscriber />
+          <Subscriber eventHandlers={this.subscriberEventHandlers}/>
         </OTStreams>
       </OTSession>
     );
