@@ -12,7 +12,7 @@ export default class OTSubscriber extends Component {
       session: props.session || context.session || null,
       currentRetryAttempt: 0,
     };
-    this.maxRetryAttempts = props.maxRetryAttempts || 15;
+    this.maxRetryAttempts = props.maxRetryAttempts || 5;
     this.retryAttemptTimeout = props.retryAttemptTimeout || 1000;
   }
 
@@ -60,6 +60,7 @@ export default class OTSubscriber extends Component {
 
     this.subscriberId = uuid();
     const { subscriberId } = this;
+
     const subscriber = this.state.session.subscribe(
             this.state.stream,
             container,
@@ -72,8 +73,8 @@ export default class OTSubscriber extends Component {
               }
               if (err &&
                 this.props.retry &&
-                this.state.currentRetryAttempt < this.maxRetryAttempts) {
-                    // Error during subscribe function
+                this.state.currentRetryAttempt < (this.maxRetryAttempts - 1)) {
+                // Error during subscribe function
                 this.handleRetrySubscriber();
                 // If there is a retry action, do we want to execute the onError props function?
                 // return;
@@ -98,9 +99,10 @@ export default class OTSubscriber extends Component {
 
   handleRetrySubscriber() {
     setTimeout(() => {
-      let { currentRetryAttempt } = this.state;
-      currentRetryAttempt += 1;
-      this.setState({ subscriber: null, currentRetryAttempt });
+      this.setState(state => ({
+        currentRetryAttempt: state.currentRetryAttempt + 1,
+        subscriber: null,
+      }));
       this.createSubscriber();
     }, this.retryAttemptTimeout);
   }
@@ -151,7 +153,7 @@ OTSubscriber.defaultProps = {
   session: null,
   properties: {},
   retry: false,
-  maxRetryAttempts: 15,
+  maxRetryAttempts: 5,
   retryAttemptTimeout: 1000,
   eventHandlers: null,
   onSubscribe: null,

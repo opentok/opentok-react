@@ -266,7 +266,7 @@ There are plans to support more Publisher properties but for now you will have t
 | stream | [Stream](https://tokbox.com/developer/sdks/js/reference/Stream.html) | No | OpenTok Stream instance. This is auto populated by wrapping `OTSubscriber` with `OTStreams`
 | properties | Object | No | Properties passed into `session.subscribe`
 | retry | Boolean | No | Set true to retry the subscribe process in case of failure (Default: false)
-| maxRetryAttempts | Number | No | Max retry attempts in case of subscribe failure (Default: 15)
+| maxRetryAttempts | Number | No | Max retry attempts in case of subscribe failure (Default: 5)
 | retryAttemptTimeout | Number | No | Timeout value between every subscribe retry attempt, expressed in ms (Default: 1000ms)
 | eventHandlers | Object&lt;Function&gt; | No | Event handlers passed into `subscriber.on`
 | onSubscribe | Function() | No | Invoked when `session.subscribe` successfully completes
