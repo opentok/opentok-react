@@ -2,6 +2,7 @@ import OTSession from './OTSession';
 import OTPublisher from './OTPublisher';
 import OTStreams from './OTStreams';
 import OTSubscriber from './OTSubscriber';
+import OTWhiteBoard from './OTWhiteBoard';
 import createSession from './createSession';
 import preloadScript from './preloadScript';
 
@@ -12,6 +13,7 @@ export default {
   OTSubscriber,
   createSession,
   preloadScript,
+  OTWhiteBoard,
 };
 
 export {
@@ -21,4 +23,5 @@ export {
   OTSubscriber,
   createSession,
   preloadScript,
+  OTWhiteBoard,
 };

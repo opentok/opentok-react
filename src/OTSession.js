@@ -9,6 +9,7 @@ export default class OTSession extends Component {
 
     this.state = {
       streams: [],
+      session: {},
     };
   }
 
@@ -35,13 +36,16 @@ export default class OTSession extends Component {
   }
 
   createSession() {
+    console.log('session created');
     this.destroySession();
 
     this.sessionHelper = createSession({
       apiKey: this.props.apiKey,
       sessionId: this.props.sessionId,
       token: this.props.token,
-      onStreamsUpdated: (streams) => { this.setState({ streams }); },
+      onStreamsUpdated: (streams) => {
+        this.setState({ streams });
+      },
       onConnect: this.props.onConnect,
       onError: this.props.onError,
     });
@@ -53,8 +57,8 @@ export default class OTSession extends Component {
       this.sessionHelper.session.on(this.props.eventHandlers);
     }
 
-    const { streams } = this.sessionHelper;
-    this.setState({ streams });
+    const { streams, session } = this.sessionHelper;
+    this.setState({ streams, session });
   }
 
   destroySession() {
@@ -70,7 +74,13 @@ export default class OTSession extends Component {
   }
 
   render() {
-    return <div>{this.props.children}</div>;
+    return (
+      <div>
+        {React.Children.toArray(this.props.children).map(child =>
+          React.cloneElement(child, { session: this.state.session }),
+        )}
+      </div>
+    );
   }
 }
 

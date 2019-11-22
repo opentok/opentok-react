@@ -1,6 +1,6 @@
 {
-  "name": "opentok-react",
-  "version": "0.9.0",
+  "name": "opentok-react-whiteboard",
+  "version": "1.0.0",
   "description": "React components for OpenTok.js",
   "main": "dist/index.js",
   "scripts": {
@@ -9,7 +9,7 @@
     "prepublish": "npm run build",
     "build": "babel src --out-dir dist",
     "lint": "eslint src test",
-    "example": "cd example && browserify -o bundle.js app.js && python -m SimpleHTTPServer"
+    "example": "cd example && browserify -t browserify-css -o bundle.js app.js && python -m SimpleHTTPServer"
   },
   "keywords": [
     "tokbox",
@@ -17,16 +17,21 @@
     "react",
     "react-component",
     "video",
-    "webrtc"
+    "webrtc",
+    "whiteboard"
   ],
   "repository": {
     "type": "git",
-    "url": "https://github.com/opentok/opentok-react.git"
+    "url": "https://github.com/MedElfadhelELHACHEMI/opentok-react.git"
   },
   "contributors": [
     {
       "name": "Aiham Hammami",
       "email": "aiham@aiham.net"
+    },
+    {
+      "name": "Med Elfadhel ELHACHEMI",
+      "email": "mohamedelfadhel.elhachemi@gmail.com"
     }
   ],
   "license": "MIT",
@@ -35,6 +40,7 @@
   },
   "dependencies": {
     "lodash": "^4.13.1",
+    "paper": "^0.12.3",
     "prop-types": "^15.5.10",
     "react-display-name": "^0.2.0",
     "scriptjs": "^2.5.8",
@@ -48,6 +54,7 @@
     "babel-preset-stage-2": "^6.18.0",
     "babelify": "^7.3.0",
     "browserify": "^13.0.1",
+    "browserify-css": "^0.15.0",
     "enzyme": "^2.6.0",
     "eslint": "^3.17.1",
     "eslint-config-airbnb": "^14.1.0",
@@ -68,10 +75,14 @@
     "react-addons-test-utils": "^15.5.1",
     "react-dom": "^15.5.0",
     "react-test-renderer": "^15.5.4",
-    "travis-multirunner": "^4.5.0",
-    "watchify": "^3.8.0"
+    "travis-multirunner": "^4.5.0"
   },
   "browserify": {
+    "browserify-css": {
+      "autoInject": true,
+      "minify": true,
+      "rootDir": "."
+    },
     "transform": [
       "babelify"
     ]

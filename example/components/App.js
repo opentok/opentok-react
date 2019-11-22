@@ -1,10 +1,10 @@
-import React, { Component } from 'react';
+import React, { Component } from "react";
 
-import { OTSession, OTStreams, preloadScript } from '../../src'
-import ConnectionStatus from './ConnectionStatus';
-import Publisher from './Publisher';
-import Subscriber from './Subscriber';
-import config from '../config';
+import { OTSession, OTStreams, preloadScript, OTWhiteBoard } from "../../src";
+import ConnectionStatus from "./ConnectionStatus";
+import Publisher from "./Publisher";
+import Subscriber from "./Subscriber";
+import config from "../config";
 
 class App extends Component {
   constructor(props) {
@@ -26,12 +26,12 @@ class App extends Component {
   }
 
   componentWillMount() {
-    OT.registerScreenSharingExtension('chrome', config.CHROME_EXTENSION_ID, 2);
+    OT.registerScreenSharingExtension("chrome", config.CHROME_EXTENSION_ID, 2);
   }
 
-  onError = (err) => {
+  onError = err => {
     this.setState({ error: `Failed to connect: ${err.message}` });
-  }
+  };
 
   render() {
     return (
@@ -42,12 +42,13 @@ class App extends Component {
         eventHandlers={this.sessionEvents}
         onError={this.onError}
       >
-        {this.state.error ? <div>{this.state.error}</div> : null}
-        <ConnectionStatus connected={this.state.connected} />
-        <Publisher />
-        <OTStreams>
-          <Subscriber />
-        </OTStreams>
+        <OTWhiteBoard />
+
+        {/*{this.state.error ? <div>{this.state.error}</div> : null}*/}
+        {/*<Publisher />*/}
+        {/*<OTStreams>*/}
+        {/*  <Subscriber />*/}
+        {/*</OTStreams>*/}
       </OTSession>
     );
   }
