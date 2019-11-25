@@ -426,7 +426,7 @@ export default class OTWhiteBoard extends Component {
 
           <input
             type="button"
-            onClick={this.clearCanvas}
+            onClick={this.clear}
             className="OT_clear"
             value="Clear"
           />
