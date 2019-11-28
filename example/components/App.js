@@ -42,7 +42,7 @@ class App extends Component {
         eventHandlers={this.sessionEvents}
         onError={this.onError}
       >
-        <OTWhiteBoard />
+        <OTWhiteBoard width={600} height={600}  />
 
         {/*{this.state.error ? <div>{this.state.error}</div> : null}*/}
         {/*<Publisher />*/}

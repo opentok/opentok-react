@@ -39,8 +39,8 @@ export default class OTWhiteBoard extends Component {
     // Create an empty project and a view for the canvas:
     paper.setup(this.canvas);
     // Create a Paper.js Path to draw a line into it:
-    this.canvas.width = 500;
-    this.canvas.height = 500;
+    this.canvas.width = this.props.width || 500;
+    this.canvas.height = this.props.height || 500;
 
     // Set paper.js view size
     paper.view.viewSize = new paper.Size(this.canvas.width, this.canvas.height);
@@ -60,7 +60,7 @@ export default class OTWhiteBoard extends Component {
     this.count = 0;
   };
 
-  changeColor = (selectedColor) => {
+  changeColor = selectedColor => {
     this.color = selectedColor.backgroundColor;
     this.erasing = false;
   };
@@ -86,15 +86,15 @@ export default class OTWhiteBoard extends Component {
     this.sendUpdate('otWhiteboard_undo', uuid);
   };
 
-  undoWhiteBoard = (uuid) => {
+  undoWhiteBoard = uuid => {
     this.redoStack.push(uuid);
-    this.pathStack.forEach((path) => {
+    this.pathStack.forEach(path => {
       if (path.uuid === uuid) {
         path.visible = false;
         paper.view.update();
       }
     });
-    this.drawHistory.forEach((update) => {
+    this.drawHistory.forEach(update => {
       if (update.uuid === uuid) {
         update.visible = false;
       }
@@ -108,22 +108,22 @@ export default class OTWhiteBoard extends Component {
     this.sendUpdate('otWhiteboard_redo', uuid);
   };
 
-  redoWhiteBoard = (uuid) => {
+  redoWhiteBoard = uuid => {
     this.undoStack.push(uuid);
-    this.pathStack.forEach((path) => {
+    this.pathStack.forEach(path => {
       if (path.uuid === uuid) {
         path.visible = true;
         paper.view.update();
       }
     });
-    this.drawHistory.forEach((update) => {
+    this.drawHistory.forEach(update => {
       if (update.uuid === uuid) {
         update.visible = true;
       }
     });
   };
 
-  draw = (update) => {
+  draw = update => {
     this.drawHistory.push(update);
     // console.log(update);
     switch (update.event) {
@@ -150,7 +150,7 @@ export default class OTWhiteBoard extends Component {
         this.pathStack.push(path);
         break;
       case 'drag':
-        this.pathStack.forEach((pathItem) => {
+        this.pathStack.forEach(pathItem => {
           if (pathItem.uuid === update.uuid) {
             pathItem.add(update.toX, update.toY);
             paper.view.draw();
@@ -158,7 +158,7 @@ export default class OTWhiteBoard extends Component {
         });
         break;
       case 'end':
-        this.pathStack.forEach((pathItem) => {
+        this.pathStack.forEach(pathItem => {
           if (pathItem.uuid === update.uuid) {
             this.undoStack.push(pathItem.uuid);
             pathItem.simplify();
@@ -169,11 +169,12 @@ export default class OTWhiteBoard extends Component {
     }
   };
 
-  drawUpdates = (updates) => {
-    updates.forEach((updateItem) => {
+  drawUpdates = updates => {
+    updates.forEach(updateItem => {
       this.draw(updateItem);
     });
   };
+
   componentDidUpdate(prevProps, prevState, snapshot) {
     if (this.props.session) {
       if (this.props.session.isConnected()) {
@@ -183,7 +184,7 @@ export default class OTWhiteBoard extends Component {
         sessionConnected() {
           this.requestHistory();
         },
-        'signal:otWhiteboard_update': (event) => {
+        'signal:otWhiteboard_update': event => {
           if (
             event.from.connectionId !==
             this.props.session.connection.connectionId
@@ -191,27 +192,27 @@ export default class OTWhiteBoard extends Component {
             this.drawUpdates(JSON.parse(event.data));
           }
         },
-        'signal:otWhiteboard_undo': (event) => {
+        'signal:otWhiteboard_undo': event => {
           if (
             event.from.connectionId !==
             this.props.session.connection.connectionId
           ) {
-            JSON.parse(event.data).forEach((data) => {
+            JSON.parse(event.data).forEach(data => {
               this.undoWhiteBoard(data);
             });
           }
         },
-        'signal:otWhiteboard_redo': (event) => {
+        'signal:otWhiteboard_redo': event => {
           if (
             event.from.connectionId !==
             this.props.session.connection.connectionId
           ) {
-            JSON.parse(event.data).forEach((data) => {
+            JSON.parse(event.data).forEach(data => {
               this.redoWhiteBoard(data);
             });
           }
         },
-        'signal:otWhiteboard_history': (event) => {
+        'signal:otWhiteboard_history': event => {
           // We will receive these from everyone in the room, only listen to the first
           // person. Also the data is chunked together so we need all of that person's
           if (
@@ -222,7 +223,7 @@ export default class OTWhiteBoard extends Component {
             this.drawUpdates(JSON.parse(event.data));
           }
         },
-        'signal:otWhiteboard_clear': (event) => {
+        'signal:otWhiteboard_clear': event => {
           console.log('clear');
           if (
             event.from.connectionId !==
@@ -231,7 +232,7 @@ export default class OTWhiteBoard extends Component {
             this.clearCanvas();
           }
         },
-        'signal:otWhiteboard_request_history': (event) => {
+        'signal:otWhiteboard_request_history': event => {
           if (this.drawHistory.length > 0) {
             this.batchSignal(
               'otWhiteboard_history',
@@ -244,7 +245,7 @@ export default class OTWhiteBoard extends Component {
     }
   }
 
-  onCanvas = (event) => {
+  onCanvas = event => {
     if (
       (event.type === 'mousemove' ||
         event.type === 'touchmove' ||
@@ -256,16 +257,21 @@ export default class OTWhiteBoard extends Component {
     }
 
     event.preventDefault();
+    const { left, top } = this.canvas.getBoundingClientRect();
+    const scaleX = this.canvas.width / event.target.width;
+    const scaleY = this.canvas.height / event.target.height;
+    const offsetX = event.clientX - left;
+    const offsetY = event.clientY - top;
+    const X = offsetX * scaleX;
+    const Y = offsetY * scaleY;
     const mode = this.erasing ? 'eraser' : 'pen';
     if (event.type === 'mousedown' || event.type === 'touchstart') {
-      // console.log(event.clientY, event.target.offsetTop);
-      // console.log(event.clientX, event.target.offsetLeft);
       this.client.dragging = true;
-      this.client.lastX = event.clientX;
-      this.client.lastY = event.clientY;
+      this.client.lastX = X;
+      this.client.lastY = Y;
       this.client.uuid =
-        parseInt(event.clientX) +
-        parseInt(event.clientY) +
+        parseInt(X) +
+        parseInt(Y) +
         Math.random()
           .toString(36)
           .substring(2);
@@ -294,14 +300,14 @@ export default class OTWhiteBoard extends Component {
           uuid: this.client.uuid,
           fromX: this.client.lastX,
           fromY: this.client.lastY,
-          toX: event.clientX,
-          toY: event.clientY,
+          toX: X,
+          toY: Y,
           event: 'drag',
         };
         this.count++;
         this.redoStack = [];
-        this.client.lastX = event.clientX;
-        this.client.lastY = event.clientY;
+        this.client.lastX = X;
+        this.client.lastY = Y;
         this.draw(update);
         this.sendUpdate('otWhiteboard_update', update);
       }
@@ -334,7 +340,7 @@ export default class OTWhiteBoard extends Component {
     // We send data in small chunks so that they fit in a signal
     // Each packet is maximum ~250 chars, we can fit 8192/250 ~= 32 updates per signal
     const dataCopy = data.slice();
-    const signalError = (err) => {
+    const signalError = err => {
       if (err) {
         console.error(err);
       }
@@ -349,7 +355,9 @@ export default class OTWhiteBoard extends Component {
       this.props.session.signal(signal, signalError);
     }
   };
+
   updateTimeout;
+
   sendUpdate = (type, update, toConnection) => {
     if (this.props.session) {
       this.batchUpdates.push(update);
@@ -437,4 +445,6 @@ export default class OTWhiteBoard extends Component {
 }
 OTWhiteBoard.propTypes = {
   session: PropTypes.any.isRequired,
+  width: PropTypes.number.isRequired,
+  height: PropTypes.number.isRequired
 };
