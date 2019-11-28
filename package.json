@@ -1,13 +1,13 @@
 {
   "name": "opentok-react-whiteboard",
-  "version": "1.0.1",
+  "version": "1.0.2",
   "description": "React components for OpenTok.js",
   "main": "dist/index.js",
   "scripts": {
     "test": "karma start",
     "unit": "karma start --single-run",
     "prepublish": "npm run build",
-    "build": "babel src --out-dir dist",
+    "build": "babel src --out-dir dist && cp src/whiteboard.css dist ",
     "lint": "eslint src test",
     "example": "cd example && browserify -t browserify-css -o bundle.js app.js && python -m SimpleHTTPServer"
   },
@@ -36,6 +36,7 @@
   ],
   "license": "MIT",
   "peerDependencies": {
+    "paper": "^0.12.3",
     "react": "^15.5.0 || ^16.0.0"
   },
   "dependencies": {
