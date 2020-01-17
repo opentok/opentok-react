@@ -1,7 +1,7 @@
 import React, { Component } from 'react';
 import PropTypes from 'prop-types';
 import getDisplayName from 'react-display-name';
-import load from "little-loader";
+import load from 'little-loader';
 
 const DEFAULT_SCRIPT_URL = 'https://static.opentok.com/v2/js/opentok.min.js';
 
