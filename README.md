@@ -250,6 +250,41 @@ However, for convenience the `OTPublisher` does watch for changes on a few keys 
 
 There are plans to support more Publisher properties but for now you will have to call `getPublisher()` to retrieve the Publisher instance and make the necessary changes yourself.
 
+You can also get access to the `publisher` object by calling the `getPublisher` method using a [Ref](https://reactjs.org/docs/refs-and-the-dom.html). For example:
+```js
+class MyApp extends React.Component {
+  constructor(props) {
+    super(props);
+    this.state = {
+      publisher: null,
+    };
+    this.otPublisher = React.createRef();
+  }
+
+  componentDidMount() {
+    this.getPublisher();
+  }
+
+  getPublisher() {
+    if (this.otPublisher) {
+      this.setState({
+        publisher: this.otPublisher.current.getPublisher(),
+      });
+    }
+  }
+
+  render() {
+    return (
+      <OTSession apiKey="your-api-key" sessionId="your-session-id" token="your-session-token">
+        <OTPublisher
+          ref={this.otPublisher}
+        />
+      </OTSession>
+    );
+  }
+}
+```
+
 ### OTStreams Component
 
 | Prop | Type | Required | Description |
@@ -265,6 +300,9 @@ There are plans to support more Publisher properties but for now you will have t
 | session | [Session](https://tokbox.com/developer/sdks/js/reference/Session.html) | No | OpenTok Session instance. This is auto populated by wrapping `OTSubscriber` with `OTStreams`
 | stream | [Stream](https://tokbox.com/developer/sdks/js/reference/Stream.html) | No | OpenTok Stream instance. This is auto populated by wrapping `OTSubscriber` with `OTStreams`
 | properties | Object | No | Properties passed into `session.subscribe`
+| retry | Boolean | No | Set true to retry the subscribe process in case of failure (Default: false)
+| maxRetryAttempts | Number | No | Max retry attempts in case of subscribe failure (Default: 5)
+| retryAttemptTimeout | Number | No | Timeout value between every subscribe retry attempt, expressed in ms (Default: 1000ms)
 | eventHandlers | Object&lt;Function&gt; | No | Event handlers passed into `subscriber.on`
 | onSubscribe | Function() | No | Invoked when `session.subscribe` successfully completes
 | onError | Function(err) | No | Invoked when `session.subscribe` fails
@@ -336,6 +374,44 @@ However, for convenience the `OTSubscriber` does watch for changes on a few keys
 | subscribeToVideo | Calls [subscriber.subscribeToVideo()](https://tokbox.com/developer/sdks/js/reference/Subscriber.html#subscribeToVideo) to toggle video on and off |
 
 There are plans to support more Subscriber properties but for now you will have to call `getSubscriber()` to retrieve the Subscriber instance and make the necessary changes yourself.
+
+You can also get access to the `subscriber` object by calling the `getSubscriber` method using a Ref. For example:
+
+```js
+class MyApp extends React.Component {
+  constructor(props) {
+    super(props);
+    this.state = {
+      subscriber: null,
+    };
+    this.otSubscriber = React.createRef();
+  }
+
+  componentDidMount() {
+    this.getSubscriber();
+  }
+
+  getSubscriber() {
+    if (this.otSubscriber) {
+      this.setState({
+        subscriber: this.otSubscriber.current.getSubscriber(),
+      });
+    }
+  }
+
+  render() {
+    return (
+      <OTSession apiKey="your-api-key" sessionId="your-session-id" token="your-session-token">
+        <OTStreams>
+          <OTSubscriber
+            ref={this.otSubscriber}
+          />
+        </OTStreams>
+      </OTSession>
+    );
+  }
+}
+```
 
 ### createSession Helper
 
