@@ -127,7 +127,8 @@ export default class OTSubscriber extends Component {
   }
 
   render() {
-    return <div ref={(node) => { this.node = node; }} />;
+    const { className, style } = this.props;
+    return <div className={className} style={style} ref={(node) => { this.node = node; }} />;
   }
 }
 
@@ -139,6 +140,8 @@ OTSubscriber.propTypes = {
     subscribe: PropTypes.func,
     unsubscribe: PropTypes.func,
   }),
+  className: PropTypes.string,
+  style: PropTypes.object, // eslint-disable-line react/forbid-prop-types
   properties: PropTypes.object, // eslint-disable-line react/forbid-prop-types
   retry: PropTypes.bool,
   maxRetryAttempts: PropTypes.number,
@@ -151,6 +154,8 @@ OTSubscriber.propTypes = {
 OTSubscriber.defaultProps = {
   stream: null,
   session: null,
+  className: '',
+  style: {},
   properties: {},
   retry: false,
   maxRetryAttempts: 5,
