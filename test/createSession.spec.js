@@ -55,13 +55,16 @@ describe('createSession', () => {
         sessionId: 'fakeSessionId',
         token: 'fakeToken',
         onStreamsUpdated,
+        sessionOptions: {
+          proxyUrl: 'https://123.123.123.123:8080',
+        },
       };
 
       sessionHelper = createSession(options);
     });
 
     it('should call OT.initSession', () => {
-      expect(OT.initSession).toHaveBeenCalledWith(options.apiKey, options.sessionId);
+      expect(OT.initSession).toHaveBeenCalledWith(options.apiKey, options.sessionId, options.sessionOptions);
     });
 
     it('should call session.on', () => {
