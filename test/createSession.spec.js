@@ -56,7 +56,7 @@ describe('createSession', () => {
         token: 'fakeToken',
         onStreamsUpdated,
         options: {
-          proxyUrl: 'https://123.123.123.123:8080',
+          connectionEventSurpressed: true,
         },
       };
 
