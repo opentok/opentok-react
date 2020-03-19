@@ -1,34 +1,4 @@
-import axios from 'axios';
-
-const libraryPackage = require('../package.json');
-
-const logAnalyticsEvent = (apiKey, sessionId, action, connectionId) => {
-  const body = {
-    payload: {
-      opentok_react_version: libraryPackage.version,
-    },
-    payload_type: 'info',
-    action,
-    partner_id: apiKey,
-    session_id: sessionId,
-    source: libraryPackage.repository.url,
-  };
-
-  if (connectionId) {
-    body.connectionId = connectionId;
-  }
-  axios({
-    url: 'https://hlg.tokbox.com/prod/logging/ClientEvent',
-    method: 'post',
-    data: JSON.stringify(body),
-  })
-    .then(() => {
-      // response complete
-    })
-    .catch(() => {
-      console.log('logging error');
-    });
-};
+import { logAnalyticsEvent } from './helpers/logging';
 
 export default function createSession({
   apiKey,
