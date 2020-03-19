@@ -44,6 +44,7 @@ export default class OTSession extends Component {
       onStreamsUpdated: (streams) => { this.setState({ streams }); },
       onConnect: this.props.onConnect,
       onError: this.props.onError,
+      sessionOptions: this.props.options,
     });
 
     if (
@@ -85,12 +86,16 @@ OTSession.propTypes = {
   eventHandlers: PropTypes.objectOf(PropTypes.func),
   onConnect: PropTypes.func,
   onError: PropTypes.func,
+  options: PropTypes.shape({
+    proxyUrl: PropTypes.string,
+  }),
 };
 
 OTSession.defaultProps = {
   eventHandlers: null,
   onConnect: null,
   onError: null,
+  options: undefined,
 };
 
 OTSession.childContextTypes = {
