@@ -64,7 +64,11 @@ describe('createSession', () => {
     });
 
     it('should call OT.initSession', () => {
-      expect(OT.initSession).toHaveBeenCalledWith(options.apiKey, options.sessionId, options.options);
+      expect(OT.initSession).toHaveBeenCalledWith(
+        options.apiKey,
+        options.sessionId,
+        options.options,
+      );
     });
 
     it('should call session.on', () => {
