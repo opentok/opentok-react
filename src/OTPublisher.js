@@ -170,7 +170,8 @@ export default class OTPublisher extends Component {
   }
 
   render() {
-    return <div ref={(node) => { this.node = node; }} />;
+    const { className, style } = this.props;
+    return <div className={className} style={style} ref={(node) => { this.node = node; }} />;
   }
 }
 
@@ -184,6 +185,8 @@ OTPublisher.propTypes = {
     publish: PropTypes.func,
     unpublish: PropTypes.func,
   }),
+  className: PropTypes.string,
+  style: PropTypes.object, // eslint-disable-line react/forbid-prop-types
   properties: PropTypes.object, // eslint-disable-line react/forbid-prop-types
   eventHandlers: PropTypes.objectOf(PropTypes.func),
   onInit: PropTypes.func,
@@ -193,6 +196,8 @@ OTPublisher.propTypes = {
 
 OTPublisher.defaultProps = {
   session: null,
+  className: '',
+  style: {},
   properties: {},
   eventHandlers: null,
   onInit: null,
