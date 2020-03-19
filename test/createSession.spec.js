@@ -55,7 +55,7 @@ describe('createSession', () => {
         sessionId: 'fakeSessionId',
         token: 'fakeToken',
         onStreamsUpdated,
-        sessionOptions: {
+        options: {
           proxyUrl: 'https://123.123.123.123:8080',
         },
       };
@@ -64,7 +64,7 @@ describe('createSession', () => {
     });
 
     it('should call OT.initSession', () => {
-      expect(OT.initSession).toHaveBeenCalledWith(options.apiKey, options.sessionId, options.sessionOptions);
+      expect(OT.initSession).toHaveBeenCalledWith(options.apiKey, options.sessionId, options.options);
     });
 
     it('should call session.on', () => {

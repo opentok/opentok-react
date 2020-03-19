@@ -44,7 +44,7 @@ export default class OTSession extends Component {
       onStreamsUpdated: (streams) => { this.setState({ streams }); },
       onConnect: this.props.onConnect,
       onError: this.props.onError,
-      sessionOptions: this.props.options,
+      options: this.props.options,
     });
 
     if (
