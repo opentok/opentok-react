@@ -86,12 +86,7 @@ OTSession.propTypes = {
   eventHandlers: PropTypes.objectOf(PropTypes.func),
   onConnect: PropTypes.func,
   onError: PropTypes.func,
-  options: PropTypes.shape({
-    proxyUrl: PropTypes.string,
-    connectionEventsSuppressed: PropTypes.bool,
-    ipWhitelist: PropTypes.bool,
-    iceConfig: PropTypes.object,
-  }),
+  options: PropTypes.object,
 };
 
 OTSession.defaultProps = {
