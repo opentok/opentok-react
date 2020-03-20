@@ -7,6 +7,7 @@ export default function createSession({
   onStreamsUpdated,
   onConnect,
   onError,
+  options,
 } = {}) {
   if (!apiKey) {
     throw new Error('Missing apiKey');
@@ -48,7 +49,7 @@ export default function createSession({
     sessionConnected: onSessionConnected,
   };
 
-  let session = OT.initSession(apiKey, sessionId);
+  let session = OT.initSession(apiKey, sessionId, options);
   logAnalyticsEvent(apiKey, sessionId, 'react_initialize');
   session.on(eventHandlers);
   session.connect(token, (err) => {
