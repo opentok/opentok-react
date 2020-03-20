@@ -516,4 +516,4 @@ The unit tests are automatically run on [Travis](https://travis-ci.org/opentok/o
 ## About
 
 Originally authored by [Aiham Hammami](https://github.com/aiham).
-Currently maintained by [TokBox Inc.](https://tokbox.com/).
+Currently maintained by OpenTok Engineers and community members. Please note that this is not officially supported by [TokBox](https://tokbox.com/).
