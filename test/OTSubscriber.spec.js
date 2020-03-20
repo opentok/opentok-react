@@ -21,6 +21,32 @@ describe('OTSubscriber', () => {
     });
   });
 
+  describe('with className prop', () => {
+    let wrapper;
+
+    beforeEach(() => {
+      wrapper = mount(<OTSubscriber className="myclass" />);
+    });
+
+    it('should render class on wrapper element', () => {
+      const divWrapper = wrapper.render().find('div.myclass');
+      expect(divWrapper.length).toBe(1);
+    });
+  });
+
+  describe('with style prop', () => {
+    let wrapper;
+    const style = { color: 'red' };
+
+    beforeEach(() => {
+      wrapper = mount(<OTSubscriber style={style} />);
+    });
+
+    it('should render style attribute on wrapper element', () => {
+      expect(wrapper.containsMatchingElement(<div style={style} />)).toEqual(true);
+    });
+  });
+
   describe('with only stream prop', () => {
     let wrapper;
     let stream;
