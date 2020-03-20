@@ -163,6 +163,7 @@ The `opentok-react` library comprises of:
 | apiKey | String | Yes | TokBox API Key
 | sessionId | String | Yes | TokBox Session ID
 | token | String | Yes | TokBox token
+| options | Object | No | TokBox options [options](https://tokbox.com/developer/sdks/js/reference/OT.html#initSession)
 | eventHandlers | Object&lt;Function&gt; | No | Event handlers passed into [session.on](https://tokbox.com/developer/sdks/js/reference/Session.html#on)
 | onConnect | Function() | No | Invoked when [session.connect](https://tokbox.com/developer/sdks/js/reference/Session.html#connect) successfully completes
 | onError | Function(err) | No | Invoked when [session.connect](https://tokbox.com/developer/sdks/js/reference/Session.html#connect) fails
