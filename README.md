@@ -163,6 +163,7 @@ The `opentok-react` library comprises of:
 | apiKey | String | Yes | TokBox API Key
 | sessionId | String | Yes | TokBox Session ID
 | token | String | Yes | TokBox token
+| options | Object | No | TokBox options [options](https://tokbox.com/developer/sdks/js/reference/OT.html#initSession)
 | eventHandlers | Object&lt;Function&gt; | No | Event handlers passed into [session.on](https://tokbox.com/developer/sdks/js/reference/Session.html#on)
 | onConnect | Function() | No | Invoked when [session.connect](https://tokbox.com/developer/sdks/js/reference/Session.html#connect) successfully completes
 | onError | Function(err) | No | Invoked when [session.connect](https://tokbox.com/developer/sdks/js/reference/Session.html#connect) fails
@@ -515,4 +516,4 @@ The unit tests are automatically run on [Travis](https://travis-ci.org/opentok/o
 ## About
 
 Originally authored by [Aiham Hammami](https://github.com/aiham).
-Currently maintained by [TokBox Inc.](https://tokbox.com/).
+Currently maintained by OpenTok Engineers and community members. Please note that this is not officially supported by [TokBox](https://tokbox.com/).
