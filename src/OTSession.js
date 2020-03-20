@@ -93,7 +93,7 @@ OTSession.defaultProps = {
   eventHandlers: null,
   onConnect: null,
   onError: null,
-  options: undefined,
+  options: {},
 };
 
 OTSession.childContextTypes = {
