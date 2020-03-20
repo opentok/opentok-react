@@ -1,3 +1,5 @@
+import { logAnalyticsEvent } from './helpers/logging';
+
 export default function createSession({
   apiKey,
   sessionId,
@@ -37,12 +39,18 @@ export default function createSession({
     }
   };
 
+  let onSessionConnected = (event) => {
+    logAnalyticsEvent(apiKey, sessionId, 'react_connected', event.target.connection.connectionId);
+  };
+
   let eventHandlers = {
     streamCreated: onStreamCreated,
     streamDestroyed: onStreamDestroyed,
+    sessionConnected: onSessionConnected,
   };
 
   let session = OT.initSession(apiKey, sessionId, options);
+  logAnalyticsEvent(apiKey, sessionId, 'react_initialize');
   session.on(eventHandlers);
   session.connect(token, (err) => {
     if (!session) {
@@ -69,6 +77,7 @@ export default function createSession({
       streams = null;
       onStreamCreated = null;
       onStreamDestroyed = null;
+      onSessionConnected = null;
       eventHandlers = null;
       session = null;
 
