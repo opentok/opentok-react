@@ -171,6 +171,9 @@ export default class OTPublisher extends Component {
 
   render() {
     const { className, style } = this.props;
+    if (this.props.properties.insertDefaultUI === false) {
+      return null;
+    }
     return <div className={className} style={style} ref={(node) => { this.node = node; }} />;
   }
 }
