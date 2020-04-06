@@ -54,9 +54,14 @@ export default class OTSubscriber extends Component {
       return;
     }
 
-    const container = document.createElement('div');
-    container.setAttribute('class', 'OTSubscriberContainer');
-    this.node.appendChild(container);
+   const properties = this.props.properties || {};
+    let container;
+
+    if (properties.insertDefaultUI !== false) {
+      container = document.createElement('div');
+      container.setAttribute('class', 'OTSubscriberContainer');
+      this.node.appendChild(container);
+    }
 
     this.subscriberId = uuid();
     const { subscriberId } = this;
@@ -64,7 +69,7 @@ export default class OTSubscriber extends Component {
     const subscriber = this.state.session.subscribe(
             this.state.stream,
             container,
-            this.props.properties,
+            properties,
             (err) => {
               if (subscriberId !== this.subscriberId) {
                     // Either this subscriber has been recreated or the
