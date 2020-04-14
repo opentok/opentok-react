@@ -53,10 +53,13 @@ export default class OTSubscriber extends Component {
       this.setState({ subscriber: null });
       return;
     }
-
-    const container = document.createElement('div');
-    container.setAttribute('class', 'OTSubscriberContainer');
-    this.node.appendChild(container);
+    const { insertDefaultUI } = this.props.properties;
+    let container = null;
+    if (insertDefaultUI) {
+      container = document.createElement('div');
+      container.setAttribute('class', 'OTSubscriberContainer');
+      this.node.appendChild(container);
+    }
 
     this.subscriberId = uuid();
     const { subscriberId } = this;
@@ -156,7 +159,9 @@ OTSubscriber.defaultProps = {
   session: null,
   className: '',
   style: {},
-  properties: {},
+  properties: {
+    insertDefaultUI: true,
+  },
   retry: false,
   maxRetryAttempts: 5,
   retryAttemptTimeout: 1000,
