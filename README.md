@@ -510,8 +510,20 @@ Run the linter with:
 ```
 npm run lint
 ```
-
 The unit tests are automatically run on [Travis](https://travis-ci.org/opentok/opentok-react) on both Chrome and Firefox and the current build status is shown at the top of this document.
+
+## Mutation Tests
+
+- Install Stryker globally:
+```
+npm install -g stryker-cli
+```
+- Run mutation testing:
+```
+stryker run
+```
+You can still run Stryker from npm script, by just running `yarn/npm run test-mutation`, but it has a better perfomance using the global installation. 
+
 
 ## About
 

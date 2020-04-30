@@ -6,6 +6,7 @@
   "scripts": {
     "test": "karma start",
     "unit": "karma start --single-run",
+    "test-mutation": "stryker run",
     "prepublish": "npm run build",
     "build": "babel src --out-dir dist",
     "lint": "eslint src test",
@@ -34,6 +35,7 @@
     "react": "^15.5.0 || ^16.0.0"
   },
   "dependencies": {
+    "@babel/preset-react": "^7.0.0",
     "lodash": "^4.13.1",
     "prop-types": "^15.5.10",
     "react-display-name": "^0.2.0",
@@ -41,6 +43,11 @@
     "uuid": "^3.0.1"
   },
   "devDependencies": {
+    "@stryker-mutator/core": "^1.1.0",
+    "@stryker-mutator/html-reporter": "^1.1.0",
+    "@stryker-mutator/jasmine-framework": "^1.1.0",
+    "@stryker-mutator/javascript-mutator": "^1.1.0",
+    "@stryker-mutator/karma-runner": "^1.1.0",
     "babel-cli": "^6.18.0",
     "babel-eslint": "^7.1.1",
     "babel-preset-es2015": "^6.9.0",
