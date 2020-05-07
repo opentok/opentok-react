@@ -206,7 +206,7 @@ export interface VideoEnabledChangedEvent<T extends 'videoDisabled' | 'videoEnab
  * {@link https://tokbox.com/developer/sdks/js/reference/VideoElementCreatedEvent.html}
  */
 export interface VideoElementCreatedEvent extends Event<'videoElementCreated'> {
-  element: Element;
+  element: HTMLElement;
 }
 
 export type CompletionHandler = (error?: Error) => void;
@@ -298,7 +298,7 @@ export interface Session extends EventEmitter<SessionEventHandlers> {
   signal(signal: Signal, completionHandler?: CompletionHandler): void;
   subscribe(
     stream: Stream,
-    targetElement: Element | string | undefined,
+    targetElement: HTMLElement | string | undefined,
     properties: SubscriberProperties,
     completionHandler?: CompletionHandler,
   ): Subscriber;
@@ -380,7 +380,7 @@ export type SubscriberEventHandlers = {
  * {@link https://tokbox.com/developer/sdks/js/reference/Subscriber.html}
  */
 export interface Subscriber extends EventEmitter<SubscriberEventHandlers> {
-  element: Element;
+  element: HTMLElement;
   id: string;
   stream: Stream;
   getAudioVolume(): number;
@@ -453,7 +453,7 @@ export interface PublisherEventHandlers {
  */
 export interface Publisher extends EventEmitter<PublisherEventHandlers> {
   accessAllowed: boolean;
-  element?: Element;
+  element?: HTMLElement;
   id: string;
   stream: Stream;
   session: Session;
@@ -634,7 +634,7 @@ export interface OTInterface extends EventEmitter<OTInterfaceEvents> {
   getSupportedCodecs(): Promise<SupportedCodecs>;
   getUserMedia(options?: PublisherProperties): Promise<void>;
   initPublisher(
-    targetElement: Element | undefined,
+    targetElement: HTMLElement | undefined,
     properties: PublisherProperties,
     completionHandler?: CompletionHandler,
   ): Publisher;
