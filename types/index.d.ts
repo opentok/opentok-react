@@ -56,13 +56,13 @@ export interface CreateSessionOptions {
   onStreamsUpdated?: (streams: Stream[]) => void;
 }
 
-export interface CreateSessionResult {
+export interface SessionHelper {
   session: Session;
   streams: Stream[];
   disconnect: () => void;
 }
 
-export function createSession(options: CreateSessionOptions): CreateSessionResult;
+export function createSession(options: CreateSessionOptions): SessionHelper;
 
 export interface PreloadScriptProps {
   loadingDelegate?: React.ReactNode;
