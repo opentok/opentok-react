@@ -40,7 +40,8 @@ expectAssignable<OTSessionProps>({
   token: '',
   eventHandlers: {
     archiveStarted: (event: ArchiveEvent) => {},
-    'signal:foo': (event: SignalEvent) => {}
+    'signal:foo': (event: SignalEvent) => {},
+    'archiveStarted streamCreated': (event: Event) => {}
   }
 });
 

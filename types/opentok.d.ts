@@ -1,8 +1,20 @@
 export type ConnectionDisconnectReason = 'clientDisconnected' | 'forceDisconnected' | 'networkDisconnected';
 
 /**
+ * Error object
+ *
+ * {@link https://tokbox.com/developer/sdks/js/reference/Error.html}
+ */
+export interface Error {
+  code?: number;
+  name: string;
+  preventDefault(): void;
+  isDefaultPrevented(): boolean;
+}
+
+/**
  * Base interface for all OpenTok events
- * 
+ *
  * {@link https://tokbox.com/developer/sdks/js/reference/Event.html}
  */
 export interface Event<ET extends string = string, T = unknown> {
@@ -15,7 +27,7 @@ export interface Event<ET extends string = string, T = unknown> {
 
 /**
  * ArchiveEvent
- * 
+ *
  * {@link https://tokbox.com/developer/sdks/js/reference/ArchiveEvent.html}
  */
 export interface ArchiveEvent extends Event<'archiveStarted' | 'archiveStopped'> {
@@ -25,7 +37,7 @@ export interface ArchiveEvent extends Event<'archiveStarted' | 'archiveStopped'>
 
 /**
  * AudioLevelUpdatedEvent
- * 
+ *
  * {@link https://tokbox.com/developer/sdks/js/reference/AudioLevelUpdatedEvent.html}
  */
 export interface AudioLevelUpdatedEvent extends Event<'audioLevelUpdated'> {
@@ -34,7 +46,7 @@ export interface AudioLevelUpdatedEvent extends Event<'audioLevelUpdated'> {
 
 /**
  * ConnectionEvent, a common interface for {@link ConnectionCreatedEvent} and {@link ConnectionDestroyedEvent}
- * 
+ *
  * {@link https://tokbox.com/developer/sdks/js/reference/ConnectionEvent.html}
  */
 export interface ConnectionEvent<T extends 'connectionCreated' | 'connectionDestroyed'> extends Event<T> {
@@ -44,7 +56,7 @@ export interface ConnectionEvent<T extends 'connectionCreated' | 'connectionDest
 
 /**
  * ConnectionCreatedEvent
- * 
+ *
  * {@link https://tokbox.com/developer/sdks/js/reference/ConnectionEvent.html}
  */
 export interface ConnectionCreatedEvent extends ConnectionEvent<'connectionCreated'> {
@@ -53,7 +65,7 @@ export interface ConnectionCreatedEvent extends ConnectionEvent<'connectionCreat
 
 /**
  * ConnectionDestroyedEvent
- * 
+ *
  * {@link https://tokbox.com/developer/sdks/js/reference/ConnectionEvent.html}
  */
 export interface ConnectionDestroyedEvent extends ConnectionEvent<'connectionDestroyed'> {
@@ -61,8 +73,19 @@ export interface ConnectionDestroyedEvent extends ConnectionEvent<'connectionDes
 }
 
 /**
+ * ExceptionEvent
+ *
+ * {@link https://tokbox.com/developer/sdks/js/reference/ExceptionEvent.html}
+ */
+export interface ExceptionEvent extends Event<'exception'> {
+  code: number;
+  message: string;
+  title: string;
+}
+
+/**
  * MediaStoppedEvent
- * 
+ *
  * {@link https://tokbox.com/developer/sdks/js/reference/MediaStoppedEvent.html}
  */
 export interface MediaStoppedEvent extends Event<'mediaStopped'> {
@@ -79,7 +102,7 @@ export interface SessionEvent<T extends 'sessionConnected' | 'sessionDisconnecte
 
 /**
  * SessionConnectEvent
- * 
+ *
  * {@link https://tokbox.com/developer/sdks/js/reference/SessionConnectEvent.html}
  */
 export interface SessionConnectEvent extends SessionEvent<'sessionConnected'> {
@@ -88,7 +111,7 @@ export interface SessionConnectEvent extends SessionEvent<'sessionConnected'> {
 
 /**
  * SessionDisconnectEvent
- * 
+ *
  * {@link https://tokbox.com/developer/sdks/js/reference/SessionDisconnectEvent.html}
  */
 export interface SessionDisconnectEvent extends SessionEvent<'sessionDisconnected'> {
@@ -97,21 +120,21 @@ export interface SessionDisconnectEvent extends SessionEvent<'sessionDisconnecte
 
 /**
  * SessionReconnectEvent
- * 
+ *
  * {@link https://tokbox.com/developer/sdks/js/reference/Event.html}
  */
-export interface SessionReconnectEvent extends Event<'sessionReconnected'> {}
+export type SessionReconnectEvent = Event<'sessionReconnected'>;
 
 /**
  * SessionReconnectingEvent
- * 
+ *
  * {@link https://tokbox.com/developer/sdks/js/reference/Event.html}
  */
-export interface SessionReconnectingEvent extends Event<'sessionReconnecting'> {}
+export type SessionReconnectingEvent = Event<'sessionReconnecting'>;
 
 /**
  * SignalEvent
- * 
+ *
  * {@link https://tokbox.com/developer/sdks/js/reference/SignalEvent.html}
  */
 export interface SignalEvent extends Event<'signal' | string> {
@@ -121,7 +144,7 @@ export interface SignalEvent extends Event<'signal' | string> {
 
 /**
  * StreamEvent, a common interface for {@link StreamCreatedEvent} and {@link StreamDestroyedEvent}
- * 
+ *
  * {@link https://tokbox.com/developer/sdks/js/reference/StreamEvent.html}
  */
 export interface StreamEvent<T extends 'streamCreated' | 'streamDestroyed' | 'streamPropertyChanged'> extends Event<T> {
@@ -131,7 +154,7 @@ export interface StreamEvent<T extends 'streamCreated' | 'streamDestroyed' | 'st
 
 /**
  * StreamCreatedEvent
- * 
+ *
  * {@link https://tokbox.com/developer/sdks/js/reference/StreamEvent.html}
  */
 export interface StreamCreatedEvent extends StreamEvent<'streamCreated'> {
@@ -140,7 +163,7 @@ export interface StreamCreatedEvent extends StreamEvent<'streamCreated'> {
 
 /**
  * StreamDestroyedEvent
- * 
+ *
  * {@link https://tokbox.com/developer/sdks/js/reference/StreamEvent.html}
  */
 export interface StreamDestroyedEvent extends StreamEvent<'streamDestroyed'> {
@@ -149,7 +172,7 @@ export interface StreamDestroyedEvent extends StreamEvent<'streamDestroyed'> {
 
 /**
  * StreamPropertyChangedEvent
- * 
+ *
  * {@link https://tokbox.com/developer/sdks/js/reference/StreamPropertyChangedEvent.html}
  */
 export interface StreamPropertyChangedEvent<V = unknown> extends StreamEvent<'streamPropertyChanged'> {
@@ -160,7 +183,7 @@ export interface StreamPropertyChangedEvent<V = unknown> extends StreamEvent<'st
 
 /**
  * VideoDimensionsChangedEvent
- * 
+ *
  * {@link https://tokbox.com/developer/sdks/js/reference/VideoDimensionsChangedEvent.html}
  */
 export interface VideoDimensionsChangedEvent extends Event<'videoDimensionsChanged'> {
@@ -170,7 +193,7 @@ export interface VideoDimensionsChangedEvent extends Event<'videoDimensionsChang
 
 /**
  * VideoEnabledChangedEvent
- * 
+ *
  * {@link https://tokbox.com/developer/sdks/js/reference/VideoEnabledChangedEvent.html}
  */
 export interface VideoEnabledChangedEvent<T extends 'videoDisabled' | 'videoEnabled'> extends Event<T> {
@@ -179,7 +202,7 @@ export interface VideoEnabledChangedEvent<T extends 'videoDisabled' | 'videoEnab
 
 /**
  * VideoElementCreatedEvent
- * 
+ *
  * {@link https://tokbox.com/developer/sdks/js/reference/VideoElementCreatedEvent.html}
  */
 export interface VideoElementCreatedEvent extends Event<'videoElementCreated'> {
@@ -191,16 +214,30 @@ export type EventHandler<E extends Event<string> = Event<string>> = (event: E) =
 
 /**
  * Base interface for all objects that emit events:
- * 
+ *
  * {@link Session}
  */
 export interface EventEmitter<EventHandlers extends {}> {
+  /**
+   * @deprecated Use on
+   */
   addEventListener<T extends keyof EventHandlers & string>(type: T, listener: EventHandlers[T], context?: any): void;
+
+  /**
+   * @deprecated Use on
+   */
   addEventListener(type: string, listener: EventHandler, context?: any): void;
 
+  /**
+   * @deprecated Use off
+   */
   removeEventListener<T extends keyof EventHandlers & string>(type: T, listener: EventHandlers[T], context?: any): void;
+
+  /**
+   * @deprecated Use off
+   */
   removeEventListener(type: string, listener: EventHandler, context?: any): void;
-  
+
   off(handlers?: Partial<EventHandlers>): this;
   off<T extends keyof EventHandlers & string>(type: T, handler?: EventHandlers[T]): this;
   off(type: string, handler?: EventHandler): this;
@@ -215,7 +252,7 @@ export interface EventEmitter<EventHandlers extends {}> {
 
 /**
  * Signal object
- * 
+ *
  * {@link https://tokbox.com/developer/sdks/js/reference/Session.html#signal}
  */
 export interface Signal {
@@ -225,24 +262,26 @@ export interface Signal {
   type?: string;
 }
 
-export type SessionEventHandlers = {
-  archiveStarted?: EventHandler<ArchiveEvent>;
-  archiveStopped?: EventHandler<ArchiveEvent>;
-  connectionCreated?: EventHandler<ConnectionCreatedEvent>;
-  connectionDestroyed?: EventHandler<ConnectionDestroyedEvent>;
-  sessionConnected?: EventHandler<SessionConnectEvent>;
-  sessionDisconnected?: EventHandler<SessionDisconnectEvent>;
-  sessionReconnected?: EventHandler<SessionReconnectEvent>;
-  sessionReconnecting?: EventHandler<SessionReconnectingEvent>;
-  signal?: EventHandler<SignalEvent>;
-  streamCreated?: EventHandler<StreamCreatedEvent>;
-  streamDestroyed?: EventHandler<StreamDestroyedEvent>;
-  streamPropertyChanged?: EventHandler<StreamPropertyChangedEvent>;
-} | Record<string, EventHandler<SignalEvent>>;
+export type SessionEventHandlers =
+  | {
+      archiveStarted?: EventHandler<ArchiveEvent>;
+      archiveStopped?: EventHandler<ArchiveEvent>;
+      connectionCreated?: EventHandler<ConnectionCreatedEvent>;
+      connectionDestroyed?: EventHandler<ConnectionDestroyedEvent>;
+      sessionConnected?: EventHandler<SessionConnectEvent>;
+      sessionDisconnected?: EventHandler<SessionDisconnectEvent>;
+      sessionReconnected?: EventHandler<SessionReconnectEvent>;
+      sessionReconnecting?: EventHandler<SessionReconnectingEvent>;
+      signal?: EventHandler<SignalEvent>;
+      streamCreated?: EventHandler<StreamCreatedEvent>;
+      streamDestroyed?: EventHandler<StreamDestroyedEvent>;
+      streamPropertyChanged?: EventHandler<StreamPropertyChangedEvent>;
+    }
+  | Record<string, EventHandler<Event>>;
 
 /**
  * Session object
- * 
+ *
  * {@link https://tokbox.com/developer/sdks/js/reference/Session.html}
  */
 export interface Session extends EventEmitter<SessionEventHandlers> {
@@ -257,16 +296,21 @@ export interface Session extends EventEmitter<SessionEventHandlers> {
   getSubscribersForStream(stream: Stream): Subscriber[];
   publish(publisher: Publisher, completionHandler?: CompletionHandler): void;
   signal(signal: Signal, completionHandler?: CompletionHandler): void;
-  subscribe(stream: Stream, targetElement: Element | string | undefined, properties: SubscriberProperties, completionHandler?: CompletionHandler): Subscriber;
+  subscribe(
+    stream: Stream,
+    targetElement: Element | string | undefined,
+    properties: SubscriberProperties,
+    completionHandler?: CompletionHandler,
+  ): Subscriber;
   unpublish(publisher: Publisher): void;
   unsubscribe(subscriber: Subscriber): void;
 }
 
 /**
- * Dimensions object 
- * 
+ * Dimensions object
+ *
  * Passed in Session.subscribe properties {@link SubscriberProperties#preferredResolution}
- * 
+ *
  * {@link https://tokbox.com/developer/sdks/js/reference/Session.html#subscribe}
  */
 export interface Dimensions {
@@ -286,7 +330,7 @@ export interface Style {
 
 /**
  * Style object passed in Session.subscribe properties {@link SubscriberProperties#style}
- * 
+ *
  * {@link https://tokbox.com/developer/sdks/js/reference/Session.html#subscribe}
  */
 export interface SubscriberStyle extends Style {
@@ -296,7 +340,7 @@ export interface SubscriberStyle extends Style {
 
 /**
  * Properties object passed to Session.subscribe
- * 
+ *
  * {@link https://tokbox.com/developer/sdks/js/reference/Session.html#subscribe}
  */
 export interface SubscriberProperties {
@@ -332,7 +376,7 @@ export type SubscriberEventHandlers = {
 
 /**
  * Subscriber object
- * 
+ *
  * {@link https://tokbox.com/developer/sdks/js/reference/Subscriber.html}
  */
 export interface Subscriber extends EventEmitter<SubscriberEventHandlers> {
@@ -358,7 +402,7 @@ export interface Subscriber extends EventEmitter<SubscriberEventHandlers> {
 
 /**
  * Capabilities object
- * 
+ *
  * {@link https://tokbox.com/developer/sdks/js/reference/Capabilities.html}
  */
 export interface Capabilities {
@@ -370,7 +414,7 @@ export interface Capabilities {
 
 /**
  * Connection object
- * 
+ *
  * {@link https://tokbox.com/developer/sdks/js/reference/Connection.html}
  */
 export interface Connection {
@@ -380,20 +424,8 @@ export interface Connection {
 }
 
 /**
- * Error object
- * 
- * {@link https://tokbox.com/developer/sdks/js/reference/Error.html}
- */
-export interface Error {
-  code?: number;
-  name: string;
-  preventDefault(): void;
-  isDefaultPrevented(): boolean;
-}
-
-/**
  * Publisher style object
- * 
+ *
  * {@link https://tokbox.com/developer/sdks/js/reference/Publisher.html#setStyle}
  */
 export interface PublisherStyle extends Style {
@@ -416,7 +448,7 @@ export interface PublisherEventHandlers {
 
 /**
  * Publisher object
- * 
+ *
  * {@link https://tokbox.com/developer/sdks/js/reference/Publisher.html}
  */
 export interface Publisher extends EventEmitter<PublisherEventHandlers> {
@@ -442,7 +474,7 @@ export interface Publisher extends EventEmitter<PublisherEventHandlers> {
 
 /**
  * Stream object
- * 
+ *
  * {@link https://tokbox.com/developer/sdks/js/reference/Stream.html}
  */
 export interface Stream {
@@ -459,7 +491,7 @@ export interface Stream {
 
 /**
  * Publisher stats object
- * 
+ *
  * {@link https://tokbox.com/developer/sdks/js/reference/Publisher.html#getStats}
  */
 export interface PublisherStats {
@@ -474,12 +506,12 @@ export interface PublisherStats {
     'video.packetsLost': number;
     'video.packetsSent': number;
     'video.frameRate': number;
-  }
+  };
 }
 
 /**
  * SubscriberStats stats object
- * 
+ *
  * {@link https://tokbox.com/developer/sdks/js/reference/Subscribe.html#getStats}
  */
 export interface SubscriberStats {
@@ -495,7 +527,7 @@ export interface SubscriberStats {
 
 /**
  * Publisher properties object
- * 
+ *
  * {@link https://tokbox.com/developer/sdks/js/reference/OT.html#initPublisher}
  */
 export interface PublisherProperties {
@@ -521,4 +553,134 @@ export interface PublisherProperties {
   usePreviousDeviceSelection?: boolean;
   videoSource?: string | MediaStreamTrack | boolean | null;
   width?: number | string;
+}
+
+export interface ScreenSharingCapabilities {
+  /**
+   * In older versions of Chrome and Opera, this is set to true if the extension is installed and registered. In Chrome 72+, Firefox 52+, Opera 59+, Edge 79+, and Internet Explorer, this property is undefined.
+   */
+  extensionInstalled: boolean;
+
+  /**
+   * Set to true if screen sharing is supported in the browser. Check the extensionRequired property to see if the browser requires an extension for screen sharing.
+   */
+  supported: boolean;
+
+  /**
+   * In older browser versions, you could select a type of screen-sharing source (such as "application", "screen", or "window" by setting the videoSource property of the options passed into the OT.initPublisher() method. However, in current browsers that support screen sharing, passing in any of these values results in the same behavior — the browser displays a dialog box in which the end user selects the screen-sharing source (which can be the entire screen or a specific window).
+   *
+   * @deprecated
+   */
+  supportedSources: {};
+
+  /**
+   * Set to "chrome" in older versions of Chrome and Opera, which require a screen-sharing extension to be installed. This property is undefined in other browsers.
+   */
+  extensionRequired?: string;
+
+  /**
+   * In older versions of Chrome and Opera, this property is set to true if a screen-sharing extension is registered; otherwise it is set to false. In other browsers (which do not require an extension), this property is undefined. Use the OT.registerScreenSharingExtension() method to register a screen-sharing extension in older versions of Chrome or Opera.
+   */
+  extensionRegistered?: boolean;
+}
+
+export interface Device {
+  kind: 'videoInput' | 'audioInput';
+  /**
+   * You can pass the deviceId in as the audioSource or videoSource property of the options parameter of the OT.initPublisher() method.
+   */
+  deviceId: string;
+  /**
+   * The label property identifies the device. The label property is set to an empty string if the user has not previously granted access to a camera and microphone. In HTTP, the user must have granted access to a camera and microphone in the current page (for example, in response to a call to OT.initPublisher()). In HTTPS, the user must have previously granted access to the camera and microphone in the current page or in a page previously loaded from the domain.
+   */
+  label: string;
+}
+
+export interface SupportedCodecs {
+  videoDecoders: string[];
+  videoEncoders: string[];
+}
+
+export interface SessionInitOptions {
+  connectionEventsSuppressed?: boolean;
+  ipWhitelist?: boolean;
+  iceConfig?: {};
+}
+
+export interface OTInterfaceEvents {
+  exception?: EventHandler<ExceptionEvent>;
+}
+
+export interface OTInterface extends EventEmitter<OTInterfaceEvents> {
+  /**
+   * Checks for support for publishing screen-sharing streams on the client browser.
+   *
+   * @param callback
+   */
+  checkScreenSharingCapability(callback: (capabilities: ScreenSharingCapabilities) => void): void;
+
+  /**
+   * Checks if the system supports OpenTok for WebRTC (1) or not (0).
+   */
+  checkSystemRequirements(): 1 | 0;
+
+  /**
+   * Enumerates the audio input devices (such as microphones) and video input devices (cameras) available to the browser.
+   *
+   * @param callback
+   */
+  getDevices(callback: (error: Error | null | undefined, devices: Device[]) => void): void;
+
+  getSupportedCodecs(): Promise<SupportedCodecs>;
+  getUserMedia(options?: PublisherProperties): Promise<void>;
+  initPublisher(
+    targetElement: Element | undefined,
+    properties: PublisherProperties,
+    completionHandler?: CompletionHandler,
+  ): Publisher;
+  initSession(apiKey: string, sessionId: string, options?: SessionInitOptions): Session;
+
+  /**
+   * Sends a string to the debugger console.
+   *
+   * @param {String} message
+   */
+  log(message: string): void;
+
+  /**
+   * Register an extension for screen-sharing support in an older version of Chrome or Opera.
+   *
+   * @param kind Set this parameter to "chrome". Currently, you can only register a screen-sharing extension for older versions of Chrome and Opera.
+   * @param {String} id The ID for your screen-sharing extension. You can find this ID at chrome://extensions.
+   * @param {Number} version The version of the screen-sharing extension from the screensharing-extensions repo. Set this if you are using version 2 or later. For example, if you are using version 2, set this to 2. With version 2, the client can use the extension immediately after installing it, without reloading the page.
+   */
+  registerScreenSharingExtension(kind: 'chrome', id: string, version: number): void;
+
+  /**
+   * Report that your app experienced an issue.
+   *
+   * @param {Function} completionHandler
+   */
+  reportIssue(completionHandler: (error: Error | null | undefined, reportId: string) => void): void;
+
+  /**
+   * Sets the API log level.
+   *
+   * @param logLevel
+   */
+  setLogLevel(logLevel: string): void;
+
+  /**
+   * Causes subscribers' audio to play back in browsers where audio is blocked.
+   */
+  unblockAudio(): void;
+
+  /**
+   * Displays information about system requirements for OpenTok for WebRTC.
+   */
+  upgradeSystemRequirements(): void;
+}
+
+declare global {
+  const OT: OTInterface;
 }
