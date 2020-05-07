@@ -294,6 +294,7 @@ export interface Session extends EventEmitter<SessionEventHandlers> {
   forceUnpublish(stream: Stream, completionHandler?: CompletionHandler): void;
   getPublisherForStream(stream: Stream): Publisher;
   getSubscribersForStream(stream: Stream): Subscriber[];
+  isConnected(): boolean;
   publish(publisher: Publisher, completionHandler?: CompletionHandler): void;
   signal(signal: Signal, completionHandler?: CompletionHandler): void;
   subscribe(
