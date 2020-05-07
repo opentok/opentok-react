@@ -1,9 +1,14 @@
 import React from 'react';
-import { Session, Error, PublisherProperties, Stream, SubscriberProperties, PublisherEventHandlers, SessionEventHandlers, SubscriberEventHandlers } from './opentok';
+import { Session, Error, PublisherProperties, Stream, SubscriberProperties, PublisherEventHandlers, SessionEventHandlers, SubscriberEventHandlers, Subscriber, Publisher } from './opentok';
+
+export interface OTPublisherRef {
+  getPublisher(): Publisher;
+}
 
 export interface OTPublisherProps {
   session?: Session;
   properties?: PublisherProperties;
+  ref?: React.Ref<OTPublisherRef>;
   eventHandlers?: PublisherEventHandlers;
   onInit?: () => void;
   onPublish?: () => void;
@@ -25,9 +30,14 @@ export interface OTStreamsProps {
   streams?: Stream[];
 }
 
+export interface OTSubscriberRef {
+  getSubscriber(): Subscriber;
+}
+
 export interface OTSubscriberProps {
   eventHandlers?: SubscriberEventHandlers;
   properties?: SubscriberProperties;
+  ref?: React.Ref<OTSubscriberRef>;
   session?: Session;
   stream?: Stream;
   onSubscribe?: () => void;

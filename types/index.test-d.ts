@@ -1,6 +1,6 @@
 import React from 'react';
 import { expectNotAssignable, expectAssignable } from 'tsd';
-import { OTSessionProps, OTPublisherProps, OTStreamsProps, OTSubscriberProps } from ".";
+import { OTSessionProps, OTPublisherProps, OTStreamsProps, OTSubscriberProps, OTSubscriberRef, OTPublisherRef } from ".";
 import { Error, Event, ArchiveEvent, SignalEvent, Session, AudioLevelUpdatedEvent, Stream, SubscriberProperties } from "./opentok";
 
 /**
@@ -46,6 +46,7 @@ expectAssignable<OTSessionProps>({
 });
 
 declare const session: Session;
+declare const publisherRef: React.RefObject<OTPublisherRef>;
 
 /**
  * OTPublisherProps
@@ -67,6 +68,15 @@ expectAssignable<OTPublisherProps>({
 });
 expectAssignable<OTPublisherProps>({
   eventHandlers: {}
+});
+expectAssignable<OTPublisherProps>({
+  ref: undefined
+});
+expectAssignable<OTPublisherProps>({
+  ref: (instance: OTPublisherRef | null) => {}
+});
+expectAssignable<OTPublisherProps>({
+  ref: publisherRef
 });
 expectAssignable<OTPublisherProps>({
   eventHandlers: {
@@ -123,6 +133,7 @@ expectAssignable<OTStreamsProps>({
 });
 
 declare const subscriberProperties: SubscriberProperties;
+declare const subscriberRef: React.RefObject<OTSubscriberRef>;
 
 /**
  * OTSubscriberProps
@@ -147,6 +158,15 @@ expectNotAssignable<OTSubscriberProps>({
 });
 expectAssignable<OTSubscriberProps>({
   eventHandlers: {}
+});
+expectAssignable<OTSubscriberProps>({
+  ref: undefined
+});
+expectAssignable<OTSubscriberProps>({
+  ref: (instance: OTSubscriberRef | null) => {}
+});
+expectAssignable<OTSubscriberProps>({
+  ref: subscriberRef
 });
 expectAssignable<OTSubscriberProps>({
   eventHandlers: {
