@@ -55,13 +55,20 @@ describe('createSession', () => {
         sessionId: 'fakeSessionId',
         token: 'fakeToken',
         onStreamsUpdated,
+        options: {
+          connectionEventSurpressed: true,
+        },
       };
 
       sessionHelper = createSession(options);
     });
 
     it('should call OT.initSession', () => {
-      expect(OT.initSession).toHaveBeenCalledWith(options.apiKey, options.sessionId);
+      expect(OT.initSession).toHaveBeenCalledWith(
+        options.apiKey,
+        options.sessionId,
+        options.options,
+      );
     });
 
     it('should call session.on', () => {

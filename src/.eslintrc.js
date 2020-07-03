@@ -14,6 +14,7 @@ module.exports = {
   },
   rules: {
     'no-confusing-arrow': ['error', { allowParens: true }],
-    'react/jsx-filename-extension': 'off'
+    'react/jsx-filename-extension': 'off',
+    'react/forbid-prop-types': ['error', { forbid: ['any', 'array'] }]
   }
 };
