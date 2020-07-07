@@ -1,13 +1,9 @@
 sudo: required
-dist: xenial
 services:
   - xvfb
 language: node_js
 node_js:
   - 6
-
-before_install:
-  - export DISPLAY=:99.0
 
 script: ./node_modules/.bin/run-tests
 
