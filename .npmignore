@@ -1,6 +1,8 @@
 example/
 src/
 test/
+types/index.test-d.ts
+types/tsconfig.json
 karma.conf.js
 .travis.yml
 .npmignore
