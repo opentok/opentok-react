@@ -53,10 +53,13 @@ export default class OTSubscriber extends Component {
       this.setState({ subscriber: null });
       return;
     }
-
-    const container = document.createElement('div');
-    container.setAttribute('class', 'OTSubscriberContainer');
-    this.node.appendChild(container);
+    const properties = this.props.properties || {};
+    let container;
+    if (properties.insertDefaultUI !== false) {
+      container = document.createElement('div');
+      container.setAttribute('class', 'OTSubscriberContainer');
+      this.node.appendChild(container);
+    }
 
     this.subscriberId = uuid();
     const { subscriberId } = this;
