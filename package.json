@@ -78,5 +78,6 @@
     "transform": [
       "babelify"
     ]
-  }
+  },
+  "types": "./types/index.d.ts"
 }
