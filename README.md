@@ -6,23 +6,28 @@ React components for OpenTok.js
 
 ## Contents
 
-- [Pre-Requisites](#pre-requisites)
-- [Install](#install)
-- [Example App](#example-app)
-- [Usage](#usage)
-  - [Importing opentok-react](#importing-opentok-react)
-  - [Example with OTSession Component](#example-with-otsession-component)
-  - [Example with createSession Helper](#example-with-createsession-helper)
-- [API Reference](#api-reference)
-  - [OTSession Component](#otsession-component)
-  - [OTPublisher Component](#otpublisher-component)
-  - [OTStreams Component](#otstreams-component)
-  - [OTSubscriber Component](#otsubscriber-component)
-  - [createSession Helper](#createsession-helper)
-  - [preloadScript Higher-Order Component](#preloadscript-higher-order-component)
-- [Custom Build](#custom-build)
-- [Contributing](#contributing)
-- [Tests](#tests)
+- [opentok-react](#opentok-react)
+  - [Contents](#contents)
+  - [Pre-Requisites](#pre-requisites)
+  - [Install](#install)
+  - [Example App](#example-app)
+  - [Usage](#usage)
+    - [Importing opentok-react](#importing-opentok-react)
+    - [Example with OTSession Component](#example-with-otsession-component)
+    - [Example with createSession Helper](#example-with-createsession-helper)
+  - [API Reference](#api-reference)
+    - [OTSession Component](#otsession-component)
+    - [OTPublisher Component](#otpublisher-component)
+    - [OTStreams Component](#otstreams-component)
+    - [OTSubscriber Component](#otsubscriber-component)
+    - [createSession Helper](#createsession-helper)
+    - [Accessing the Session Using React Refs](#accessing-the-session-using-react-refs)
+    - [Disconnecting a Session](#disconnecting-a-session)
+    - [`preloadScript` Higher-Order Component](#preloadscript-higher-order-component)
+  - [Custom Build](#custom-build)
+  - [Contributing](#contributing)
+  - [Tests](#tests)
+  - [About](#about)
 
 ## Pre-Requisites
 
@@ -445,6 +450,63 @@ The `createSession` helper returns an object with the following properties:
 
 Use of this helper is optional and you can instead use the `OTSession` component or directly call [OT.initSession](https://tokbox.com/developer/sdks/js/reference/OT.html#initSession) and listen to [streamCreated](https://tokbox.com/developer/sdks/js/reference/Session.html#event:streamCreated) events if you prefer.
 
+### Accessing the Session Using React Refs
+
+If you choose to use the `OTSession` component, you can also access the sessionHelper using React refs. This is helpful when you need to generate the session using `OT.initSession` and you still want to use the `OTSession` component.
+
+To do this, you'll need to access the sessionHelper method from the OTSession DOM element.
+
+```javascript
+class MyComponent extends React.Component {
+  constructor(props) {
+    super(props);
+    this.otSession = React.createRef();
+  }
+  render() {
+    return <OTSession ref={this.otSession}>...</OTSession>;
+  }
+}
+```
+
+See [the react docs](https://reactjs.org/docs/refs-and-the-dom.html) for more on using refs in React.
+
+### Disconnecting a Session
+
+If you need to disconnect a session (in order to create an "End Call" button for example), you can access the disconnect method from the session object. You can access the session object using one of several ways depending on your use case.
+
+For example:
+
+If you [used a ReactJS ref](#accessing-the-session-using-react-refs) to access the session helper off the `OTSession` DOM element:
+
+```javascript
+<button onClick={this.otSession.sessionHelper.disconnect}>
+  End Call
+</button>
+
+// OR
+
+<button onClick={this.otSession.sessionHelper.session.disconnect}>
+  End Call
+</button>
+```
+
+If you used the [createSession helper](#example-with-createsession-helper) method:
+
+```javascript
+<button onClick={this.sessionHelper.disconnect}>
+  End Call
+</button>
+```
+
+If you created the session using [OT.initSession](https://tokbox.com/developer/sdks/js/reference/OT.html#initSession):
+
+```javascript
+const otSession = OT.initSession(<YOUR_API_KEY>, <YOUR_SESSION_ID>);
+...
+<button onClick={otSession.disconnect}>
+  End Call
+</button>
+```
 
 ### `preloadScript` Higher-Order Component
 
