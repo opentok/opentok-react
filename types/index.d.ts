@@ -69,4 +69,4 @@ export interface PreloadScriptProps {
   opentokClientUrl?: string;
 }
 
-export function preloadScript(component: React.ComponentType): React.ComponentType<PreloadScriptProps>;
+export function preloadScript<P>(component: React.ComponentType<P>): React.ComponentType<PreloadScriptProps & P>;
