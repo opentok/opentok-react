@@ -475,7 +475,7 @@ class VideoChat extends React.Component {
   // All the code of your component
 }
 
-export default preloadScript(App);
+export default preloadScript(VideoChat);
 ```
 
 ## Custom Build
