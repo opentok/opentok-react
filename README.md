@@ -1,6 +1,6 @@
 # opentok-react
 
-[![npm version](https://badge.fury.io/js/opentok-react.svg)](https://badge.fury.io/js/opentok-react) [![Build Status](https://travis-ci.org/opentok/opentok-react.svg?branch=master)](https://travis-ci.org/opentok/opentok-react)
+[![npm version](https://badge.fury.io/js/opentok-react.svg)](https://badge.fury.io/js/opentok-react) [![Build Status](https://travis-ci.org/opentok/opentok-react.svg?branch=main)](https://travis-ci.org/opentok/opentok-react)
 
 React components for OpenTok.js
 
