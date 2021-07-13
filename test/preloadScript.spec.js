@@ -1,6 +1,9 @@
 import React from 'react';
-import { mount } from 'enzyme';
+import { mount, configure } from 'enzyme';
+import Adapter from '@wojtekmaj/enzyme-adapter-react-17';
 import preloadScript from '../src/preloadScript';
+
+configure({ adapter: new Adapter() });
 
 describe('preloadScript', () => {
   it('Should render loadingDelegate when OT is not available', () => {
