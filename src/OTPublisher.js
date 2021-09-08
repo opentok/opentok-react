@@ -35,6 +35,12 @@ export default class OTPublisher extends Component {
       }
     };
 
+    if (shouldUpdate('audioSource', undefined)) {
+      this.state.publisher
+        .setAudioSource(this.props.properties.audioSource)
+        .catch(error => this.errorHandler(error));
+    }
+
     if (shouldUpdate('videoSource', undefined)) {
       this.destroyPublisher();
       this.createPublisher();
