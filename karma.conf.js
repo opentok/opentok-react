@@ -1,5 +1,5 @@
 module.exports = config => {
-  const browser = process.env.BROWSER || 'chrome';
+  const browser = process.env.BROWSER || 'ChromeHeadless';
 
   config.set({
     basePath: '',
@@ -29,8 +29,6 @@ module.exports = config => {
     port: 9876,
     colors: true,
     logLevel: config.LOG_DEBUG,
-    autoWatch: true,
     browsers: [browser[0].toUpperCase() + browser.substr(1)],
-    singleRun: false
   });
 };
