@@ -1,3 +1,9 @@
+|<p align="left"> <h1> :warning: This repository is now deprecated :warning:</h1><br /><br /> <h2>Please consider using [OpenTok Web Components](https://github.com/opentok/web-components) instead.</h2> <br /><br /> An example React project can be found [here](https://github.com/opentok/web-components/tree/main/examples/react)   |
+|-----------------------------------------|
+  
+  
+<br /><br /><br /><br /><br /><br /><br />
+
 # opentok-react
 
 [![npm version](https://badge.fury.io/js/opentok-react.svg)](https://badge.fury.io/js/opentok-react) [![Build Status](https://travis-ci.org/opentok/opentok-react.svg?branch=main)](https://travis-ci.org/opentok/opentok-react)
